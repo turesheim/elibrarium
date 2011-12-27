@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description>
+      Resheim Reader
+   </description>
+   <feature url="features/no.resheim.reader_0.0.0.jar" id="no.resheim.reader" version="0.0.0">
+      <category name="Features"/>
+   </feature>
+   <category-def name="Features" label="Resheim Reader Features">
+      <description>
+         Tools.
+      </description>
+   </category-def>
+</site>
