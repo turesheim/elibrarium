@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ui
+Bundle-SymbolicName: no.resheim.reader.library.ui
+Bundle-Version: 0.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.mylyn.docs.epub.core;bundle-version="0.8.0",
+ org.eclipse.mylyn.docs.epub.ui;bundle-version="0.8.0",
+ no.resheim.reader.library.core;bundle-version="0.1.0"
