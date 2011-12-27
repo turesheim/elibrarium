@@ -10,6 +10,7 @@
 
   <properties>
     <tycho-version>0.13.0</tycho-version>
+		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/S20110907174232/repository/</orbit-repository-url>
 	</properties>
 	
 	<prerequisites>
