@@ -79,6 +79,8 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 		switch (eDataType.getClassifierID()) {
 			case LibraryPackage.ANNOTATION_COLOR:
 				return createAnnotationColorFromString(eDataType, initialValue);
+			case LibraryPackage.LOCATION_FORMAT:
+				return createLocationFormatFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -94,6 +96,8 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 		switch (eDataType.getClassifierID()) {
 			case LibraryPackage.ANNOTATION_COLOR:
 				return convertAnnotationColorToString(eDataType, instanceValue);
+			case LibraryPackage.LOCATION_FORMAT:
+				return convertLocationFormatToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -146,6 +150,26 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * @generated
 	 */
 	public String convertAnnotationColorToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public LocationFormat createLocationFormatFromString(EDataType eDataType, String initialValue) {
+		LocationFormat result = LocationFormat.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertLocationFormatToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

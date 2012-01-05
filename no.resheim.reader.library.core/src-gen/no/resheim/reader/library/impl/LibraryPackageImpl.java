@@ -12,6 +12,7 @@ import no.resheim.reader.library.Book;
 import no.resheim.reader.library.Library;
 import no.resheim.reader.library.LibraryFactory;
 import no.resheim.reader.library.LibraryPackage;
+import no.resheim.reader.library.LocationFormat;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -59,6 +60,13 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * @generated
 	 */
 	private EEnum annotationColorEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum locationFormatEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -220,7 +228,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAnnotation_Color() {
+	public EAttribute getAnnotation_Format() {
 		return (EAttribute)annotationEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -229,7 +237,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAnnotation_Text() {
+	public EAttribute getAnnotation_Color() {
 		return (EAttribute)annotationEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -238,7 +246,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAnnotation_Timestamp() {
+	public EAttribute getAnnotation_Text() {
 		return (EAttribute)annotationEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -247,8 +255,17 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAnnotation_Comment() {
+	public EAttribute getAnnotation_Timestamp() {
 		return (EAttribute)annotationEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getAnnotation_Comment() {
+		return (EAttribute)annotationEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -258,6 +275,15 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 */
 	public EEnum getAnnotationColor() {
 		return annotationColorEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getLocationFormat() {
+		return locationFormatEEnum;
 	}
 
 	/**
@@ -300,6 +326,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 
 		annotationEClass = createEClass(ANNOTATION);
 		createEAttribute(annotationEClass, ANNOTATION__LOCATION);
+		createEAttribute(annotationEClass, ANNOTATION__FORMAT);
 		createEAttribute(annotationEClass, ANNOTATION__COLOR);
 		createEAttribute(annotationEClass, ANNOTATION__TEXT);
 		createEAttribute(annotationEClass, ANNOTATION__TIMESTAMP);
@@ -307,6 +334,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 
 		// Create enums
 		annotationColorEEnum = createEEnum(ANNOTATION_COLOR);
+		locationFormatEEnum = createEEnum(LOCATION_FORMAT);
 	}
 
 	/**
@@ -354,6 +382,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 
 		initEClass(annotationEClass, Annotation.class, "Annotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAnnotation_Location(), ecorePackage.getEString(), "location", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAnnotation_Format(), this.getLocationFormat(), "format", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAnnotation_Color(), this.getAnnotationColor(), "color", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAnnotation_Text(), ecorePackage.getEString(), "text", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAnnotation_Timestamp(), ecorePackage.getEDate(), "timestamp", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -366,6 +395,9 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		addEEnumLiteral(annotationColorEEnum, AnnotationColor.BLUE);
 		addEEnumLiteral(annotationColorEEnum, AnnotationColor.RED);
 		addEEnumLiteral(annotationColorEEnum, AnnotationColor.PURPLE);
+
+		initEEnum(locationFormatEEnum, LocationFormat.class, "LocationFormat");
+		addEEnumLiteral(locationFormatEEnum, LocationFormat.RANGY);
 
 		// Create resource
 		createResource(eNS_URI);

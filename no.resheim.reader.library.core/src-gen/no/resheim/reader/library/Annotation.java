@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link no.resheim.reader.library.Annotation#getLocation <em>Location</em>}</li>
+ *   <li>{@link no.resheim.reader.library.Annotation#getFormat <em>Format</em>}</li>
  *   <li>{@link no.resheim.reader.library.Annotation#getColor <em>Color</em>}</li>
  *   <li>{@link no.resheim.reader.library.Annotation#getText <em>Text</em>}</li>
  *   <li>{@link no.resheim.reader.library.Annotation#getTimestamp <em>Timestamp</em>}</li>
@@ -56,6 +57,35 @@ public interface Annotation extends EObject {
 	 * @generated
 	 */
 	void setLocation(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Format</b></em>' attribute.
+	 * The literals are from the enumeration {@link no.resheim.reader.library.LocationFormat}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Format</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Format</em>' attribute.
+	 * @see no.resheim.reader.library.LocationFormat
+	 * @see #setFormat(LocationFormat)
+	 * @see no.resheim.reader.library.LibraryPackage#getAnnotation_Format()
+	 * @model required="true"
+	 * @generated
+	 */
+	LocationFormat getFormat();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.reader.library.Annotation#getFormat <em>Format</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Format</em>' attribute.
+	 * @see no.resheim.reader.library.LocationFormat
+	 * @see #getFormat()
+	 * @generated
+	 */
+	void setFormat(LocationFormat value);
 
 	/**
 	 * Returns the value of the '<em><b>Color</b></em>' attribute.

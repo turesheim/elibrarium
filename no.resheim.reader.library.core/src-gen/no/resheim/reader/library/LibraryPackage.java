@@ -172,13 +172,22 @@ public interface LibraryPackage extends EPackage {
 	int ANNOTATION__LOCATION = 0;
 
 	/**
+	 * The feature id for the '<em><b>Format</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ANNOTATION__FORMAT = 1;
+
+	/**
 	 * The feature id for the '<em><b>Color</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__COLOR = 1;
+	int ANNOTATION__COLOR = 2;
 
 	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
@@ -187,7 +196,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__TEXT = 2;
+	int ANNOTATION__TEXT = 3;
 
 	/**
 	 * The feature id for the '<em><b>Timestamp</b></em>' attribute.
@@ -196,7 +205,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__TIMESTAMP = 3;
+	int ANNOTATION__TIMESTAMP = 4;
 
 	/**
 	 * The feature id for the '<em><b>Comment</b></em>' attribute.
@@ -205,7 +214,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__COMMENT = 4;
+	int ANNOTATION__COMMENT = 5;
 
 	/**
 	 * The number of structural features of the '<em>Annotation</em>' class.
@@ -214,7 +223,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION_FEATURE_COUNT = 5;
+	int ANNOTATION_FEATURE_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link no.resheim.reader.library.AnnotationColor <em>Annotation Color</em>}' enum.
@@ -225,6 +234,16 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 */
 	int ANNOTATION_COLOR = 3;
+
+	/**
+	 * The meta object id for the '{@link no.resheim.reader.library.LocationFormat <em>Location Format</em>}' enum.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see no.resheim.reader.library.LocationFormat
+	 * @see no.resheim.reader.library.impl.LibraryPackageImpl#getLocationFormat()
+	 * @generated
+	 */
+	int LOCATION_FORMAT = 4;
 
 
 	/**
@@ -335,6 +354,17 @@ public interface LibraryPackage extends EPackage {
 	EAttribute getAnnotation_Location();
 
 	/**
+	 * Returns the meta object for the attribute '{@link no.resheim.reader.library.Annotation#getFormat <em>Format</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Format</em>'.
+	 * @see no.resheim.reader.library.Annotation#getFormat()
+	 * @see #getAnnotation()
+	 * @generated
+	 */
+	EAttribute getAnnotation_Format();
+
+	/**
 	 * Returns the meta object for the attribute '{@link no.resheim.reader.library.Annotation#getColor <em>Color</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -387,6 +417,16 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 */
 	EEnum getAnnotationColor();
+
+	/**
+	 * Returns the meta object for enum '{@link no.resheim.reader.library.LocationFormat <em>Location Format</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for enum '<em>Location Format</em>'.
+	 * @see no.resheim.reader.library.LocationFormat
+	 * @generated
+	 */
+	EEnum getLocationFormat();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -497,6 +537,14 @@ public interface LibraryPackage extends EPackage {
 		EAttribute ANNOTATION__LOCATION = eINSTANCE.getAnnotation_Location();
 
 		/**
+		 * The meta object literal for the '<em><b>Format</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ANNOTATION__FORMAT = eINSTANCE.getAnnotation_Format();
+
+		/**
 		 * The meta object literal for the '<em><b>Color</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -537,6 +585,16 @@ public interface LibraryPackage extends EPackage {
 		 * @generated
 		 */
 		EEnum ANNOTATION_COLOR = eINSTANCE.getAnnotationColor();
+
+		/**
+		 * The meta object literal for the '{@link no.resheim.reader.library.LocationFormat <em>Location Format</em>}' enum.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see no.resheim.reader.library.LocationFormat
+		 * @see no.resheim.reader.library.impl.LibraryPackageImpl#getLocationFormat()
+		 * @generated
+		 */
+		EEnum LOCATION_FORMAT = eINSTANCE.getLocationFormat();
 
 	}
 

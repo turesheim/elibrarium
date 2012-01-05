@@ -11,6 +11,7 @@ import java.util.Date;
 import no.resheim.reader.library.Annotation;
 import no.resheim.reader.library.AnnotationColor;
 import no.resheim.reader.library.LibraryPackage;
+import no.resheim.reader.library.LocationFormat;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -27,6 +28,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getLocation <em>Location</em>}</li>
+ *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getFormat <em>Format</em>}</li>
  *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getColor <em>Color</em>}</li>
  *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getText <em>Text</em>}</li>
  *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getTimestamp <em>Timestamp</em>}</li>
@@ -56,6 +58,26 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 	 * @ordered
 	 */
 	protected String location = LOCATION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getFormat() <em>Format</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFormat()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final LocationFormat FORMAT_EDEFAULT = LocationFormat.RANGY;
+
+	/**
+	 * The cached value of the '{@link #getFormat() <em>Format</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFormat()
+	 * @generated
+	 * @ordered
+	 */
+	protected LocationFormat format = FORMAT_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getColor() <em>Color</em>}' attribute.
@@ -182,6 +204,27 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public LocationFormat getFormat() {
+		return format;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setFormat(LocationFormat newFormat) {
+		LocationFormat oldFormat = format;
+		format = newFormat == null ? FORMAT_EDEFAULT : newFormat;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.ANNOTATION__FORMAT, oldFormat, format));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public AnnotationColor getColor() {
 		return color;
 	}
@@ -271,6 +314,8 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 		switch (featureID) {
 			case LibraryPackage.ANNOTATION__LOCATION:
 				return getLocation();
+			case LibraryPackage.ANNOTATION__FORMAT:
+				return getFormat();
 			case LibraryPackage.ANNOTATION__COLOR:
 				return getColor();
 			case LibraryPackage.ANNOTATION__TEXT:
@@ -293,6 +338,9 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 		switch (featureID) {
 			case LibraryPackage.ANNOTATION__LOCATION:
 				setLocation((String)newValue);
+				return;
+			case LibraryPackage.ANNOTATION__FORMAT:
+				setFormat((LocationFormat)newValue);
 				return;
 			case LibraryPackage.ANNOTATION__COLOR:
 				setColor((AnnotationColor)newValue);
@@ -321,6 +369,9 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 			case LibraryPackage.ANNOTATION__LOCATION:
 				setLocation(LOCATION_EDEFAULT);
 				return;
+			case LibraryPackage.ANNOTATION__FORMAT:
+				setFormat(FORMAT_EDEFAULT);
+				return;
 			case LibraryPackage.ANNOTATION__COLOR:
 				setColor(COLOR_EDEFAULT);
 				return;
@@ -347,6 +398,8 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 		switch (featureID) {
 			case LibraryPackage.ANNOTATION__LOCATION:
 				return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
+			case LibraryPackage.ANNOTATION__FORMAT:
+				return format != FORMAT_EDEFAULT;
 			case LibraryPackage.ANNOTATION__COLOR:
 				return color != COLOR_EDEFAULT;
 			case LibraryPackage.ANNOTATION__TEXT:
@@ -371,6 +424,8 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (location: ");
 		result.append(location);
+		result.append(", format: ");
+		result.append(format);
 		result.append(", color: ");
 		result.append(color);
 		result.append(", text: ");
