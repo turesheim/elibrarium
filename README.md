@@ -9,10 +9,10 @@ and book reader.
 ##Planned features:
 
 * EPUB reader
-** Markings and notes support
-** WebKit based rendering engine
+  * Markings and notes support
+  * WebKit based rendering engine
 * Library manager
-** Drag and drop book files
+  * Drag and drop book files
 
 ##License:
 
