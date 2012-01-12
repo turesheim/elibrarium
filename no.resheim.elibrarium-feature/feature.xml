@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="no.resheim.reader"
+      id="no.resheim.elibrarium"
       label="%featureName"
       version="0.1.0.qualifier"
       provider-name="%providerName">
@@ -23,21 +23,21 @@
          search-location="both"/>
 
    <plugin
-         id="no.resheim.reader.epub.ui"
+         id="no.resheim.elibrarium.reader.epub"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="no.resheim.reader.library.core"
+         id="no.resheim.elibrarium.library.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="no.resheim.reader.library.ui"
+         id="no.resheim.elibrarium.library.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

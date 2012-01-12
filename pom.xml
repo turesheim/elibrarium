@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>no.resheim.reader</groupId>
-	<artifactId>no.resheim.reader-parent</artifactId>
+	<groupId>no.resheim.elibrarium</groupId>
+	<artifactId>no.resheim.elibrarium-parent</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -595,10 +595,10 @@
 
 
 	<modules>
-		<module>no.resheim.reader-feature</module>
-		<module>no.resheim.reader.library.core</module>
-		<module>no.resheim.reader.library.ui</module>
-		<module>no.resheim.reader.epub.ui</module>
-		<module>no.resheim.reader-site</module>
+		<module>no.resheim.elibrarium-feature</module>
+		<module>no.resheim.elibrarium.library.core</module>
+		<module>no.resheim.elibrarium.library.ui</module>
+		<module>no.resheim.elibrarium.reader.epub</module>
+		<module>no.resheim.elibrarium-site</module>
 	</modules>
 </project>

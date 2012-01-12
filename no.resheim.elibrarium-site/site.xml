@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description>
+      Elibrarium
+   </description>
+   <feature url="features/no.resheim.reader_0.0.0.jar" id="no.resheim.elibrarium" version="0.0.0">
+      <category name="Features"/>
+   </feature>
+   <category-def name="Features" label="Elibrarium Features">
+      <description>
+         Elibrarium features.
+      </description>
+   </category-def>
+</site>

@@ -3,11 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>no.resheim.reader-parent</artifactId>
-    <groupId>no.resheim.reader</groupId>
+    <artifactId>no.resheim.elibrarium-parent</artifactId>
+    <groupId>no.resheim.elibrarium</groupId>
     <version>0.1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>no.resheim.reader.library.ui</artifactId>
+  <artifactId>no.resheim.elibrarium.library.ui</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   <build>
@@ -26,5 +26,5 @@
       </plugin>
     </plugins>
   </build>
-  <groupId>no.resheim.reader</groupId>
+  <groupId>no.resheim.elibrarium</groupId>
 </project>
