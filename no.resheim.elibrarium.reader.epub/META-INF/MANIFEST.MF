@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EPUB Reader
-Bundle-SymbolicName: no.resheim.elibrarium.reader.epub;singleton:=true
+Bundle-SymbolicName: no.resheim.elibrarium.epub.ui;singleton:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Version: 0.1.0.qualifier
 Bundle-Vendor: Torkild U. Resheim

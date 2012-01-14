@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="no.resheim.elibrarium"
+      id="no.resheim.elibrarium.epub"
       label="%featureName"
       version="0.1.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%featureName"
+      plugin="no.resheim.elibrarium.epub.ui">
 
    <description>
       %description
@@ -19,22 +20,10 @@
 
    <includes
          id="org.eclipse.mylyn.docs.epub"
-         version="0.0.0"
-         search-location="both"/>
-
-   <includes
-         id="no.resheim.elibrarium.reader.epub_feature"
          version="0.0.0"/>
 
    <plugin
-         id="no.resheim.elibrarium.library.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="no.resheim.elibrarium.library.ui"
+         id="no.resheim.elibrarium.epub.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
