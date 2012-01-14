@@ -23,7 +23,7 @@
          search-location="both"/>
 
    <includes
-         id="no.resheim.elibrarium.reader.epub_feature"
+         id="no.resheim.elibrarium.epub"
          version="0.0.0"/>
 
    <plugin

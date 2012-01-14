@@ -598,7 +598,8 @@
 		<module>no.resheim.elibrarium-feature</module>
 		<module>no.resheim.elibrarium.library.core</module>
 		<module>no.resheim.elibrarium.library.ui</module>
-		<module>no.resheim.elibrarium.reader.epub</module>
+		<module>no.resheim.elibrarium.epub-feature</module>
+		<module>no.resheim.elibrarium.epub.ui</module>
 		<module>no.resheim.elibrarium-site</module>
 	</modules>
 </project>

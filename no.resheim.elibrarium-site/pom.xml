@@ -10,7 +10,7 @@
   </parent>
   <artifactId>no.resheim.elibrarium-site</artifactId>
   <packaging>eclipse-update-site</packaging>
-  <name>Elibrarium</name>
+  <name>Elibrarium Installation Repository</name>
   <build>
     <plugins>
       <plugin>

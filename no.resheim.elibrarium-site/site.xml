@@ -3,12 +3,15 @@
    <description>
       Elibrarium
    </description>
-   <feature url="features/no.resheim.reader_0.0.0.jar" id="no.resheim.elibrarium" version="0.0.0">
-      <category name="Features"/>
+   <feature url="features/no.resheim.elibrarium_0.0.0.jar" id="no.resheim.elibrarium" version="0.0.0">
+      <category name="features"/>
    </feature>
-   <category-def name="Features" label="Elibrarium Features">
+   <feature url="features/no.resheim.elibrarium.epub_0.0.0.jar" id="no.resheim.elibrarium.epub" version="0.0.0">
+      <category name="features"/>
+   </feature>
+   <category-def name="features" label="Electronic Book Manager and Readers">
       <description>
-         Elibrarium features.
+         Electronic book manager and readers.
       </description>
    </category-def>
 </site>
