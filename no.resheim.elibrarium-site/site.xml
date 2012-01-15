@@ -9,7 +9,7 @@
    <feature url="features/no.resheim.elibrarium.epub_0.0.0.jar" id="no.resheim.elibrarium.epub" version="0.0.0">
       <category name="features"/>
    </feature>
-   <category-def name="features" label="Electronic Book Manager and Readers">
+   <category-def name="features" label="Electronic Books">
       <description>
          Electronic book manager and readers.
       </description>
