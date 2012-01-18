@@ -63,7 +63,9 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 		switch (eClass.getClassifierID()) {
 			case LibraryPackage.LIBRARY: return createLibrary();
 			case LibraryPackage.BOOK: return createBook();
+			case LibraryPackage.MARKER: return createMarker();
 			case LibraryPackage.ANNOTATION: return createAnnotation();
+			case LibraryPackage.BOOKMARK: return createBookmark();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -81,6 +83,8 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 				return createAnnotationColorFromString(eDataType, initialValue);
 			case LibraryPackage.LOCATION_FORMAT:
 				return createLocationFormatFromString(eDataType, initialValue);
+			case LibraryPackage.BOOKMARK_TYPE:
+				return createBookmarkTypeFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -98,6 +102,8 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 				return convertAnnotationColorToString(eDataType, instanceValue);
 			case LibraryPackage.LOCATION_FORMAT:
 				return convertLocationFormatToString(eDataType, instanceValue);
+			case LibraryPackage.BOOKMARK_TYPE:
+				return convertBookmarkTypeToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -128,9 +134,29 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Marker createMarker() {
+		MarkerImpl marker = new MarkerImpl();
+		return marker;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Annotation createAnnotation() {
 		AnnotationImpl annotation = new AnnotationImpl();
 		return annotation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Bookmark createBookmark() {
+		BookmarkImpl bookmark = new BookmarkImpl();
+		return bookmark;
 	}
 
 	/**
@@ -170,6 +196,26 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * @generated
 	 */
 	public String convertLocationFormatToString(EDataType eDataType, Object instanceValue) {
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public BookmarkType createBookmarkTypeFromString(EDataType eDataType, String initialValue) {
+		BookmarkType result = BookmarkType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertBookmarkTypeToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

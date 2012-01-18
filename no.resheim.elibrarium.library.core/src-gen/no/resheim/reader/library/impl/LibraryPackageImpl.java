@@ -9,10 +9,13 @@ package no.resheim.reader.library.impl;
 import no.resheim.reader.library.Annotation;
 import no.resheim.reader.library.AnnotationColor;
 import no.resheim.reader.library.Book;
+import no.resheim.reader.library.Bookmark;
+import no.resheim.reader.library.BookmarkType;
 import no.resheim.reader.library.Library;
 import no.resheim.reader.library.LibraryFactory;
 import no.resheim.reader.library.LibraryPackage;
 import no.resheim.reader.library.LocationFormat;
+import no.resheim.reader.library.Marker;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -48,7 +51,21 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass markerEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass annotationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass bookmarkEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -63,6 +80,13 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * @generated
 	 */
 	private EEnum locationFormatEEnum = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EEnum bookmarkTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -184,8 +208,71 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getBook_Title() {
+		return (EAttribute)bookEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getBook_Author() {
+		return (EAttribute)bookEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getBook_Annotations() {
-		return (EReference)bookEClass.getEStructuralFeatures().get(2);
+		return (EReference)bookEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getBook_Bookmarks() {
+		return (EReference)bookEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getMarker() {
+		return markerEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMarker_Location() {
+		return (EAttribute)markerEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMarker_Format() {
+		return (EAttribute)markerEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMarker_Timestamp() {
+		return (EAttribute)markerEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -202,7 +289,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAnnotation_Location() {
+	public EAttribute getAnnotation_Color() {
 		return (EAttribute)annotationEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -211,7 +298,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAnnotation_Format() {
+	public EAttribute getAnnotation_Text() {
 		return (EAttribute)annotationEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -220,7 +307,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAnnotation_Color() {
+	public EAttribute getAnnotation_Comment() {
 		return (EAttribute)annotationEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -229,8 +316,8 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAnnotation_Text() {
-		return (EAttribute)annotationEClass.getEStructuralFeatures().get(3);
+	public EClass getBookmark() {
+		return bookmarkEClass;
 	}
 
 	/**
@@ -238,17 +325,8 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAnnotation_Timestamp() {
-		return (EAttribute)annotationEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getAnnotation_Comment() {
-		return (EAttribute)annotationEClass.getEStructuralFeatures().get(5);
+	public EAttribute getBookmark_Type() {
+		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -267,6 +345,15 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 */
 	public EEnum getLocationFormat() {
 		return locationFormatEEnum;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EEnum getBookmarkType() {
+		return bookmarkTypeEEnum;
 	}
 
 	/**
@@ -304,19 +391,28 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		bookEClass = createEClass(BOOK);
 		createEAttribute(bookEClass, BOOK__PATH);
 		createEAttribute(bookEClass, BOOK__COVER_IMAGE);
+		createEAttribute(bookEClass, BOOK__TITLE);
+		createEAttribute(bookEClass, BOOK__AUTHOR);
 		createEReference(bookEClass, BOOK__ANNOTATIONS);
+		createEReference(bookEClass, BOOK__BOOKMARKS);
+
+		markerEClass = createEClass(MARKER);
+		createEAttribute(markerEClass, MARKER__LOCATION);
+		createEAttribute(markerEClass, MARKER__FORMAT);
+		createEAttribute(markerEClass, MARKER__TIMESTAMP);
 
 		annotationEClass = createEClass(ANNOTATION);
-		createEAttribute(annotationEClass, ANNOTATION__LOCATION);
-		createEAttribute(annotationEClass, ANNOTATION__FORMAT);
 		createEAttribute(annotationEClass, ANNOTATION__COLOR);
 		createEAttribute(annotationEClass, ANNOTATION__TEXT);
-		createEAttribute(annotationEClass, ANNOTATION__TIMESTAMP);
 		createEAttribute(annotationEClass, ANNOTATION__COMMENT);
+
+		bookmarkEClass = createEClass(BOOKMARK);
+		createEAttribute(bookmarkEClass, BOOKMARK__TYPE);
 
 		// Create enums
 		annotationColorEEnum = createEEnum(ANNOTATION_COLOR);
 		locationFormatEEnum = createEEnum(LOCATION_FORMAT);
+		bookmarkTypeEEnum = createEEnum(BOOKMARK_TYPE);
 	}
 
 	/**
@@ -347,6 +443,8 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		annotationEClass.getESuperTypes().add(this.getMarker());
+		bookmarkEClass.getESuperTypes().add(this.getMarker());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(libraryEClass, Library.class, "Library", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -356,15 +454,23 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		initEClass(bookEClass, Book.class, "Book", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBook_Path(), ecorePackage.getEString(), "path", null, 1, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBook_CoverImage(), ecorePackage.getEString(), "coverImage", null, 1, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBook_Title(), ecorePackage.getEString(), "title", null, 1, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBook_Author(), ecorePackage.getEString(), "author", null, 1, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBook_Annotations(), this.getAnnotation(), null, "annotations", null, 0, -1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getBook_Bookmarks(), this.getBookmark(), null, "bookmarks", null, 0, -1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(markerEClass, Marker.class, "Marker", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getMarker_Location(), ecorePackage.getEString(), "location", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMarker_Format(), this.getLocationFormat(), "format", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMarker_Timestamp(), ecorePackage.getEDate(), "timestamp", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(annotationEClass, Annotation.class, "Annotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getAnnotation_Location(), ecorePackage.getEString(), "location", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAnnotation_Format(), this.getLocationFormat(), "format", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAnnotation_Color(), this.getAnnotationColor(), "color", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAnnotation_Text(), ecorePackage.getEString(), "text", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAnnotation_Timestamp(), ecorePackage.getEDate(), "timestamp", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAnnotation_Comment(), ecorePackage.getEString(), "comment", null, 0, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(bookmarkEClass, Bookmark.class, "Bookmark", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getBookmark_Type(), this.getBookmarkType(), "type", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(annotationColorEEnum, AnnotationColor.class, "AnnotationColor");
@@ -376,6 +482,10 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 
 		initEEnum(locationFormatEEnum, LocationFormat.class, "LocationFormat");
 		addEEnumLiteral(locationFormatEEnum, LocationFormat.RANGY);
+
+		initEEnum(bookmarkTypeEEnum, BookmarkType.class, "BookmarkType");
+		addEEnumLiteral(bookmarkTypeEEnum, BookmarkType.LAST);
+		addEEnumLiteral(bookmarkTypeEEnum, BookmarkType.USER);
 
 		// Create resource
 		createResource(eNS_URI);

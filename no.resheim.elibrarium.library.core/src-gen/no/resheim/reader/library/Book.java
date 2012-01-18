@@ -20,7 +20,10 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link no.resheim.reader.library.Book#getPath <em>Path</em>}</li>
  *   <li>{@link no.resheim.reader.library.Book#getCoverImage <em>Cover Image</em>}</li>
+ *   <li>{@link no.resheim.reader.library.Book#getTitle <em>Title</em>}</li>
+ *   <li>{@link no.resheim.reader.library.Book#getAuthor <em>Author</em>}</li>
  *   <li>{@link no.resheim.reader.library.Book#getAnnotations <em>Annotations</em>}</li>
+ *   <li>{@link no.resheim.reader.library.Book#getBookmarks <em>Bookmarks</em>}</li>
  * </ul>
  * </p>
  *
@@ -82,6 +85,58 @@ public interface Book extends EObject {
 	void setCoverImage(String value);
 
 	/**
+	 * Returns the value of the '<em><b>Title</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Title</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Title</em>' attribute.
+	 * @see #setTitle(String)
+	 * @see no.resheim.reader.library.LibraryPackage#getBook_Title()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getTitle();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.reader.library.Book#getTitle <em>Title</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Title</em>' attribute.
+	 * @see #getTitle()
+	 * @generated
+	 */
+	void setTitle(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Author</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Author</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Author</em>' attribute.
+	 * @see #setAuthor(String)
+	 * @see no.resheim.reader.library.LibraryPackage#getBook_Author()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getAuthor();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.reader.library.Book#getAuthor <em>Author</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Author</em>' attribute.
+	 * @see #getAuthor()
+	 * @generated
+	 */
+	void setAuthor(String value);
+
+	/**
 	 * Returns the value of the '<em><b>Annotations</b></em>' reference list.
 	 * The list contents are of type {@link no.resheim.reader.library.Annotation}.
 	 * <!-- begin-user-doc -->
@@ -96,5 +151,21 @@ public interface Book extends EObject {
 	 * @generated
 	 */
 	EList<Annotation> getAnnotations();
+
+	/**
+	 * Returns the value of the '<em><b>Bookmarks</b></em>' reference list.
+	 * The list contents are of type {@link no.resheim.reader.library.Bookmark}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Bookmarks</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Bookmarks</em>' reference list.
+	 * @see no.resheim.reader.library.LibraryPackage#getBook_Bookmarks()
+	 * @model
+	 * @generated
+	 */
+	EList<Bookmark> getBookmarks();
 
 } // Book

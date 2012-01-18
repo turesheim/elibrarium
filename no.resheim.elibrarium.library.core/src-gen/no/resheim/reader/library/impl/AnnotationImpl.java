@@ -6,19 +6,15 @@
  */
 package no.resheim.reader.library.impl;
 
-import java.util.Date;
-
 import no.resheim.reader.library.Annotation;
 import no.resheim.reader.library.AnnotationColor;
 import no.resheim.reader.library.LibraryPackage;
-import no.resheim.reader.library.LocationFormat;
 
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,58 +23,15 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getLocation <em>Location</em>}</li>
- *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getFormat <em>Format</em>}</li>
  *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getColor <em>Color</em>}</li>
  *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getText <em>Text</em>}</li>
- *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getTimestamp <em>Timestamp</em>}</li>
  *   <li>{@link no.resheim.reader.library.impl.AnnotationImpl#getComment <em>Comment</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class AnnotationImpl extends EObjectImpl implements Annotation {
-	/**
-	 * The default value of the '{@link #getLocation() <em>Location</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getLocation()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String LOCATION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getLocation() <em>Location</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getLocation()
-	 * @generated
-	 * @ordered
-	 */
-	protected String location = LOCATION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getFormat() <em>Format</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFormat()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final LocationFormat FORMAT_EDEFAULT = LocationFormat.RANGY;
-
-	/**
-	 * The cached value of the '{@link #getFormat() <em>Format</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFormat()
-	 * @generated
-	 * @ordered
-	 */
-	protected LocationFormat format = FORMAT_EDEFAULT;
-
+public class AnnotationImpl extends MarkerImpl implements Annotation {
 	/**
 	 * The default value of the '{@link #getColor() <em>Color</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -120,26 +73,6 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 	protected String text = TEXT_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getTimestamp() <em>Timestamp</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTimestamp()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Date TIMESTAMP_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getTimestamp() <em>Timestamp</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTimestamp()
-	 * @generated
-	 * @ordered
-	 */
-	protected Date timestamp = TIMESTAMP_EDEFAULT;
-
-	/**
 	 * The default value of the '{@link #getComment() <em>Comment</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -176,48 +109,6 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 	@Override
 	protected EClass eStaticClass() {
 		return LibraryPackage.Literals.ANNOTATION;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getLocation() {
-		return location;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setLocation(String newLocation) {
-		String oldLocation = location;
-		location = newLocation;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.ANNOTATION__LOCATION, oldLocation, location));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public LocationFormat getFormat() {
-		return format;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setFormat(LocationFormat newFormat) {
-		LocationFormat oldFormat = format;
-		format = newFormat == null ? FORMAT_EDEFAULT : newFormat;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.ANNOTATION__FORMAT, oldFormat, format));
 	}
 
 	/**
@@ -267,27 +158,6 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Date getTimestamp() {
-		return timestamp;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setTimestamp(Date newTimestamp) {
-		Date oldTimestamp = timestamp;
-		timestamp = newTimestamp;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.ANNOTATION__TIMESTAMP, oldTimestamp, timestamp));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getComment() {
 		return comment;
 	}
@@ -312,16 +182,10 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case LibraryPackage.ANNOTATION__LOCATION:
-				return getLocation();
-			case LibraryPackage.ANNOTATION__FORMAT:
-				return getFormat();
 			case LibraryPackage.ANNOTATION__COLOR:
 				return getColor();
 			case LibraryPackage.ANNOTATION__TEXT:
 				return getText();
-			case LibraryPackage.ANNOTATION__TIMESTAMP:
-				return getTimestamp();
 			case LibraryPackage.ANNOTATION__COMMENT:
 				return getComment();
 		}
@@ -336,20 +200,11 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case LibraryPackage.ANNOTATION__LOCATION:
-				setLocation((String)newValue);
-				return;
-			case LibraryPackage.ANNOTATION__FORMAT:
-				setFormat((LocationFormat)newValue);
-				return;
 			case LibraryPackage.ANNOTATION__COLOR:
 				setColor((AnnotationColor)newValue);
 				return;
 			case LibraryPackage.ANNOTATION__TEXT:
 				setText((String)newValue);
-				return;
-			case LibraryPackage.ANNOTATION__TIMESTAMP:
-				setTimestamp((Date)newValue);
 				return;
 			case LibraryPackage.ANNOTATION__COMMENT:
 				setComment((String)newValue);
@@ -366,20 +221,11 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case LibraryPackage.ANNOTATION__LOCATION:
-				setLocation(LOCATION_EDEFAULT);
-				return;
-			case LibraryPackage.ANNOTATION__FORMAT:
-				setFormat(FORMAT_EDEFAULT);
-				return;
 			case LibraryPackage.ANNOTATION__COLOR:
 				setColor(COLOR_EDEFAULT);
 				return;
 			case LibraryPackage.ANNOTATION__TEXT:
 				setText(TEXT_EDEFAULT);
-				return;
-			case LibraryPackage.ANNOTATION__TIMESTAMP:
-				setTimestamp(TIMESTAMP_EDEFAULT);
 				return;
 			case LibraryPackage.ANNOTATION__COMMENT:
 				setComment(COMMENT_EDEFAULT);
@@ -396,16 +242,10 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case LibraryPackage.ANNOTATION__LOCATION:
-				return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
-			case LibraryPackage.ANNOTATION__FORMAT:
-				return format != FORMAT_EDEFAULT;
 			case LibraryPackage.ANNOTATION__COLOR:
 				return color != COLOR_EDEFAULT;
 			case LibraryPackage.ANNOTATION__TEXT:
 				return TEXT_EDEFAULT == null ? text != null : !TEXT_EDEFAULT.equals(text);
-			case LibraryPackage.ANNOTATION__TIMESTAMP:
-				return TIMESTAMP_EDEFAULT == null ? timestamp != null : !TIMESTAMP_EDEFAULT.equals(timestamp);
 			case LibraryPackage.ANNOTATION__COMMENT:
 				return COMMENT_EDEFAULT == null ? comment != null : !COMMENT_EDEFAULT.equals(comment);
 		}
@@ -422,16 +262,10 @@ public class AnnotationImpl extends EObjectImpl implements Annotation {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (location: ");
-		result.append(location);
-		result.append(", format: ");
-		result.append(format);
-		result.append(", color: ");
+		result.append(" (color: ");
 		result.append(color);
 		result.append(", text: ");
 		result.append(text);
-		result.append(", timestamp: ");
-		result.append(timestamp);
 		result.append(", comment: ");
 		result.append(comment);
 		result.append(')');

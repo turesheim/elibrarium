@@ -44,6 +44,15 @@ public interface LibraryFactory extends EFactory {
 	Book createBook();
 
 	/**
+	 * Returns a new object of class '<em>Marker</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Marker</em>'.
+	 * @generated
+	 */
+	Marker createMarker();
+
+	/**
 	 * Returns a new object of class '<em>Annotation</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -51,6 +60,15 @@ public interface LibraryFactory extends EFactory {
 	 * @generated
 	 */
 	Annotation createAnnotation();
+
+	/**
+	 * Returns a new object of class '<em>Bookmark</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Bookmark</em>'.
+	 * @generated
+	 */
+	Bookmark createBookmark();
 
 	/**
 	 * Returns the package supported by this factory.
