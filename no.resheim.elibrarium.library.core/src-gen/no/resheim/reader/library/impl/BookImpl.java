@@ -17,14 +17,11 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-
-import org.eclipse.mylyn.docs.epub.opf.Metadata;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,7 +33,6 @@ import org.eclipse.mylyn.docs.epub.opf.Metadata;
  *   <li>{@link no.resheim.reader.library.impl.BookImpl#getPath <em>Path</em>}</li>
  *   <li>{@link no.resheim.reader.library.impl.BookImpl#getCoverImage <em>Cover Image</em>}</li>
  *   <li>{@link no.resheim.reader.library.impl.BookImpl#getAnnotations <em>Annotations</em>}</li>
- *   <li>{@link no.resheim.reader.library.impl.BookImpl#getMetadata <em>Metadata</em>}</li>
  * </ul>
  * </p>
  *
@@ -92,16 +88,6 @@ public class BookImpl extends EObjectImpl implements Book {
 	 * @ordered
 	 */
 	protected EList<Annotation> annotations;
-
-	/**
-	 * The cached value of the '{@link #getMetadata() <em>Metadata</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMetadata()
-	 * @generated
-	 * @ordered
-	 */
-	protected Metadata metadata;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -181,44 +167,6 @@ public class BookImpl extends EObjectImpl implements Book {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Metadata getMetadata() {
-		if (metadata != null && metadata.eIsProxy()) {
-			InternalEObject oldMetadata = (InternalEObject)metadata;
-			metadata = (Metadata)eResolveProxy(oldMetadata);
-			if (metadata != oldMetadata) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, LibraryPackage.BOOK__METADATA, oldMetadata, metadata));
-			}
-		}
-		return metadata;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Metadata basicGetMetadata() {
-		return metadata;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setMetadata(Metadata newMetadata) {
-		Metadata oldMetadata = metadata;
-		metadata = newMetadata;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.BOOK__METADATA, oldMetadata, metadata));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -228,9 +176,6 @@ public class BookImpl extends EObjectImpl implements Book {
 				return getCoverImage();
 			case LibraryPackage.BOOK__ANNOTATIONS:
 				return getAnnotations();
-			case LibraryPackage.BOOK__METADATA:
-				if (resolve) return getMetadata();
-				return basicGetMetadata();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -254,9 +199,6 @@ public class BookImpl extends EObjectImpl implements Book {
 				getAnnotations().clear();
 				getAnnotations().addAll((Collection<? extends Annotation>)newValue);
 				return;
-			case LibraryPackage.BOOK__METADATA:
-				setMetadata((Metadata)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -278,9 +220,6 @@ public class BookImpl extends EObjectImpl implements Book {
 			case LibraryPackage.BOOK__ANNOTATIONS:
 				getAnnotations().clear();
 				return;
-			case LibraryPackage.BOOK__METADATA:
-				setMetadata((Metadata)null);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -299,8 +238,6 @@ public class BookImpl extends EObjectImpl implements Book {
 				return COVER_IMAGE_EDEFAULT == null ? coverImage != null : !COVER_IMAGE_EDEFAULT.equals(coverImage);
 			case LibraryPackage.BOOK__ANNOTATIONS:
 				return annotations != null && !annotations.isEmpty();
-			case LibraryPackage.BOOK__METADATA:
-				return metadata != null;
 		}
 		return super.eIsSet(featureID);
 	}

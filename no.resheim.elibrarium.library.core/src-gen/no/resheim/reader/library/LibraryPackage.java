@@ -135,22 +135,13 @@ public interface LibraryPackage extends EPackage {
 	int BOOK__ANNOTATIONS = 2;
 
 	/**
-	 * The feature id for the '<em><b>Metadata</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOK__METADATA = 3;
-
-	/**
 	 * The number of structural features of the '<em>Book</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BOOK_FEATURE_COUNT = 4;
+	int BOOK_FEATURE_COUNT = 3;
 
 	/**
 	 * The meta object id for the '{@link no.resheim.reader.library.impl.AnnotationImpl <em>Annotation</em>}' class.
@@ -320,17 +311,6 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getBook_Annotations();
-
-	/**
-	 * Returns the meta object for the reference '{@link no.resheim.reader.library.Book#getMetadata <em>Metadata</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Metadata</em>'.
-	 * @see no.resheim.reader.library.Book#getMetadata()
-	 * @see #getBook()
-	 * @generated
-	 */
-	EReference getBook_Metadata();
 
 	/**
 	 * Returns the meta object for class '{@link no.resheim.reader.library.Annotation <em>Annotation</em>}'.
@@ -509,14 +489,6 @@ public interface LibraryPackage extends EPackage {
 		 * @generated
 		 */
 		EReference BOOK__ANNOTATIONS = eINSTANCE.getBook_Annotations();
-
-		/**
-		 * The meta object literal for the '<em><b>Metadata</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference BOOK__METADATA = eINSTANCE.getBook_Metadata();
 
 		/**
 		 * The meta object literal for the '{@link no.resheim.reader.library.impl.AnnotationImpl <em>Annotation</em>}' class.

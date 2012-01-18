@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
-import org.eclipse.mylyn.docs.epub.ocf.OCFPackage;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -45,7 +44,7 @@ public class LibraryManager implements BundleActivator {
 		// Register package so that it is available even without the Eclipse
 		// runtime
 		@SuppressWarnings("unused")
-		OCFPackage packageInstance = OCFPackage.eINSTANCE;
+		LibraryPackage packageInstance = LibraryPackage.eINSTANCE;
 
 		// Register the file suffix
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl() {

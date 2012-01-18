@@ -22,10 +22,6 @@ import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
-import org.eclipse.mylyn.docs.epub.dc.DCPackage;
-
-import org.eclipse.mylyn.docs.epub.opf.OPFPackage;
-
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Package</b>.
@@ -114,10 +110,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 
 		isInited = true;
 
-		// Initialize simple dependencies
-		OPFPackage.eINSTANCE.eClass();
-		DCPackage.eINSTANCE.eClass();
-
 		// Create package meta-data objects
 		theLibraryPackage.createPackageContents();
 
@@ -194,15 +186,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 */
 	public EReference getBook_Annotations() {
 		return (EReference)bookEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getBook_Metadata() {
-		return (EReference)bookEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -322,7 +305,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		createEAttribute(bookEClass, BOOK__PATH);
 		createEAttribute(bookEClass, BOOK__COVER_IMAGE);
 		createEReference(bookEClass, BOOK__ANNOTATIONS);
-		createEReference(bookEClass, BOOK__METADATA);
 
 		annotationEClass = createEClass(ANNOTATION);
 		createEAttribute(annotationEClass, ANNOTATION__LOCATION);
@@ -360,9 +342,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		setNsPrefix(eNS_PREFIX);
 		setNsURI(eNS_URI);
 
-		// Obtain other dependent packages
-		OPFPackage theOPFPackage = (OPFPackage)EPackage.Registry.INSTANCE.getEPackage(OPFPackage.eNS_URI);
-
 		// Create type parameters
 
 		// Set bounds for type parameters
@@ -378,7 +357,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		initEAttribute(getBook_Path(), ecorePackage.getEString(), "path", null, 1, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBook_CoverImage(), ecorePackage.getEString(), "coverImage", null, 1, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBook_Annotations(), this.getAnnotation(), null, "annotations", null, 0, -1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getBook_Metadata(), theOPFPackage.getMetadata(), null, "metadata", null, 0, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(annotationEClass, Annotation.class, "Annotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAnnotation_Location(), ecorePackage.getEString(), "location", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

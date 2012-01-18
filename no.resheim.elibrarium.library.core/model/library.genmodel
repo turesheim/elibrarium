@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/no.resheim.reader.library.core/src-gen"
-    modelPluginID="no.resheim.reader.library.core" modelName="Library" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="6.0" copyrightFields="false" runtimeVersion="2.6" usedGenPackages="../../org.eclipse.mylyn.docs.epub.core/model/opf.genmodel#//opf ../../org.eclipse.mylyn.docs.epub.core/model/opf.genmodel#//dc">
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/no.resheim.elibrarium.library.core/src-gen"
+    modelPluginID="no.resheim.elibrarium.library.core" modelName="Library" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false" runtimeVersion="2.7">
   <foreignModel>library.ecore</foreignModel>
   <genPackages prefix="Library" basePackage="no.resheim.reader" resource="XML" disposableProviderFactory="true"
       ecorePackage="library.ecore#/">
@@ -14,6 +14,9 @@
       <genEnumLiterals ecoreEnumLiteral="library.ecore#//AnnotationColor/Red"/>
       <genEnumLiterals ecoreEnumLiteral="library.ecore#//AnnotationColor/Purple"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="library.ecore#//LocationFormat">
+      <genEnumLiterals ecoreEnumLiteral="library.ecore#//LocationFormat/Rangy"/>
+    </genEnums>
     <genClasses ecoreClass="library.ecore#//Library">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Library/version"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference library.ecore#//Library/volumes"/>
@@ -22,10 +25,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Book/path"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Book/coverImage"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference library.ecore#//Book/annotations"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference library.ecore#//Book/metadata"/>
     </genClasses>
     <genClasses ecoreClass="library.ecore#//Annotation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/format"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/color"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/text"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/timestamp"/>

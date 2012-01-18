@@ -10,8 +10,6 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import org.eclipse.mylyn.docs.epub.opf.Metadata;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Book</b></em>'.
@@ -23,7 +21,6 @@ import org.eclipse.mylyn.docs.epub.opf.Metadata;
  *   <li>{@link no.resheim.reader.library.Book#getPath <em>Path</em>}</li>
  *   <li>{@link no.resheim.reader.library.Book#getCoverImage <em>Cover Image</em>}</li>
  *   <li>{@link no.resheim.reader.library.Book#getAnnotations <em>Annotations</em>}</li>
- *   <li>{@link no.resheim.reader.library.Book#getMetadata <em>Metadata</em>}</li>
  * </ul>
  * </p>
  *
@@ -99,31 +96,5 @@ public interface Book extends EObject {
 	 * @generated
 	 */
 	EList<Annotation> getAnnotations();
-
-	/**
-	 * Returns the value of the '<em><b>Metadata</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Metadata</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Metadata</em>' reference.
-	 * @see #setMetadata(Metadata)
-	 * @see no.resheim.reader.library.LibraryPackage#getBook_Metadata()
-	 * @model
-	 * @generated
-	 */
-	Metadata getMetadata();
-
-	/**
-	 * Sets the value of the '{@link no.resheim.reader.library.Book#getMetadata <em>Metadata</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Metadata</em>' reference.
-	 * @see #getMetadata()
-	 * @generated
-	 */
-	void setMetadata(Metadata value);
 
 } // Book
