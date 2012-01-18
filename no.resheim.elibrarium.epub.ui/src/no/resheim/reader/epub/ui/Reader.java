@@ -131,8 +131,9 @@ public class Reader extends EditorPart {
 		@Override
 		public Object function(Object[] arguments) {
 			final String range = (String) arguments[0];
-			markTextItem.setData(range);
-			menu.setVisible(true);
+			// Pop up the selected text menu
+			// markTextItem.setData(range);
+			// menu.setVisible(true);
 			return super.function(arguments);
 		}
 
