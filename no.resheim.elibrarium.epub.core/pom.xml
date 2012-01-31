@@ -7,8 +7,8 @@
     <groupId>no.resheim.elibrarium</groupId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>no.resheim.elibrarium.epub.ui</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <artifactId>no.resheim.elibrarium.epub.core</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   <build>
     <plugins>

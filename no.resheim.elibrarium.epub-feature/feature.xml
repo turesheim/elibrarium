@@ -2,7 +2,7 @@
 <feature
       id="no.resheim.elibrarium.epub"
       label="%featureName"
-      version="0.1.0.qualifier"
+      version="1.0.0.qualifier"
       provider-name="%featureName"
       plugin="no.resheim.elibrarium.epub.ui">
 
@@ -28,5 +28,11 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="no.resheim.elibrarium.epub.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>

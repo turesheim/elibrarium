@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>no.resheim.elibrarium</groupId>
 	<artifactId>no.resheim.elibrarium-parent</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
   <properties>
@@ -599,7 +599,8 @@
 		<module>no.resheim.elibrarium.library.core</module>
 		<module>no.resheim.elibrarium.library.ui</module>
 		<module>no.resheim.elibrarium.epub-feature</module>
-		<module>no.resheim.elibrarium.epub.ui</module>
+		<module>no.resheim.elibrarium.epub.core</module>
+		<module>no.resheim.elibrarium.epub.ui</module>		
 		<module>no.resheim.elibrarium-site</module>
 	</modules>
 </project>
