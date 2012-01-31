@@ -12,13 +12,9 @@
 package no.resheim.elibrarium.epub.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
 
 /**
- * <ul>
- * <li>Keep track of EPUB books.</li>
- * <li>Scan user specified folders for books</li>
- * </ul>
+ * *
  * 
  * @author Torkild U. Resheim
  * 
@@ -26,6 +22,7 @@ import org.osgi.framework.BundleContext;
 public class EPUBPlugin extends AbstractUIPlugin {
 
 	public EPUBPlugin() {
+		plugin = this;
 	}
 
 	public static final String PLUGIN_ID = "no.resheim.elibrarium.epub.ui";
@@ -40,19 +37,5 @@ public class EPUBPlugin extends AbstractUIPlugin {
 	}
 
 	private static EPUBPlugin plugin;
-
-
-	@Override
-	public void start(BundleContext context) throws Exception {
-		plugin = this;
-	}
-
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		if (plugin == this) {
-			plugin = null;
-		}
-		super.stop(context);
-	}
 
 }
