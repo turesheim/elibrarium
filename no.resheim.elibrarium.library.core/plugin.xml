@@ -9,18 +9,19 @@
 -->
 
 <plugin>
-
+   <extension-point id="collection" name="Book Collection" schema="schema/collection.exsd"/>
+<!--
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
-            uri="http://resheim.no/reader/library"
-            class="no.resheim.reader.library.LibraryPackage"
+            uri="http://resheim.no/elibrarium/library"
+            class="no.resheim.elibrarium.library.LibraryPackage"
             genModel="model/library.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.extension_parser">
       <parser
-            type="library"
-            class="no.resheim.reader.library.util.LibraryResourceFactoryImpl"/>
+            type="elibrarium"
+            class="no.resheim.elibrarium.library.util.LibraryResourceFactoryImpl"/>
    </extension>
-
+-->
 </plugin>

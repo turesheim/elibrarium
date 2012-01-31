@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="no.resheim.elibrarium.library.ui"
+            name="Electronic Books">
+      </category>
+      <view
+            category="no.resheim.elibrarium.library.ui"
+            class="no.resheim.elibrarium.library.ui.views.LibraryView"
+            icon="icons/library.gif"
+            id="no.resheim.elibrarium.library.ui.views.LibraryView"
+            name="Electronic Books">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            id="no.resheim.elibrarium.library.ui.views.LibraryView"
+            name="Electronic Books View"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="no.resheim.elibrarium.library.ui.views.RemoveCommandHandler"
+            commandId="org.eclipse.ui.edit.delete">
+         <activeWhen>
+            <with
+                  variable="activeContexts">
+               <iterate
+                     operator="or">
+                  <equals
+                        value="no.resheim.elibrarium.library.ui.views.LibraryView">
+                  </equals></iterate>
+            </with></activeWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:no.resheim.elibrarium.library.ui.views.LibraryView?after=additions">
+         <command
+               commandId="org.eclipse.ui.edit.delete"
+               label="Remove"
+               style="push"
+               tooltip="Removes the book from the library.">
+         </command>
+      </menuContribution>
+   </extension>
+
+</plugin>

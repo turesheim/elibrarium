@@ -9,9 +9,11 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ org.eclipse.core.resources
 Bundle-ActivationPolicy: lazy
-Export-Package: no.resheim.reader.library,
- no.resheim.reader.library.impl,
- no.resheim.reader.library.util
-Bundle-Activator: no.resheim.reader.library.LibraryManager
+Export-Package: no.resheim.elibrarium.library.core,
+ no.resheim.elibrarium.library,
+ no.resheim.elibrarium.library.impl,
+ no.resheim.elibrarium.library.util
+Bundle-Activator: no.resheim.elibrarium.library.core.LibraryPlugin

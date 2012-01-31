@@ -5,12 +5,12 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="no.resheim.reader.epub.ui.Reader"
+            class="no.resheim.elibrarium.epub.ui.reader.EPUBReader"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             default="true"
             extensions="epub"
             icon="icons/book.gif"
-            id="no.resheim.reader.epub.ui.Reader"
+            id="no.resheim.elibrarium.epub.ui.reader.EPUBReader"
             name="EPUB Reader">
       </editor>
    </extension>

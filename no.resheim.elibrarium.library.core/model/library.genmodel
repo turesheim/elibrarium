@@ -2,11 +2,12 @@
 <genmodel:GenModel xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/no.resheim.elibrarium.library.core/src-gen"
-    modelPluginID="no.resheim.elibrarium.library.core" modelName="Library" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="6.0" copyrightFields="false" runtimeVersion="2.7">
+    modelPluginID="no.resheim.elibrarium.library.core" modelName="Library" nonNLSMarkers="true"
+    runtimeCompatibility="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0"
+    copyrightFields="false" runtimeVersion="2.7" interfaceNamePattern="">
   <foreignModel>library.ecore</foreignModel>
-  <genPackages prefix="Library" basePackage="no.resheim.reader" resource="XML" disposableProviderFactory="true"
-      ecorePackage="library.ecore#/">
+  <genPackages prefix="Library" basePackage="no.resheim.elibrarium" resource="XML"
+      disposableProviderFactory="true" fileExtensions="xml" ecorePackage="library.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="library.ecore#//AnnotationColor">
       <genEnumLiterals ecoreEnumLiteral="library.ecore#//AnnotationColor/Yellow"/>
       <genEnumLiterals ecoreEnumLiteral="library.ecore#//AnnotationColor/Green"/>
@@ -17,22 +18,40 @@
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="library.ecore#//LocationFormat">
       <genEnumLiterals ecoreEnumLiteral="library.ecore#//LocationFormat/Rangy"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="library.ecore#//BookmarkType">
+      <genEnumLiterals ecoreEnumLiteral="library.ecore#//BookmarkType/Last"/>
+      <genEnumLiterals ecoreEnumLiteral="library.ecore#//BookmarkType/User"/>
+    </genEnums>
     <genClasses ecoreClass="library.ecore#//Library">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Library/version"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference library.ecore#//Library/volumes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference library.ecore#//Library/books"/>
     </genClasses>
     <genClasses ecoreClass="library.ecore#//Book">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Book/path"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Book/coverImage"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Book/bookURN"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Book/bookURL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Book/collection"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Book/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Book/author"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference library.ecore#//Book/annotations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference library.ecore#//Book/bookmarks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference library.ecore#//Book/metadata"/>
+    </genClasses>
+    <genClasses ecoreClass="library.ecore#//Marker">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Marker/location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Marker/format"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Marker/timestamp"/>
     </genClasses>
     <genClasses ecoreClass="library.ecore#//Annotation">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/location"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/format"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/color"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/text"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/timestamp"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Annotation/comment"/>
+    </genClasses>
+    <genClasses ecoreClass="library.ecore#//Bookmark">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Bookmark/type"/>
+    </genClasses>
+    <genClasses ecoreClass="library.ecore#//Metadata">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Metadata/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Metadata/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
