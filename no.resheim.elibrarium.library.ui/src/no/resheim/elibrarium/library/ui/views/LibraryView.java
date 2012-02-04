@@ -14,6 +14,7 @@ package no.resheim.elibrarium.library.ui.views;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Date;
 
@@ -31,6 +32,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.DecoratingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -239,6 +241,11 @@ public class LibraryView extends ViewPart implements ILibraryListener {
 							} catch (PartInitException e) {
 							}
 						} else {
+							MessageDialog.openError(
+									getSite().getShell(),
+									"Missing book",
+									MessageFormat.format("The book at \"{0}\" is missing.",
+											fileToOpen.getAbsolutePath()));
 						}
 					} catch (URISyntaxException e1) {
 						e1.printStackTrace();
