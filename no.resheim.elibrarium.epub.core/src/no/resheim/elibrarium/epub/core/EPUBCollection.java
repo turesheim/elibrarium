@@ -1,5 +1,17 @@
+/*******************************************************************************
+ * Copyright (c) 2012 Torkild U. Resheim.
+ * 
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: 
+ *     Torkild U. Resheim - initial API and implementation
+ *******************************************************************************/
 package no.resheim.elibrarium.epub.core;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -11,8 +23,14 @@ import no.resheim.elibrarium.library.core.LibraryPlugin;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 
-public class EPUBCollection implements ICollection {
+public class EPUBCollection implements ICollection, IPreferenceChangeListener {
 
 	private final ListenerList listeners;
 
@@ -20,9 +38,44 @@ public class EPUBCollection implements ICollection {
 	
 	private static EPUBCollection collection;
 
+	private final FolderScanner scanner;
+
+	private class Scheduler extends JobChangeAdapter {
+
+		FolderScanner scanner;
+
+		public Scheduler(FolderScanner scanner) {
+			this.scanner = scanner;
+		}
+
+		@Override
+		public void done(IJobChangeEvent event) {
+			super.done(event);
+			if (isDiscoveryEnabled()) {
+				IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EPUBCorePlugin.PLUGIN_ID);
+				int minutes = preferences.getInt(PreferenceConstants.SCAN_INTERVAL, PreferenceConstants.DEFAULT_SCAN_INTERVAL);
+				scanner.schedule(60000 * minutes);
+			}
+		}
+
+	}
+
+	private boolean isDiscoveryEnabled(){
+		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EPUBCorePlugin.PLUGIN_ID);
+		return preferences.getBoolean(PreferenceConstants.SCAN_ENABLE, false);
+	}
+
 	public EPUBCollection() {
 		listeners = new ListenerList();
 		collection = this;
+		scanner = new FolderScanner("Scanning");
+		scanner.addJobChangeListener(new Scheduler(scanner));
+		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EPUBCorePlugin.PLUGIN_ID);
+		preferences.addPreferenceChangeListener(this);
+		if (isDiscoveryEnabled()) {
+			// Wait ten seconds before starting the first time
+			scanner.schedule(10000);
+		}
 	}
 
 	public static EPUBCollection getCollection() {
@@ -96,6 +149,15 @@ public class EPUBCollection implements ICollection {
 		return false;
 	}
 
+	public boolean hasBook(File file) {
+		for (Book book : getBooks()) {
+			if (book.getBookURL().equals(file.toURI().toString())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void add(final Book book) {
 		if (!hasBook(book.getBookURN())) {
@@ -116,5 +178,18 @@ public class EPUBCollection implements ICollection {
 				});
 			}
 		}
+	}
+
+	@Override
+	public void preferenceChange(PreferenceChangeEvent event) {
+		System.out.println("EPUBCollection.preferenceChange()");
+		if (event.getKey().equals(PreferenceConstants.SCAN_ENABLE)) {
+			if (isDiscoveryEnabled()) {
+				scanner.schedule();
+			} else {
+				scanner.cancel();
+			}
+		}
+
 	}
 }

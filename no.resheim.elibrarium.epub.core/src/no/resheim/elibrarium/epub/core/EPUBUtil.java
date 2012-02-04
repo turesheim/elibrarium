@@ -9,7 +9,7 @@
  * Contributors: 
  *     Torkild U. Resheim - initial API and implementation
  *******************************************************************************/
-package no.resheim.elibrarium.epub.ui;
+package no.resheim.elibrarium.epub.core;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -25,8 +25,6 @@ import org.eclipse.mylyn.docs.epub.opf.Role;
 
 /**
  * Various utility methods for handling EPUB content.
- * 
- * TODO: Move to o.e.m.docs.epub.core
  * 
  * @author Torkild U. Resheim
  */

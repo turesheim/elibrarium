@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 import no.resheim.elibrarium.epub.core.EPUBCollection;
-import no.resheim.elibrarium.epub.ui.EPUBUtil;
+import no.resheim.elibrarium.epub.core.EPUBUtil;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.core.LibraryUtil;
 
@@ -418,13 +418,15 @@ public class EPUBReader extends EditorPart {
 	 * @return URL of the first text page
 	 */
 	private String getFirstPublicationPage() {
-		// First try the first TEXT type page
-		EList<Reference> references = ops.getOpfPackage().getGuide().getGuideItems();
-		for (Reference reference : references) {
-			if (reference.getType().equals("text")) {
-				String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + reference.getHref();
-				setCurrentHref(reference.getHref());
-				return url;
+		// First try the first TEXT type page if there is a guide.
+		if (ops.getOpfPackage().getGuide() != null) {
+			EList<Reference> references = ops.getOpfPackage().getGuide().getGuideItems();
+			for (Reference reference : references) {
+				if (reference.getType().equals("text")) {
+					String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + reference.getHref();
+					setCurrentHref(reference.getHref());
+					return url;
+				}
 			}
 		}
 		// Then try the first page in the spine

@@ -14,5 +14,13 @@
             name="EPUB Reader">
       </editor>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="no.resheim.elibrarium.epub.ui.preferences.ScanPreferencePage"
+            id="no.resheim.elibrarium.epub.ui.preferences.PreferencePage"
+            name="EPUB Scanning">
+      </page>
+   </extension>
+   
 </plugin>

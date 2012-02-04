@@ -1,0 +1,105 @@
+/*******************************************************************************
+ * Copyright (c) 2012 Torkild U. Resheim.
+ * 
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: 
+ *     Torkild U. Resheim - initial API and implementation
+ *******************************************************************************/
+package no.resheim.elibrarium.epub.core;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.net.URI;
+import java.util.List;
+
+import no.resheim.elibrarium.library.Book;
+import no.resheim.elibrarium.library.LibraryFactory;
+import no.resheim.elibrarium.library.Metadata;
+import no.resheim.elibrarium.library.core.LibraryUtil;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.mylyn.docs.epub.core.EPUB;
+import org.eclipse.mylyn.docs.epub.core.OPSPublication;
+
+public class FolderScanner extends Job {
+
+	public FolderScanner(String name) {
+		super(name);
+	}
+
+	/**
+	 * Registers all publications found in the given EPUB unless they are
+	 * already in the library.
+	 * 
+	 * @param epubPath
+	 *            path to the EPUB file
+	 * @throws Exception
+	 */
+	private void registerBooks(File epubPath) throws Exception {
+		EPUB epub = new EPUB();
+		epub.unpack(epubPath);
+		List<OPSPublication> publications = epub.getOPSPublications();
+		for (OPSPublication ops : publications) {
+			String title = EPUBUtil.getFirstTitle(ops);
+			String author = EPUBUtil.getFirstAuthor(ops);
+			String id = EPUBUtil.getIdentifier(ops);
+			if (!EPUBCollection.getCollection().hasBook(id)) {
+				URI uri = epubPath.toURI();
+				Book book = LibraryUtil.createNewBook(EPUBCollection.COLLECTION_ID, uri, id, title, author);
+				// Mark the book as automatically discovered
+				Metadata md = LibraryFactory.eINSTANCE.createMetadata();
+				md.setKey("discovered");
+				md.setKey(Boolean.toString(true));
+				book.getMetadata().add(md);
+				EPUBCollection.getCollection().add(book);
+			}
+
+		}
+	};
+
+	@Override
+	protected IStatus run(IProgressMonitor monitor) {
+		System.out.println("Scanning...");
+		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EPUBCorePlugin.PLUGIN_ID);
+		boolean scan = preferences.getBoolean(PreferenceConstants.SCAN_ENABLE, false);
+		if (scan){
+			String paths = preferences.get(PreferenceConstants.SCAN_FOLDERS, "");
+			String[] folders = paths.split(File.pathSeparator);
+			for (String string : folders) {
+				File folder = new File(string);
+				if (folder.isDirectory()) {
+					File[] epubs = folder.listFiles(new FilenameFilter() {
+
+						@Override
+						public boolean accept(File dir, String name) {
+							if (name.toLowerCase().endsWith(".epub")) {
+								return true;
+							}
+							return false;
+						}
+					});
+
+					for (File file : epubs) {
+						if (!EPUBCollection.getCollection().hasBook(file)) {
+							try {
+								registerBooks(file);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}
+		}
+		return Status.OK_STATUS;
+	}
+}

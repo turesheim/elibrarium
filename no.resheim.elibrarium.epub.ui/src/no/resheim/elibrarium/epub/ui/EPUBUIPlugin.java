@@ -19,9 +19,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author Torkild U. Resheim
  * 
  */
-public class EPUBPlugin extends AbstractUIPlugin {
+public class EPUBUIPlugin extends AbstractUIPlugin {
 
-	public EPUBPlugin() {
+	public EPUBUIPlugin() {
 		plugin = this;
 	}
 
@@ -32,10 +32,10 @@ public class EPUBPlugin extends AbstractUIPlugin {
 	 * 
 	 * @return the shared instance
 	 */
-	public static EPUBPlugin getDefault() {
+	public static EPUBUIPlugin getDefault() {
 		return plugin;
 	}
 
-	private static EPUBPlugin plugin;
+	private static EPUBUIPlugin plugin;
 
 }

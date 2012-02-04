@@ -9,5 +9,11 @@
             id="no.resheim.elibrarium.epub">
       </collection>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="no.resheim.elibrarium.epub.core.PreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>
