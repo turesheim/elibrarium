@@ -19,7 +19,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
 
 
 
-    var defaultTagName = "del";
+    var defaultTagName = "span";
 
     function trim(str) {
         return str.replace(/^\s\s*/, "").replace(/\s\s*$/, "");

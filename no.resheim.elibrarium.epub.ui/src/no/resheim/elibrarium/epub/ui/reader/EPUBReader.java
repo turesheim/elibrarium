@@ -39,6 +39,7 @@ import org.eclipse.mylyn.docs.epub.ncx.NavPoint;
 import org.eclipse.mylyn.docs.epub.opf.Item;
 import org.eclipse.mylyn.docs.epub.opf.Itemref;
 import org.eclipse.mylyn.docs.epub.opf.Reference;
+import org.eclipse.mylyn.docs.epub.opf.Type;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -88,6 +89,11 @@ public class EPUBReader extends EditorPart {
 
 	}
 
+	/**
+	 * Performs selection of text in the browser.
+	 * 
+	 * @author Torkild U. Resheim
+	 */
 	private class MarkTextItem {
 
 		private String range;
@@ -121,6 +127,8 @@ public class EPUBReader extends EditorPart {
 	}
 
 	/**
+	 * Handles text markings. The function(Object[]) method is called from
+	 * JavaScript executing in the browser.
 	 * 
 	 * @author Torkild U. Resheim
 	 */
@@ -129,9 +137,12 @@ public class EPUBReader extends EditorPart {
 		@Override
 		public Object function(Object[] arguments) {
 			final String range = (String) arguments[0];
-			// Pop up the selected text menu
-			// markTextItem.setData(range);
-			// menu.setVisible(true);
+			final String text = (String) arguments[1];
+			// Pop up the selected text menu if there is a selection
+			if (text.length() > 0) {
+				markTextItem.setData(range);
+				menu.setVisible(true);
+			}
 			return super.function(arguments);
 		}
 
@@ -284,7 +295,7 @@ public class EPUBReader extends EditorPart {
 			}
 		}
 
-		MarkTextHandler markTextHandler = new MarkTextHandler(browser);
+		new MarkTextHandler(browser);
 		menu = new Menu(browser);
 		markTextItem = new MarkTextItem(menu, SWT.PUSH);
 
@@ -422,7 +433,7 @@ public class EPUBReader extends EditorPart {
 		if (ops.getOpfPackage().getGuide() != null) {
 			EList<Reference> references = ops.getOpfPackage().getGuide().getGuideItems();
 			for (Reference reference : references) {
-				if (reference.getType().equals("text")) {
+				if (reference.getType().equals(Type.TEXT)) {
 					String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + reference.getHref();
 					setCurrentHref(reference.getHref());
 					return url;

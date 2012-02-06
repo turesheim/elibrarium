@@ -26,13 +26,14 @@ try {
 	 **************************************************************************/
 	function markText(serialized) {
 		var range = rangy.deserializeRange(serialized);
-		cssApplier.toggleRange(range);
+		cssApplier.applyToRange(range);
 	}
+	
 	function showSelection() {
 		var selection = window.getSelection();
 		if (selection.rangeCount > 0) {
 			var serialization = rangy.serializeSelection();
-			javaMarkTextHandler(serialization);
+			javaMarkTextHandler(serialization,selection.toString());
 		}
 	}
 	document.onmouseup = showSelection;
@@ -40,10 +41,19 @@ try {
 	/***************************************************************************
 	 * Initialise.
 	 **************************************************************************/
+	function injectCSS() {
+	    var headTag = document.getElementsByTagName("head")[0].innerHTML;	
+		var newCSS = headTag + '<style type="text/css">*.yellowMarker {background-color: yellow;}</style>';
+		document.getElementsByTagName('head')[0].innerHTML += newCSS;
+	 }
+	injectCSS();
+	/***************************************************************************
+	 * Initialise.
+	 **************************************************************************/
 	bodyID.style.overflow = 'hidden';
 	rangy.init();
 	var cssApplier;
-	cssApplier = rangy.createCssClassApplier("_epub-marked_yellow");
+	cssApplier = rangy.createCssClassApplier("yellowMarker");
 } catch (e) {
 	document.write(e);
 }
