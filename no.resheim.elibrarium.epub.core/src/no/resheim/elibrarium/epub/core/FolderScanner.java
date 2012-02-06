@@ -68,7 +68,6 @@ public class FolderScanner extends Job {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		System.out.println("Scanning...");
 		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EPUBCorePlugin.PLUGIN_ID);
 		boolean scan = preferences.getBoolean(PreferenceConstants.SCAN_ENABLE, false);
 		if (scan){
