@@ -16,10 +16,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.Date;
 
 import no.resheim.elibrarium.epub.core.EPUBCollection;
 import no.resheim.elibrarium.epub.core.EPUBUtil;
+import no.resheim.elibrarium.library.Annotation;
+import no.resheim.elibrarium.library.AnnotationColor;
 import no.resheim.elibrarium.library.Book;
+import no.resheim.elibrarium.library.LibraryFactory;
 import no.resheim.elibrarium.library.core.LibraryUtil;
 
 import org.eclipse.core.runtime.IPath;
@@ -116,6 +120,13 @@ public class EPUBReader extends EditorPart {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					browser.execute("markText('" + range + "');");
+					Annotation annotation = LibraryFactory.eINSTANCE.createAnnotation();
+					annotation.setTimestamp(new Date());
+					annotation.setLocation(range);
+					annotation.setText("My Text");
+					annotation.setColor(AnnotationColor.YELLOW);
+					annotation.setHref(getCurrentHref());
+					currentBook.getAnnotations().add(annotation);
 				}
 
 				@Override
@@ -190,6 +201,8 @@ public class EPUBReader extends EditorPart {
 
 	private boolean disposed;
 
+	private Book currentBook;
+
 	/**
 	 * WebBrowserEditor constructor comment.
 	 */
@@ -213,12 +226,16 @@ public class EPUBReader extends EditorPart {
 		EList<Itemref> spineItems = ops.getOpfPackage().getSpine().getSpineItems();
 		if (currentChapter > 0 && currentChapter <= spineItems.size()) {
 			Item item = ops.getItemById(spineItems.get(currentChapter - 1).getIdref());
-			String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + item.getHref();
-			setCurrentHref(item.getHref());
-			browser.setUrl(url);
-			setPartName(getTitle(ops));
-			updateLabels();
+			openItem(item);
 		}
+	}
+
+	private void openItem(Item item) {
+		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + item.getHref();
+		setCurrentHref(item.getHref());
+		browser.setUrl(url);
+		setPartName(getTitle(ops));
+		updateLabels();
 	}
 
 	/**
@@ -354,7 +371,7 @@ public class EPUBReader extends EditorPart {
 		return super.getAdapter(required);
 	}
 
-	private String getCurentHref() {
+	private String getCurrentHref() {
 		return currentHref;
 	}
 
@@ -506,9 +523,10 @@ public class EPUBReader extends EditorPart {
 		String id = EPUBUtil.getIdentifier(ops);
 		if (!EPUBCollection.getCollection().hasBook(id)) {
 			URI uri = path.toFile().toURI();
-			System.out.println("Adding to library: " + uri);
-			Book book = LibraryUtil.createNewBook(EPUBCollection.COLLECTION_ID, uri, id, title, author);
-			EPUBCollection.getCollection().add(book);
+			currentBook = LibraryUtil.createNewBook(EPUBCollection.COLLECTION_ID, uri, id, title, author);
+			EPUBCollection.getCollection().add(currentBook);
+		} else {
+			currentBook = EPUBCollection.getCollection().getBook(id);
 		}
 	};
 
@@ -532,6 +550,14 @@ public class EPUBReader extends EditorPart {
 				default:
 					page = 1;
 					break;
+				}
+				// Annotations and markers.
+				EList<Annotation> annotations = currentBook.getAnnotations();
+				for (Annotation annotation : annotations) {
+					System.out.println(annotation);
+					if (annotation.getHref() != null && annotation.getHref().equals(getCurrentHref())) {
+						browser.execute("markText('" + annotation.getLocation() + "');");
+					}
 				}
 				browseToPage(page);
 				// Size may be 0,0 when the view is first opened so we want to
@@ -616,7 +642,7 @@ public class EPUBReader extends EditorPart {
 		try {
 			String ref = navPoint.getContent().getSrc();
 			String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref;
-			if (!getCurentHref().equals(ref)) {
+			if (!getCurrentHref().equals(ref)) {
 				setCurrentHref(ref);
 				direction = Direction.INITIAL;
 				browser.setUrl(url);
