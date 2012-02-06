@@ -182,7 +182,6 @@ public class EPUBCollection implements ICollection, IPreferenceChangeListener {
 
 	@Override
 	public void preferenceChange(PreferenceChangeEvent event) {
-		System.out.println("EPUBCollection.preferenceChange()");
 		if (event.getKey().equals(PreferenceConstants.SCAN_ENABLE)) {
 			if (isDiscoveryEnabled()) {
 				scanner.schedule();
