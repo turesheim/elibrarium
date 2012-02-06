@@ -149,6 +149,23 @@ public class EPUBCollection implements ICollection, IPreferenceChangeListener {
 		return false;
 	}
 
+	/**
+	 * Returns the book with the given URN <code>null</code> if the book could
+	 * not be found.
+	 * 
+	 * @param urn
+	 *            the book identifier
+	 * @return the book if found or <code>null</code>
+	 */
+	public Book getBook(String urn) {
+		for (Book book : getBooks()) {
+			if (book.getBookURN().equals(urn)) {
+				return book;
+			}
+		}
+		return null;
+	}
+
 	public boolean hasBook(File file) {
 		for (Book book : getBooks()) {
 			if (book.getBookURL().equals(file.toURI().toString())) {
