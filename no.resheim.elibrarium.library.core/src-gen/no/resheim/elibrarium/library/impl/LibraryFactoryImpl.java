@@ -82,8 +82,6 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 		switch (eDataType.getClassifierID()) {
 			case LibraryPackage.ANNOTATION_COLOR:
 				return createAnnotationColorFromString(eDataType, initialValue);
-			case LibraryPackage.LOCATION_FORMAT:
-				return createLocationFormatFromString(eDataType, initialValue);
 			case LibraryPackage.BOOKMARK_TYPE:
 				return createBookmarkTypeFromString(eDataType, initialValue);
 			default:
@@ -101,8 +99,6 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 		switch (eDataType.getClassifierID()) {
 			case LibraryPackage.ANNOTATION_COLOR:
 				return convertAnnotationColorToString(eDataType, instanceValue);
-			case LibraryPackage.LOCATION_FORMAT:
-				return convertLocationFormatToString(eDataType, instanceValue);
 			case LibraryPackage.BOOKMARK_TYPE:
 				return convertBookmarkTypeToString(eDataType, instanceValue);
 			default:
@@ -187,26 +183,6 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * @generated
 	 */
 	public String convertAnnotationColorToString(EDataType eDataType, Object instanceValue) {
-		return instanceValue == null ? null : instanceValue.toString();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public LocationFormat createLocationFormatFromString(EDataType eDataType, String initialValue) {
-		LocationFormat result = LocationFormat.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertLocationFormatToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 

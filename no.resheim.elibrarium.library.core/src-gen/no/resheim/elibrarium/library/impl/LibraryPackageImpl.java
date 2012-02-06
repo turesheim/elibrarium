@@ -14,7 +14,6 @@ import no.resheim.elibrarium.library.BookmarkType;
 import no.resheim.elibrarium.library.Library;
 import no.resheim.elibrarium.library.LibraryFactory;
 import no.resheim.elibrarium.library.LibraryPackage;
-import no.resheim.elibrarium.library.LocationFormat;
 import no.resheim.elibrarium.library.Marker;
 import no.resheim.elibrarium.library.Metadata;
 
@@ -81,13 +80,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * @generated
 	 */
 	private EEnum annotationColorEEnum = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EEnum locationFormatEEnum = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -288,7 +280,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMarker_Format() {
+	public EAttribute getMarker_Href() {
 		return (EAttribute)markerEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -396,15 +388,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EEnum getLocationFormat() {
-		return locationFormatEEnum;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EEnum getBookmarkType() {
 		return bookmarkTypeEEnum;
 	}
@@ -453,7 +436,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 
 		markerEClass = createEClass(MARKER);
 		createEAttribute(markerEClass, MARKER__LOCATION);
-		createEAttribute(markerEClass, MARKER__FORMAT);
+		createEAttribute(markerEClass, MARKER__HREF);
 		createEAttribute(markerEClass, MARKER__TIMESTAMP);
 
 		annotationEClass = createEClass(ANNOTATION);
@@ -470,7 +453,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 
 		// Create enums
 		annotationColorEEnum = createEEnum(ANNOTATION_COLOR);
-		locationFormatEEnum = createEEnum(LOCATION_FORMAT);
 		bookmarkTypeEEnum = createEEnum(BOOKMARK_TYPE);
 	}
 
@@ -522,7 +504,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 
 		initEClass(markerEClass, Marker.class, "Marker", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(getMarker_Location(), ecorePackage.getEString(), "location", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(getMarker_Format(), this.getLocationFormat(), "format", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getMarker_Href(), ecorePackage.getEString(), "href", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getMarker_Timestamp(), ecorePackage.getEDate(), "timestamp", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(annotationEClass, Annotation.class, "Annotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -544,9 +526,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		addEEnumLiteral(annotationColorEEnum, AnnotationColor.BLUE);
 		addEEnumLiteral(annotationColorEEnum, AnnotationColor.RED);
 		addEEnumLiteral(annotationColorEEnum, AnnotationColor.PURPLE);
-
-		initEEnum(locationFormatEEnum, LocationFormat.class, "LocationFormat"); //$NON-NLS-1$
-		addEEnumLiteral(locationFormatEEnum, LocationFormat.RANGY);
 
 		initEEnum(bookmarkTypeEEnum, BookmarkType.class, "BookmarkType"); //$NON-NLS-1$
 		addEEnumLiteral(bookmarkTypeEEnum, BookmarkType.LAST);

@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link no.resheim.elibrarium.library.Marker#getLocation <em>Location</em>}</li>
- *   <li>{@link no.resheim.elibrarium.library.Marker#getFormat <em>Format</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.Marker#getHref <em>Href</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Marker#getTimestamp <em>Timestamp</em>}</li>
  * </ul>
  * </p>
@@ -56,33 +56,30 @@ public interface Marker extends EObject {
 	void setLocation(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Format</b></em>' attribute.
-	 * The literals are from the enumeration {@link no.resheim.elibrarium.library.LocationFormat}.
+	 * Returns the value of the '<em><b>Href</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Format</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Href</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Format</em>' attribute.
-	 * @see no.resheim.elibrarium.library.LocationFormat
-	 * @see #setFormat(LocationFormat)
-	 * @see no.resheim.elibrarium.library.LibraryPackage#getMarker_Format()
+	 * @return the value of the '<em>Href</em>' attribute.
+	 * @see #setHref(String)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getMarker_Href()
 	 * @model required="true"
 	 * @generated
 	 */
-	LocationFormat getFormat();
+	String getHref();
 
 	/**
-	 * Sets the value of the '{@link no.resheim.elibrarium.library.Marker#getFormat <em>Format</em>}' attribute.
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Marker#getHref <em>Href</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Format</em>' attribute.
-	 * @see no.resheim.elibrarium.library.LocationFormat
-	 * @see #getFormat()
+	 * @param value the new value of the '<em>Href</em>' attribute.
+	 * @see #getHref()
 	 * @generated
 	 */
-	void setFormat(LocationFormat value);
+	void setHref(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Timestamp</b></em>' attribute.

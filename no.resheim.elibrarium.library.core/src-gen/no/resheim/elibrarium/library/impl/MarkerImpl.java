@@ -9,7 +9,6 @@ package no.resheim.elibrarium.library.impl;
 import java.util.Date;
 
 import no.resheim.elibrarium.library.LibraryPackage;
-import no.resheim.elibrarium.library.LocationFormat;
 import no.resheim.elibrarium.library.Marker;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -27,7 +26,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link no.resheim.elibrarium.library.impl.MarkerImpl#getLocation <em>Location</em>}</li>
- *   <li>{@link no.resheim.elibrarium.library.impl.MarkerImpl#getFormat <em>Format</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.impl.MarkerImpl#getHref <em>Href</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.MarkerImpl#getTimestamp <em>Timestamp</em>}</li>
  * </ul>
  * </p>
@@ -56,24 +55,24 @@ public class MarkerImpl extends EObjectImpl implements Marker {
 	protected String location = LOCATION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getFormat() <em>Format</em>}' attribute.
+	 * The default value of the '{@link #getHref() <em>Href</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getFormat()
+	 * @see #getHref()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final LocationFormat FORMAT_EDEFAULT = LocationFormat.RANGY;
+	protected static final String HREF_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getFormat() <em>Format</em>}' attribute.
+	 * The cached value of the '{@link #getHref() <em>Href</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getFormat()
+	 * @see #getHref()
 	 * @generated
 	 * @ordered
 	 */
-	protected LocationFormat format = FORMAT_EDEFAULT;
+	protected String href = HREF_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getTimestamp() <em>Timestamp</em>}' attribute.
@@ -140,8 +139,8 @@ public class MarkerImpl extends EObjectImpl implements Marker {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public LocationFormat getFormat() {
-		return format;
+	public String getHref() {
+		return href;
 	}
 
 	/**
@@ -149,11 +148,11 @@ public class MarkerImpl extends EObjectImpl implements Marker {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setFormat(LocationFormat newFormat) {
-		LocationFormat oldFormat = format;
-		format = newFormat == null ? FORMAT_EDEFAULT : newFormat;
+	public void setHref(String newHref) {
+		String oldHref = href;
+		href = newHref;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.MARKER__FORMAT, oldFormat, format));
+			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.MARKER__HREF, oldHref, href));
 	}
 
 	/**
@@ -187,8 +186,8 @@ public class MarkerImpl extends EObjectImpl implements Marker {
 		switch (featureID) {
 			case LibraryPackage.MARKER__LOCATION:
 				return getLocation();
-			case LibraryPackage.MARKER__FORMAT:
-				return getFormat();
+			case LibraryPackage.MARKER__HREF:
+				return getHref();
 			case LibraryPackage.MARKER__TIMESTAMP:
 				return getTimestamp();
 		}
@@ -206,8 +205,8 @@ public class MarkerImpl extends EObjectImpl implements Marker {
 			case LibraryPackage.MARKER__LOCATION:
 				setLocation((String)newValue);
 				return;
-			case LibraryPackage.MARKER__FORMAT:
-				setFormat((LocationFormat)newValue);
+			case LibraryPackage.MARKER__HREF:
+				setHref((String)newValue);
 				return;
 			case LibraryPackage.MARKER__TIMESTAMP:
 				setTimestamp((Date)newValue);
@@ -227,8 +226,8 @@ public class MarkerImpl extends EObjectImpl implements Marker {
 			case LibraryPackage.MARKER__LOCATION:
 				setLocation(LOCATION_EDEFAULT);
 				return;
-			case LibraryPackage.MARKER__FORMAT:
-				setFormat(FORMAT_EDEFAULT);
+			case LibraryPackage.MARKER__HREF:
+				setHref(HREF_EDEFAULT);
 				return;
 			case LibraryPackage.MARKER__TIMESTAMP:
 				setTimestamp(TIMESTAMP_EDEFAULT);
@@ -247,8 +246,8 @@ public class MarkerImpl extends EObjectImpl implements Marker {
 		switch (featureID) {
 			case LibraryPackage.MARKER__LOCATION:
 				return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
-			case LibraryPackage.MARKER__FORMAT:
-				return format != FORMAT_EDEFAULT;
+			case LibraryPackage.MARKER__HREF:
+				return HREF_EDEFAULT == null ? href != null : !HREF_EDEFAULT.equals(href);
 			case LibraryPackage.MARKER__TIMESTAMP:
 				return TIMESTAMP_EDEFAULT == null ? timestamp != null : !TIMESTAMP_EDEFAULT.equals(timestamp);
 		}
@@ -267,8 +266,8 @@ public class MarkerImpl extends EObjectImpl implements Marker {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (location: "); //$NON-NLS-1$
 		result.append(location);
-		result.append(", format: "); //$NON-NLS-1$
-		result.append(format);
+		result.append(", href: "); //$NON-NLS-1$
+		result.append(href);
 		result.append(", timestamp: "); //$NON-NLS-1$
 		result.append(timestamp);
 		result.append(')');

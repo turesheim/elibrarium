@@ -208,13 +208,13 @@ public interface LibraryPackage extends EPackage {
 	int MARKER__LOCATION = 0;
 
 	/**
-	 * The feature id for the '<em><b>Format</b></em>' attribute.
+	 * The feature id for the '<em><b>Href</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MARKER__FORMAT = 1;
+	int MARKER__HREF = 1;
 
 	/**
 	 * The feature id for the '<em><b>Timestamp</b></em>' attribute.
@@ -254,13 +254,13 @@ public interface LibraryPackage extends EPackage {
 	int ANNOTATION__LOCATION = MARKER__LOCATION;
 
 	/**
-	 * The feature id for the '<em><b>Format</b></em>' attribute.
+	 * The feature id for the '<em><b>Href</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__FORMAT = MARKER__FORMAT;
+	int ANNOTATION__HREF = MARKER__HREF;
 
 	/**
 	 * The feature id for the '<em><b>Timestamp</b></em>' attribute.
@@ -327,13 +327,13 @@ public interface LibraryPackage extends EPackage {
 	int BOOKMARK__LOCATION = MARKER__LOCATION;
 
 	/**
-	 * The feature id for the '<em><b>Format</b></em>' attribute.
+	 * The feature id for the '<em><b>Href</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BOOKMARK__FORMAT = MARKER__FORMAT;
+	int BOOKMARK__HREF = MARKER__HREF;
 
 	/**
 	 * The feature id for the '<em><b>Timestamp</b></em>' attribute.
@@ -410,16 +410,6 @@ public interface LibraryPackage extends EPackage {
 	int ANNOTATION_COLOR = 6;
 
 	/**
-	 * The meta object id for the '{@link no.resheim.elibrarium.library.LocationFormat <em>Location Format</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see no.resheim.elibrarium.library.LocationFormat
-	 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getLocationFormat()
-	 * @generated
-	 */
-	int LOCATION_FORMAT = 7;
-
-	/**
 	 * The meta object id for the '{@link no.resheim.elibrarium.library.BookmarkType <em>Bookmark Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -427,7 +417,7 @@ public interface LibraryPackage extends EPackage {
 	 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getBookmarkType()
 	 * @generated
 	 */
-	int BOOKMARK_TYPE = 8;
+	int BOOKMARK_TYPE = 7;
 
 
 	/**
@@ -582,15 +572,15 @@ public interface LibraryPackage extends EPackage {
 	EAttribute getMarker_Location();
 
 	/**
-	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Marker#getFormat <em>Format</em>}'.
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Marker#getHref <em>Href</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Format</em>'.
-	 * @see no.resheim.elibrarium.library.Marker#getFormat()
+	 * @return the meta object for the attribute '<em>Href</em>'.
+	 * @see no.resheim.elibrarium.library.Marker#getHref()
 	 * @see #getMarker()
 	 * @generated
 	 */
-	EAttribute getMarker_Format();
+	EAttribute getMarker_Href();
 
 	/**
 	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Marker#getTimestamp <em>Timestamp</em>}'.
@@ -708,16 +698,6 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 */
 	EEnum getAnnotationColor();
-
-	/**
-	 * Returns the meta object for enum '{@link no.resheim.elibrarium.library.LocationFormat <em>Location Format</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Location Format</em>'.
-	 * @see no.resheim.elibrarium.library.LocationFormat
-	 * @generated
-	 */
-	EEnum getLocationFormat();
 
 	/**
 	 * Returns the meta object for enum '{@link no.resheim.elibrarium.library.BookmarkType <em>Bookmark Type</em>}'.
@@ -870,12 +850,12 @@ public interface LibraryPackage extends EPackage {
 		EAttribute MARKER__LOCATION = eINSTANCE.getMarker_Location();
 
 		/**
-		 * The meta object literal for the '<em><b>Format</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Href</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MARKER__FORMAT = eINSTANCE.getMarker_Format();
+		EAttribute MARKER__HREF = eINSTANCE.getMarker_Href();
 
 		/**
 		 * The meta object literal for the '<em><b>Timestamp</b></em>' attribute feature.
@@ -972,16 +952,6 @@ public interface LibraryPackage extends EPackage {
 		 * @generated
 		 */
 		EEnum ANNOTATION_COLOR = eINSTANCE.getAnnotationColor();
-
-		/**
-		 * The meta object literal for the '{@link no.resheim.elibrarium.library.LocationFormat <em>Location Format</em>}' enum.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see no.resheim.elibrarium.library.LocationFormat
-		 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getLocationFormat()
-		 * @generated
-		 */
-		EEnum LOCATION_FORMAT = eINSTANCE.getLocationFormat();
 
 		/**
 		 * The meta object literal for the '{@link no.resheim.elibrarium.library.BookmarkType <em>Bookmark Type</em>}' enum.
