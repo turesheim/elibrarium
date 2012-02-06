@@ -10,8 +10,6 @@ import java.util.Map;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Library;
 import no.resheim.elibrarium.library.LibraryFactory;
-import no.resheim.elibrarium.library.LibraryPackage;
-import no.resheim.elibrarium.library.util.LibraryResourceImpl;
 
 import org.eclipse.core.resources.ISaveContext;
 import org.eclipse.core.resources.ISaveParticipant;
@@ -32,7 +30,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import org.osgi.framework.BundleContext;
 
 public class LibraryPlugin extends Plugin implements ILibrarian {
@@ -207,10 +204,24 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 	 * @throws IOException
 	 */
 	private void readLibrary(File file) throws IOException {
+		// registerLibraryResourceFactory();
 		ResourceSet resourceSet = new ResourceSetImpl();
 		URI fileURI = URI.createFileURI(file.getAbsolutePath());
 		Resource resource = resourceSet.createResource(fileURI);
-		resource.load(null);
+		Map<Object, Object> loadOptions = new HashMap<Object, Object>();
+		loadOptions.put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
+		// Required in order to correctly read in attributes
+		loadOptions.put(XMLResource.OPTION_LAX_FEATURE_PROCESSING, Boolean.TRUE);
+		// Treat "href" attributes as features
+		loadOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.TRUE);
+		// Escape
+		loadOptions.put(XMLResource.OPTION_SKIP_ESCAPE_URI, Boolean.FALSE);
+		// Do not download any external DTDs.
+		Map<String, Object> parserFeatures = new HashMap<String, Object>();
+		parserFeatures.put("http://xml.org/sax/features/validation", Boolean.FALSE);
+		parserFeatures.put("http://apache.org/xml/features/nonvalidating/load-external-dtd", Boolean.FALSE);
+		loadOptions.put(XMLResource.OPTION_PARSER_FEATURES, parserFeatures);
+		resource.load(loadOptions);
 		library = (Library) resource.getContents().get(0);
 	}
 
@@ -232,50 +243,9 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 		}
 	}
 
-	/**
-	 * Registers a new resource factory for the library data structure. This is
-	 * normally done through Eclipse extension points.
-	 */
-	private void registerLibraryResourceFactory() {
-		// Register package so that it is available even without the Eclipse
-		// runtime
-		@SuppressWarnings("unused")
-		LibraryPackage packageInstance = LibraryPackage.eINSTANCE;
-
-		// Register the file suffix
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(".elibrarium", new XMLResourceFactoryImpl() {
-
-			@Override
-			public Resource createResource(URI uri) {
-				LibraryResourceImpl xmiResource = new LibraryResourceImpl(uri);
-				Map<Object, Object> loadOptions = xmiResource.getDefaultLoadOptions();
-				Map<Object, Object> saveOptions = xmiResource.getDefaultSaveOptions();
-				// We use extended metadata
-				saveOptions.put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
-				loadOptions.put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
-				// Required in order to correctly read in attributes
-				loadOptions.put(XMLResource.OPTION_LAX_FEATURE_PROCESSING, Boolean.TRUE);
-				// Treat "href" attributes as features
-				loadOptions.put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.TRUE);
-				// Escape
-				loadOptions.put(XMLResource.OPTION_SKIP_ESCAPE_URI, Boolean.FALSE);
-				// UTF-8 encoding is required per specification
-				saveOptions.put(XMLResource.OPTION_ENCODING, "utf-8");
-				// Do not download any external DTDs.
-				Map<String, Object> parserFeatures = new HashMap<String, Object>();
-				parserFeatures.put("http://xml.org/sax/features/validation", Boolean.FALSE);
-				parserFeatures.put("http://apache.org/xml/features/nonvalidating/load-external-dtd", Boolean.FALSE);
-				loadOptions.put(XMLResource.OPTION_PARSER_FEATURES, parserFeatures);
-				return xmiResource;
-			}
-
-		});
-	}
-
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		registerLibraryResourceFactory();
 		if (!restoreState()) {
 			library = LibraryFactory.eINSTANCE.createLibrary();
 			library.setVersion(LIBRARY_VERSION);
@@ -315,7 +285,12 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 		URI fileURI = URI.createFileURI(file.getAbsolutePath());
 		Resource resource = resourceSet.createResource(fileURI);
 		resource.getContents().add(library);
-		resource.save(null);
+		Map<Object, Object> saveOptions = new HashMap<Object, Object>();
+		// We use extended metadata
+		saveOptions.put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
+		// UTF-8 encoding is required per specification
+		saveOptions.put(XMLResource.OPTION_ENCODING, "utf-8");
+		resource.save(saveOptions);
 	}
 
 }

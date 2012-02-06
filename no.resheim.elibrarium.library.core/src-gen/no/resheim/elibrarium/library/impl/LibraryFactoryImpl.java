@@ -63,7 +63,6 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 		switch (eClass.getClassifierID()) {
 			case LibraryPackage.LIBRARY: return createLibrary();
 			case LibraryPackage.BOOK: return createBook();
-			case LibraryPackage.MARKER: return createMarker();
 			case LibraryPackage.ANNOTATION: return createAnnotation();
 			case LibraryPackage.BOOKMARK: return createBookmark();
 			case LibraryPackage.METADATA: return createMetadata();
@@ -124,16 +123,6 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	public Book createBook() {
 		BookImpl book = new BookImpl();
 		return book;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Marker createMarker() {
-		MarkerImpl marker = new MarkerImpl();
-		return marker;
 	}
 
 	/**

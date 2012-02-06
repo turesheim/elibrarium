@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  *
  * @see no.resheim.elibrarium.library.LibraryPackage#getMarker()
- * @model
+ * @model abstract="true"
  * @generated
  */
 public interface Marker extends EObject {

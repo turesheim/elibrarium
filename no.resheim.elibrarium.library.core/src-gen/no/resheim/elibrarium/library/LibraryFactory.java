@@ -44,15 +44,6 @@ public interface LibraryFactory extends EFactory {
 	Book createBook();
 
 	/**
-	 * Returns a new object of class '<em>Marker</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Marker</em>'.
-	 * @generated
-	 */
-	Marker createMarker();
-
-	/**
 	 * Returns a new object of class '<em>Annotation</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

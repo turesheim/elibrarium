@@ -33,7 +33,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *
  * @generated
  */
-public class MarkerImpl extends EObjectImpl implements Marker {
+public abstract class MarkerImpl extends EObjectImpl implements Marker {
 	/**
 	 * The default value of the '{@link #getLocation() <em>Location</em>}' attribute.
 	 * <!-- begin-user-doc -->
