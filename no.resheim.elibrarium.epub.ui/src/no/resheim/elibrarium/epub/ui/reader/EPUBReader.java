@@ -63,7 +63,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IActionBars;
@@ -100,8 +102,6 @@ public class EPUBReader extends EditorPart {
 	 */
 	private class MarkTextItem {
 
-		private String range;
-
 		public MenuItem menuItem;
 
 		public MarkTextItem(Menu parent, int style) {
@@ -109,9 +109,40 @@ public class EPUBReader extends EditorPart {
 			menuItem.setText("Mark text");
 			installListener();
 		}
+		private void installListener() {
+			menuItem.addSelectionListener(new SelectionListener() {
 
-		public void setData(String range) {
-			this.range = range;
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (browser.execute("markText('" + currentRange + "');")) {
+						Annotation annotation = LibraryFactory.eINSTANCE.createAnnotation();
+						annotation.setTimestamp(new Date());
+						annotation.setLocation(currentRange);
+						annotation.setText("My Text");
+						annotation.setColor(AnnotationColor.YELLOW);
+						annotation.setHref(getCurrentHref());
+						currentBook.getAnnotations().add(annotation);
+					} else {
+						System.err.println("Could not annotate book");
+					}
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+			});
+		}
+
+	}
+
+	private class RemoveMarkedItem {
+
+		public MenuItem menuItem;
+
+		public RemoveMarkedItem(Menu parent, int style) {
+			menuItem = new MenuItem(parent, style);
+			menuItem.setText("Remove");
+			installListener();
 		}
 
 		private void installListener() {
@@ -119,14 +150,10 @@ public class EPUBReader extends EditorPart {
 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					browser.execute("markText('" + range + "');");
-					Annotation annotation = LibraryFactory.eINSTANCE.createAnnotation();
-					annotation.setTimestamp(new Date());
-					annotation.setLocation(range);
-					annotation.setText("My Text");
-					annotation.setColor(AnnotationColor.YELLOW);
-					annotation.setHref(getCurrentHref());
-					currentBook.getAnnotations().add(annotation);
+					if (browser.execute("removeMark('" + currentRange + "');")) {
+					} else {
+						System.err.println("Could not remove mark");
+					}
 				}
 
 				@Override
@@ -139,7 +166,8 @@ public class EPUBReader extends EditorPart {
 
 	/**
 	 * Handles text markings. The function(Object[]) method is called from
-	 * JavaScript executing in the browser.
+	 * JavaScript executing in the browser when the user releases the mouse
+	 * button.
 	 * 
 	 * @author Torkild U. Resheim
 	 */
@@ -147,12 +175,19 @@ public class EPUBReader extends EditorPart {
 
 		@Override
 		public Object function(Object[] arguments) {
+
+			currentColor = null;
+			currentRange = null;
+			currentText = null;
+
 			final String range = (String) arguments[0];
 			final String text = (String) arguments[1];
-			// Pop up the selected text menu if there is a selection
 			if (text.length() > 0) {
-				markTextItem.setData(range);
-				menu.setVisible(true);
+				currentRange = range;
+				currentText = text;
+			}
+			if ((Boolean) arguments[2]) {
+				currentColor = AnnotationColor.YELLOW;
 			}
 			return super.function(arguments);
 		}
@@ -162,6 +197,12 @@ public class EPUBReader extends EditorPart {
 		}
 
 	}
+
+	private String currentRange;
+
+	private String currentText;
+
+	private AnnotationColor currentColor;
 
 	protected static final String PROPERTY_TITLE = "title"; //$NON-NLS-1$
 
@@ -196,8 +237,6 @@ public class EPUBReader extends EditorPart {
 	private File unpackFolder;
 
 	private Menu menu;
-
-	private MarkTextItem markTextItem;
 
 	private boolean disposed;
 
@@ -313,9 +352,31 @@ public class EPUBReader extends EditorPart {
 		}
 
 		new MarkTextHandler(browser);
-		menu = new Menu(browser);
-		markTextItem = new MarkTextItem(menu, SWT.PUSH);
 
+		// Create a new menu for the browser. We want this dynamically populated
+		// so all items are removed when the menu is shown and it will be
+		// re-populated.
+		menu = new Menu(browser);
+		browser.setMenu(menu);
+		menu.addListener(SWT.Show, new Listener() {
+			public void handleEvent(Event event) {
+				MenuItem[] menuItems = menu.getItems();
+				for (int i = 0; i < menuItems.length; i++) {
+					menuItems[i].dispose();
+				}
+				populateMenu();
+			}
+		});
+
+	}
+
+	private void populateMenu() {
+		if (currentColor != null) {
+			new RemoveMarkedItem(menu, SWT.PUSH);
+		} else if (currentRange != null) {
+			// Allow text to be marked
+			new MarkTextItem(menu, SWT.PUSH);
+		}
 	}
 
 	private boolean deleteFolder(File folder) {
@@ -554,7 +615,6 @@ public class EPUBReader extends EditorPart {
 				// Annotations and markers.
 				EList<Annotation> annotations = currentBook.getAnnotations();
 				for (Annotation annotation : annotations) {
-					System.out.println(annotation);
 					if (annotation.getHref() != null && annotation.getHref().equals(getCurrentHref())) {
 						browser.execute("markText('" + annotation.getLocation() + "');");
 					}
@@ -679,7 +739,7 @@ public class EPUBReader extends EditorPart {
 	private void paginateChapter() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("desiredWidth = " + browser.getSize().x + ";");
-		sb.append("desiredHeight = " + browser.getSize().y + "-20;");
+		sb.append("desiredHeight = " + (browser.getSize().y - 20) + ";");
 		try {
 			readJS("rangy-core.js", sb);
 			readJS("rangy-serializer.js", sb);
@@ -691,13 +751,21 @@ public class EPUBReader extends EditorPart {
 				pageWidth = (int) Math.round((Double) browser.evaluate("return desiredWidth"));
 			} else {
 				System.err.println("Could not paginate");
-				// throw new RuntimeException("Could not paginate");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Reads the (JavaScript) file and appends the content to the given buffer.
+	 * 
+	 * @param filename
+	 *            file to read
+	 * @param sb
+	 *            buffer to add to
+	 * @throws IOException
+	 */
 	private void readJS(String filename, StringBuilder sb) throws IOException {
 		String in;
 		BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(filename)));

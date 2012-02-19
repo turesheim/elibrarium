@@ -21,25 +21,35 @@ try {
 	}
 	adjustImages();
 
+	/**
+	 * - Maintain a list over all annotations added (using markText())
+	 * - Test whether or not the current selection is within a range in which
+	 *   case the entire range should be selected.
+	 */
+	
 	/***************************************************************************
 	 * Handling of range, selection and marked text.
 	 **************************************************************************/
 	function markText(serialized) {
 		var range = rangy.deserializeRange(serialized);
-		cssApplier.applyToRange(range);
-	}
+		cssApplier.applyToRange(range);			
+		range.detach();
+	}	
 	
-	function showSelection() {
+	function removeMark(serialized) {
+		cssApplier.undoToSelection();			
+	}	
+
+	function showSelection(e) {
 		var selection = window.getSelection();
-		if (selection.rangeCount > 0) {
-			var serialization = rangy.serializeSelection();
-			javaMarkTextHandler(serialization,selection.toString());
-		}
+		var serialization = rangy.serializeSelection();
+		var yellow = cssApplier.isAppliedToSelection()
+		javaMarkTextHandler(serialization,selection.toString(),yellow);
 	}
 	document.onmouseup = showSelection;
 	
 	/***************************************************************************
-	 * Initialise.
+	 * Inject CSS for markers and annotations.
 	 **************************************************************************/
 	function injectCSS() {
 	    var headTag = document.getElementsByTagName("head")[0].innerHTML;	
@@ -47,6 +57,7 @@ try {
 		document.getElementsByTagName('head')[0].innerHTML += newCSS;
 	 }
 	injectCSS();
+	
 	/***************************************************************************
 	 * Initialise.
 	 **************************************************************************/
