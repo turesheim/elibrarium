@@ -20,7 +20,18 @@
 
    <includes
          id="org.eclipse.mylyn.docs.epub"
-         version="0.0.0"/>
+         version="0.0.0"
+         search-location="both"/>
+
+   <includes
+         id="org.eclipse.mylyn.commons"
+         version="0.0.0"
+         search-location="both"/>
+
+   <includes
+         id="org.eclipse.mylyn.commons.notifications"
+         version="0.0.0"
+         search-location="both"/>
 
    <plugin
          id="no.resheim.elibrarium.epub.ui"
