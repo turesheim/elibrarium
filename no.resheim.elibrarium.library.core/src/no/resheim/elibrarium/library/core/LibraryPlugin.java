@@ -16,12 +16,9 @@ import org.eclipse.core.resources.ISaveParticipant;
 import org.eclipse.core.resources.ISavedState;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.emf.common.util.EList;
@@ -225,22 +222,10 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 		library = (Library) resource.getContents().get(0);
 	}
 
-	/**
-	 * Obtains all book providers from the extension point registry.
-	 */
-	private void registerBookProviders() {
-		final IExtensionRegistry ereg = Platform.getExtensionRegistry();
-		IConfigurationElement[] elements = ereg
-				.getConfigurationElementsFor("no.resheim.elibrarium.library.core.collection");
-		for (IConfigurationElement element : elements) {
-			try {
-				ICollection provider = (ICollection) element.createExecutableExtension("class");
-				collection.add(provider);
-				provider.addListener(this);
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-		}
+
+	public void addCollection(ICollection provider) {
+		collection.add(provider);
+		provider.addListener(this);
 	}
 
 	@Override
@@ -250,7 +235,6 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 			library = LibraryFactory.eINSTANCE.createLibrary();
 			library.setVersion(LIBRARY_VERSION);
 		}
-		registerBookProviders();
 	}
 
 	private boolean restoreState() {

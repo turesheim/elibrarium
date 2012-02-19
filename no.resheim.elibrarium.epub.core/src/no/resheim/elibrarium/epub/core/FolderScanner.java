@@ -52,15 +52,15 @@ public class FolderScanner extends Job {
 			String title = EPUBUtil.getFirstTitle(ops);
 			String author = EPUBUtil.getFirstAuthor(ops);
 			String id = EPUBUtil.getIdentifier(ops);
-			if (!EPUBCollection.getCollection().hasBook(id)) {
+			if (!EPUBCorePlugin.getCollection().hasBook(id)) {
 				URI uri = epubPath.toURI();
-				Book book = LibraryUtil.createNewBook(EPUBCollection.COLLECTION_ID, uri, id, title, author);
+				Book book = LibraryUtil.createNewBook(EPUBCorePlugin.COLLECTION_ID, uri, id, title, author);
 				// Mark the book as automatically discovered
 				Metadata md = LibraryFactory.eINSTANCE.createMetadata();
 				md.setKey("discovered");
 				md.setKey(Boolean.toString(true));
 				book.getMetadata().add(md);
-				EPUBCollection.getCollection().add(book);
+				EPUBCorePlugin.getCollection().add(book);
 			}
 
 		}
@@ -88,7 +88,7 @@ public class FolderScanner extends Job {
 					});
 
 					for (File file : epubs) {
-						if (!EPUBCollection.getCollection().hasBook(file)) {
+						if (!EPUBCorePlugin.getCollection().hasBook(file)) {
 							try {
 								registerBooks(file);
 							} catch (Exception e) {

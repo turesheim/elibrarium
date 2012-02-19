@@ -3,13 +3,6 @@
 <plugin>
 
    <extension
-         point="no.resheim.elibrarium.library.core.collection">
-      <collection
-            class="no.resheim.elibrarium.epub.core.EPUBCollection"
-            id="no.resheim.elibrarium.epub">
-      </collection>
-   </extension>
-   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="no.resheim.elibrarium.epub.core.PreferenceInitializer">

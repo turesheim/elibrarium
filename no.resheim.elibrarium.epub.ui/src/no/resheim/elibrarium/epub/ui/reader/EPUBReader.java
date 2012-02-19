@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Date;
 
-import no.resheim.elibrarium.epub.core.EPUBCollection;
+import no.resheim.elibrarium.epub.core.EPUBCorePlugin;
 import no.resheim.elibrarium.epub.core.EPUBUtil;
 import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.AnnotationColor;
@@ -579,15 +579,16 @@ public class EPUBReader extends EditorPart {
 	}
 
 	private void registerBook(IPath path, OPSPublication ops) {
+		System.out.println("EPUBReader.registerBook()");
 		String title = EPUBUtil.getFirstTitle(ops);
 		String author = EPUBUtil.getFirstAuthor(ops);
 		String id = EPUBUtil.getIdentifier(ops);
-		if (!EPUBCollection.getCollection().hasBook(id)) {
+		if (!EPUBCorePlugin.getCollection().hasBook(id)) {
 			URI uri = path.toFile().toURI();
-			currentBook = LibraryUtil.createNewBook(EPUBCollection.COLLECTION_ID, uri, id, title, author);
-			EPUBCollection.getCollection().add(currentBook);
+			currentBook = LibraryUtil.createNewBook(EPUBCorePlugin.COLLECTION_ID, uri, id, title, author);
+			EPUBCorePlugin.getCollection().add(currentBook);
 		} else {
-			currentBook = EPUBCollection.getCollection().getBook(id);
+			currentBook = EPUBCorePlugin.getCollection().getBook(id);
 		}
 	};
 

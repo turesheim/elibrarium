@@ -9,7 +9,6 @@
 -->
 
 <plugin>
-   <extension-point id="collection" name="Book Collection" schema="schema/collection.exsd"/>
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
             uri="http://resheim.no/elibrarium/library"

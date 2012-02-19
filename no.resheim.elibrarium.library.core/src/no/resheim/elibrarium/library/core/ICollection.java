@@ -46,7 +46,8 @@ public interface ICollection {
 	}
 
 	/**
-	 * Used to verify the status of a book on the behalf of the library.
+	 * Used to verify the status of a book on the behalf of the
+	 * <i>Librarian</i>.
 	 * 
 	 * @param book
 	 *            the book to verify
@@ -55,8 +56,8 @@ public interface ICollection {
 	public Status verify(Book book);
 
 	/**
-	 * Remove a book from the {@link ICollection}. It is up to the
-	 * implementation to also notify the library about the newly added book.
+	 * Remove a book from the {@link ICollection}. The <i>Librarian</i> should
+	 * be notified when a book has been removed.
 	 * 
 	 * @param book
 	 *            the book to be removed
@@ -65,8 +66,8 @@ public interface ICollection {
 	public void remove(Book book);
 
 	/**
-	 * Add a book to the {@link ICollection}. It is up to the implementation to
-	 * also notify the library about the newly added book.
+	 * Add a book to the {@link ICollection}. The <i>Librarian</i> should be
+	 * notified when a book has been added.
 	 * 
 	 * @param book
 	 *            the book to be added
