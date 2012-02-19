@@ -12,6 +12,7 @@
 package no.resheim.elibrarium.epub.ui.reader;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
@@ -77,7 +78,7 @@ public class PaginationJob extends Job {
 			sb.append("desiredWidth=" + browser.getSize().x + ";");
 			sb.append("htmlID=document.getElementsByTagName('html')[0];");
 			sb.append("bodyID=document.getElementsByTagName('body')[0];");
-			sb.append("desiredHeight = " + browser.getSize().y + "-20;");
+			sb.append("desiredHeight = " + (browser.getSize().y - 20) + ";");
 			sb.append("totalHeight=bodyID.offsetHeight;");
 			sb.append("pageCount=Math.floor(totalHeight/desiredHeight)+1;");
 			sb.append("width=desiredWidth*pageCount;");
@@ -88,7 +89,6 @@ public class PaginationJob extends Job {
 			sb.append("  var imgs, i;");
 			sb.append("  imgs=bodyID.getElementsByTagName('img');");
 			sb.append("  for(i=0;i<imgs.length;i++) {");
-			sb.append("    imgs[i].style.maxWidth = (desiredWidth-10)+'px';");
 			sb.append("    imgs[i].style.maxWidth = (desiredWidth-10)+'px';");
 			sb.append("  }");
 			sb.append("}");
@@ -171,7 +171,7 @@ public class PaginationJob extends Job {
 	private final Shell shell;
 
 	public PaginationJob(OPSPublication ops) {
-		super("Paginating " + EPUBUtil.getFirstTitle(ops));
+		super(MessageFormat.format("Paginating \"{0}\"", EPUBUtil.getFirstTitle(ops)));
 		this.ops = ops;
 		shell = new Shell();
 		browser = new Browser(shell, SWT.NONE);
