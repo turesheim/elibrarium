@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import no.resheim.elibrarium.epub.core.EPUBUtil;
+import no.resheim.elibrarium.epub.ui.EPUBUIPlugin;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -34,6 +35,7 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * 
@@ -220,15 +222,19 @@ public class PaginationJob extends Job {
 		this.ops = ops;
 	}
 
-	public void update(int width, int height) {
+	public synchronized void update(int width, int height) {
+		StatusManager.getManager().handle(
+				new Status(IStatus.INFO, EPUBUIPlugin.PLUGIN_ID, "PaginationJob.update(" + width + "," + height + ")"),
+				StatusManager.LOG);
 		if (width == 0 || height == 0) {
 			throw new IllegalArgumentException("Height or width cannot be 0");
 		}
 		if (getState() == RUNNING) {
+
 			return;
 		}
 		browser.setSize(width, height);
-		this.schedule(200);
+		this.schedule();
 	}
 
 	public int[] getChapterSizes() {

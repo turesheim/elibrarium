@@ -82,86 +82,45 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  */
 public class EPUBReader extends EditorPart {
 
-	private enum Direction {
-		BACKWARD, FORWARD, INITIAL
-	}
+	private class ResizeListener implements ControlListener, Runnable, Listener {
 
-	private class PaginationJobListener extends JobChangeAdapter {
+		private long lastEvent = 0;
+
+		private boolean mouse = true;
+
+		public void controlMoved(ControlEvent e) {
+		}
+
+		public void controlResized(ControlEvent e) {
+			lastEvent = System.currentTimeMillis();
+			Display.getDefault().timerExec(500, this);
+		}
+
+		private void paginate() {
+			if (browser.getSize().x > 0 && browser.getSize().y > 0) {
+				paginateChapter();
+				paginationJob.update(browser.getSize().x, browser.getSize().y);
+				updateLabels();
+			}
+		}
 
 		@Override
-		public void done(IJobChangeEvent event) {
-			updateLabels();
+		public void run() {
+			if ((lastEvent + 500) < System.currentTimeMillis() && mouse) {
+					paginate();
+				} else {
+				Display.getDefault().timerExec(500, this);
+				}
+		}
+		@Override
+		public void handleEvent(Event event) {
+			mouse = event.type == SWT.MouseUp;
 		}
 
 	}
 
-	/**
-	 * Performs selection of text in the browser.
-	 * 
-	 * @author Torkild U. Resheim
-	 */
-	private class MarkTextItem {
-
-		public MenuItem menuItem;
-
-		public MarkTextItem(Menu parent, int style) {
-			menuItem = new MenuItem(parent, style);
-			menuItem.setText("Mark text");
-			installListener();
-		}
-		private void installListener() {
-			menuItem.addSelectionListener(new SelectionListener() {
-
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					if (browser.execute("markText('" + currentRange + "');")) {
-						Annotation annotation = LibraryFactory.eINSTANCE.createAnnotation();
-						annotation.setTimestamp(new Date());
-						annotation.setLocation(currentRange);
-						annotation.setText("My Text");
-						annotation.setColor(AnnotationColor.YELLOW);
-						annotation.setHref(getCurrentHref());
-						currentBook.getAnnotations().add(annotation);
-					} else {
-						System.err.println("Could not annotate book");
-					}
-				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
-			});
-		}
-
-	}
-
-	private class RemoveMarkedItem {
-
-		public MenuItem menuItem;
-
-		public RemoveMarkedItem(Menu parent, int style) {
-			menuItem = new MenuItem(parent, style);
-			menuItem.setText("Remove");
-			installListener();
-		}
-
-		private void installListener() {
-			menuItem.addSelectionListener(new SelectionListener() {
-
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					if (browser.execute("removeMark('" + currentRange + "');")) {
-					} else {
-						System.err.println("Could not remove mark");
-					}
-				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
-			});
-		}
-
+	private enum Direction {
+		BACKWARD, FORWARD, INITIAL
 	}
 
 	/**
@@ -172,6 +131,10 @@ public class EPUBReader extends EditorPart {
 	 * @author Torkild U. Resheim
 	 */
 	private class MarkTextHandler extends BrowserFunction {
+
+		public MarkTextHandler(Browser browser) {
+			super(browser, "javaMarkTextHandler");
+		}
 
 		@Override
 		public Object function(Object[] arguments) {
@@ -192,17 +155,86 @@ public class EPUBReader extends EditorPart {
 			return super.function(arguments);
 		}
 
-		public MarkTextHandler(Browser browser) {
-			super(browser, "javaMarkTextHandler");
+	}
+
+	/**
+	 * Performs selection of text in the browser.
+	 * 
+	 * @author Torkild U. Resheim
+	 */
+	private class MarkTextItem {
+
+		public MenuItem menuItem;
+
+		public MarkTextItem(Menu parent, int style) {
+			menuItem = new MenuItem(parent, style);
+			menuItem.setText("Mark text");
+			installListener();
+		}
+
+		private void installListener() {
+			menuItem.addSelectionListener(new SelectionListener() {
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (browser.execute("markText('" + currentRange + "');")) {
+						Annotation annotation = LibraryFactory.eINSTANCE.createAnnotation();
+						annotation.setTimestamp(new Date());
+						annotation.setLocation(currentRange);
+						annotation.setText("My Text");
+						annotation.setColor(AnnotationColor.YELLOW);
+						annotation.setHref(getCurrentHref());
+						currentBook.getAnnotations().add(annotation);
+					} else {
+						System.err.println("Could not annotate book");
+					}
+				}
+			});
 		}
 
 	}
 
-	private String currentRange;
+	private class PaginationJobListener extends JobChangeAdapter {
 
-	private String currentText;
+		@Override
+		public void done(IJobChangeEvent event) {
+			updateLabels();
+		}
 
-	private AnnotationColor currentColor;
+	}
+
+	private class RemoveMarkedItem {
+
+		public MenuItem menuItem;
+
+		public RemoveMarkedItem(Menu parent, int style) {
+			menuItem = new MenuItem(parent, style);
+			menuItem.setText("Remove");
+			installListener();
+		}
+
+		private void installListener() {
+			menuItem.addSelectionListener(new SelectionListener() {
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					if (browser.execute("removeMark('" + currentRange + "');")) {
+					} else {
+						System.err.println("Could not remove mark");
+					}
+				}
+			});
+		}
+
+	}
 
 	protected static final String PROPERTY_TITLE = "title"; //$NON-NLS-1$
 
@@ -212,15 +244,27 @@ public class EPUBReader extends EditorPart {
 
 	protected Browser browser;
 
+	private Book currentBook;
+
+	private AnnotationColor currentColor;
+
 	private String currentHref;
 
+	private String currentRange;
+
+	private String currentText;
+
 	private Direction direction = Direction.INITIAL;
+
+	private boolean disposed;
 
 	protected Image image;
 
 	protected String initialURL;
 
 	private Label label;
+
+	private Menu menu;
 
 	private Object myOutlinePage;
 
@@ -235,12 +279,6 @@ public class EPUBReader extends EditorPart {
 	boolean paginationRequired = true;
 
 	private File unpackFolder;
-
-	private Menu menu;
-
-	private boolean disposed;
-
-	private Book currentBook;
 
 	/**
 	 * WebBrowserEditor constructor comment.
@@ -267,14 +305,6 @@ public class EPUBReader extends EditorPart {
 			Item item = ops.getItemById(spineItems.get(currentChapter - 1).getIdref());
 			openItem(item);
 		}
-	}
-
-	private void openItem(Item item) {
-		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + item.getHref();
-		setCurrentHref(item.getHref());
-		browser.setUrl(url);
-		setPartName(getTitle(ops));
-		updateLabels();
 	}
 
 	/**
@@ -324,7 +354,10 @@ public class EPUBReader extends EditorPart {
 		label.setLayoutData(gd);
 		label.setText(" ");
 
-		installResizeListener();
+		ResizeListener listener = new ResizeListener();
+		browser.addControlListener(listener);
+		browser.getDisplay().addFilter(SWT.MouseDown, listener);
+		browser.getDisplay().addFilter(SWT.MouseUp, listener);
 		installInjector();
 		installKeyListener();
 
@@ -368,15 +401,6 @@ public class EPUBReader extends EditorPart {
 			}
 		});
 
-	}
-
-	private void populateMenu() {
-		if (currentColor != null) {
-			new RemoveMarkedItem(menu, SWT.PUSH);
-		} else if (currentRange != null) {
-			// Allow text to be marked
-			new MarkTextItem(menu, SWT.PUSH);
-		}
 	}
 
 	private boolean deleteFolder(File folder) {
@@ -432,10 +456,6 @@ public class EPUBReader extends EditorPart {
 		return super.getAdapter(required);
 	}
 
-	private String getCurrentHref() {
-		return currentHref;
-	}
-
 	/**
 	 * Determines the chapter number of the item currently displayed. If
 	 * <b>-1</b> is returned, the item is not in the spine.
@@ -483,6 +503,10 @@ public class EPUBReader extends EditorPart {
 			}
 		}
 		return page;
+	}
+
+	private String getCurrentHref() {
+		return currentHref;
 	}
 
 	private int getCurrentPage() {
@@ -559,6 +583,8 @@ public class EPUBReader extends EditorPart {
 				initialURL = getFirstPublicationPage();
 				setPartName(getTitle(ops));
 				paginationJob = new PaginationJob(ops);
+				paginationJob.setUser(false);
+				paginationJob.setPriority(Job.LONG);
 				paginationJob.addJobChangeListener(new PaginationJobListener());
 				registerBook(path, ops);
 			} catch (Exception e) {
@@ -577,20 +603,6 @@ public class EPUBReader extends EditorPart {
 		setSite(site);
 		setInput(input);
 	}
-
-	private void registerBook(IPath path, OPSPublication ops) {
-		System.out.println("EPUBReader.registerBook()");
-		String title = EPUBUtil.getFirstTitle(ops);
-		String author = EPUBUtil.getFirstAuthor(ops);
-		String id = EPUBUtil.getIdentifier(ops);
-		if (!EPUBCorePlugin.getCollection().hasBook(id)) {
-			URI uri = path.toFile().toURI();
-			currentBook = LibraryUtil.createNewBook(EPUBCorePlugin.COLLECTION_ID, uri, id, title, author);
-			EPUBCorePlugin.getCollection().add(currentBook);
-		} else {
-			currentBook = EPUBCorePlugin.getCollection().getBook(id);
-		}
-	};
 
 	private void installInjector() {
 		browser.addProgressListener(new ProgressListener() {
@@ -623,7 +635,7 @@ public class EPUBReader extends EditorPart {
 				browseToPage(page);
 				// Size may be 0,0 when the view is first opened so we want to
 				// delay until the browser is resized.
-				if (paginationRequired && browser.getSize().x > 0) {
+				if (paginationRequired && browser.getSize().x > 0 && browser.getSize().y > 0) {
 					paginationJob.update(browser.getSize().x, browser.getSize().y);
 					paginationRequired = false;
 				}
@@ -659,21 +671,7 @@ public class EPUBReader extends EditorPart {
 				}
 			}
 		});
-	}
-
-	private void installResizeListener() {
-		browser.addControlListener(new ControlListener() {
-
-			public void controlMoved(ControlEvent e) {
-			}
-
-			public void controlResized(ControlEvent e) {
-				paginateChapter();
-				paginationJob.update(browser.getSize().x, browser.getSize().y);
-				updateLabels();
-			}
-		});
-	}
+	};
 
 	/*
 	 * (non-Javadoc) Returns whether the contents of this editor have changed
@@ -731,6 +729,14 @@ public class EPUBReader extends EditorPart {
 		throw new RuntimeException("Not implemented");
 	}
 
+	private void openItem(Item item) {
+		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + item.getHref();
+		setCurrentHref(item.getHref());
+		browser.setUrl(url);
+		setPartName(getTitle(ops));
+		updateLabels();
+	}
+
 	/**
 	 * Executes JavaScript that will reformat the chapter and obtain information
 	 * that is required for browsing it.
@@ -758,6 +764,28 @@ public class EPUBReader extends EditorPart {
 		}
 	}
 
+	private void populateMenu() {
+		if (currentColor != null) {
+			new RemoveMarkedItem(menu, SWT.PUSH);
+		} else if (currentRange != null) {
+			// Allow text to be marked
+			new MarkTextItem(menu, SWT.PUSH);
+		}
+	}
+
+	/**
+	 * Browse to the previous page in the reading order. If already on the first
+	 * page of the chapter, the last page of the previous chapter will be shown.
+	 */
+	public void previousPage() {
+		int page = getCurrentChapterPage();
+		if (page > 1) {
+			browseToPage(--page);
+		} else {
+			browseChapter(Direction.BACKWARD);
+		}
+	}
+
 	/**
 	 * Reads the (JavaScript) file and appends the content to the given buffer.
 	 * 
@@ -776,16 +804,17 @@ public class EPUBReader extends EditorPart {
 		}
 	}
 
-	/**
-	 * Browse to the previous page in the reading order. If already on the first
-	 * page of the chapter, the last page of the previous chapter will be shown.
-	 */
-	public void previousPage() {
-		int page = getCurrentChapterPage();
-		if (page > 1) {
-			browseToPage(--page);
+	private void registerBook(IPath path, OPSPublication ops) {
+		System.out.println("EPUBReader.registerBook()");
+		String title = EPUBUtil.getFirstTitle(ops);
+		String author = EPUBUtil.getFirstAuthor(ops);
+		String id = EPUBUtil.getIdentifier(ops);
+		if (!EPUBCorePlugin.getCollection().hasBook(id)) {
+			URI uri = path.toFile().toURI();
+			currentBook = LibraryUtil.createNewBook(EPUBCorePlugin.COLLECTION_ID, uri, id, title, author);
+			EPUBCorePlugin.getCollection().add(currentBook);
 		} else {
-			browseChapter(Direction.BACKWARD);
+			currentBook = EPUBCorePlugin.getCollection().getBook(id);
 		}
 	}
 
