@@ -15,14 +15,11 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.Date;
 
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.core.ILibraryListener;
 import no.resheim.elibrarium.library.core.LibraryPlugin;
 import no.resheim.elibrarium.library.ui.LibraryLabelProvider;
-import no.resheim.elibrarium.library.ui.LibraryUIPlugin;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -46,8 +43,6 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
-import org.eclipse.mylyn.commons.notifications.ui.AbstractUiNotification;
-import org.eclipse.mylyn.commons.notifications.ui.NotificationsUi;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -276,46 +271,46 @@ public class LibraryView extends ViewPart implements ILibraryListener {
 	@Override
 	public void bookAdded(final Book book) {
 		refreshView();
-		AbstractUiNotification notification = new AbstractUiNotification("no.resheim.elibrarium.library.ui.event") {
-
-			@SuppressWarnings("rawtypes")
-			@Override
-			public Object getAdapter(Class adapter) {
-				return null;
-			}
-
-			@Override
-			public String getLabel() {
-				return "Book added";
-			}
-
-			@Override
-			public String getDescription() {
-				return "Added \"" + book.getTitle() + "\" to library.";
-			}
-
-			@Override
-			public Date getDate() {
-				return new Date(System.currentTimeMillis());
-			}
-
-			@Override
-			public Image getNotificationImage() {
-				return null;
-			}
-
-			@Override
-			public Image getNotificationKindImage() {
-				return LibraryUIPlugin.getDefault().getImageRegistry().get(LibraryUIPlugin.IMG_BOOK);
-			}
-
-			@Override
-			public void open() {
-				// TODO Auto-generated method stub
-
-			}
-		};
-		NotificationsUi.getService().notify(Collections.singletonList(notification));
+		// AbstractUiNotification notification = new
+		// AbstractUiNotification("no.resheim.elibrarium.library.ui.event") {
+		//
+		// @SuppressWarnings("rawtypes")
+		// @Override
+		// public Object getAdapter(Class adapter) {
+		// return null;
+		// }
+		//
+		// @Override
+		// public String getLabel() {
+		// return "Book added";
+		// }
+		//
+		// @Override
+		// public String getDescription() {
+		// return "Added \"" + book.getTitle() + "\" to library.";
+		// }
+		//
+		// @Override
+		// public Date getDate() {
+		// return new Date(System.currentTimeMillis());
+		// }
+		//
+		// @Override
+		// public Image getNotificationImage() {
+		// return null;
+		// }
+		//
+		// @Override
+		// public Image getNotificationKindImage() {
+		// return
+		// LibraryUIPlugin.getDefault().getImageRegistry().get(LibraryUIPlugin.IMG_BOOK);
+		// }
+		//
+		// @Override
+		// public void open() {
+		// }
+		// };
+		// NotificationsUi.getService().notify(Collections.singletonList(notification));
 	}
 
 	@Override
