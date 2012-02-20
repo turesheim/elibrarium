@@ -280,6 +280,8 @@ public class EPUBReader extends EditorPart {
 
 	private File unpackFolder;
 
+	private ResizeListener resizeListener;
+
 	/**
 	 * WebBrowserEditor constructor comment.
 	 */
@@ -354,11 +356,15 @@ public class EPUBReader extends EditorPart {
 		label.setLayoutData(gd);
 		label.setText(" ");
 
-		ResizeListener listener = new ResizeListener();
-		browser.addControlListener(listener);
-		browser.getDisplay().addFilter(SWT.MouseDown, listener);
-		browser.getDisplay().addFilter(SWT.MouseUp, listener);
+		resizeListener = new ResizeListener();
+		browser.addControlListener(resizeListener);
+		browser.getDisplay().addFilter(SWT.MouseDown, resizeListener);
+		browser.getDisplay().addFilter(SWT.MouseUp, resizeListener);
+
+		// Various javascript
 		installInjector();
+
+		// Handle key-presses
 		installKeyListener();
 
 		// These events are triggered when the location of the browser has
@@ -418,6 +424,11 @@ public class EPUBReader extends EditorPart {
 
 	@Override
 	public void dispose() {
+		// Uninstall pagination listener
+		browser.removeControlListener(resizeListener);
+		browser.getDisplay().removeFilter(SWT.MouseDown, resizeListener);
+		browser.getDisplay().removeFilter(SWT.MouseUp, resizeListener);
+
 		paginationJob.cancel();
 		// Delete the temporary folder where we keep the unpacked content.
 		if (unpackFolder.exists()) {
