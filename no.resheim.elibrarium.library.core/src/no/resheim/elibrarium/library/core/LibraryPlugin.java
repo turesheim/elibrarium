@@ -16,6 +16,7 @@ import org.eclipse.core.resources.ISaveParticipant;
 import org.eclipse.core.resources.ISavedState;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Path;
@@ -57,12 +58,12 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 			case ISaveContext.FULL_SAVE:
 				LibraryPlugin instance = LibraryPlugin.getDefault();
 				// save the plug-in state
-				int saveNumber = context.getSaveNumber();
-				String saveFileName = "library-" + Integer.toString(saveNumber) + ".elibrarium";
-				File f = instance.getStateLocation().append(saveFileName).toFile();
+				// int saveNumber = context.getSaveNumber();
+				String saveFileName = "library.elibrarium";
 				// if we fail to write, an exception is thrown and we do not
 				// update the path
 				try {
+					File f = instance.getStorageLocation().append(saveFileName).toFile();
 					instance.writeLibrary(f);
 					context.map(new Path("library"), new Path(saveFileName));
 					context.needSaveNumber();
@@ -222,7 +223,6 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 		library = (Library) resource.getContents().get(0);
 	}
 
-
 	public void addCollection(ICollection provider) {
 		collection.add(provider);
 		provider.addListener(this);
@@ -237,17 +237,26 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 		}
 	}
 
+	private IPath getStorageLocation() throws IOException {
+		String root = System.getProperty("user.home");
+		String os = System.getProperty("os.name").toLowerCase();
+		if (os.indexOf("mac") > -1) {
+			root = root + File.separator + "Library" + File.separator;
+		}
+		File file = new File(root + File.separator + "Elibrarium");
+		return new Path(file.getAbsolutePath());
+
+	}
+
 	private boolean restoreState() {
 		try {
 			ISaveParticipant saveParticipant = new WorkspaceSaveParticipant();
 			ISavedState lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(PLUGIN_ID, saveParticipant);
-			if (lastState != null) {
-				String saveFileName = lastState.lookup(new Path("library")).toString();
-				File f = getStateLocation().append(saveFileName).toFile();
-				if (f.exists()) {
-					readLibrary(f);
-					return true;
-				}
+			String saveFileName = lastState.lookup(new Path("library")).toString();
+			File f = getStorageLocation().append(saveFileName).toFile();
+			if (f.exists()) {
+				readLibrary(f);
+				return true;
 			}
 		} catch (CoreException e) {
 			e.printStackTrace();
