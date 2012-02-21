@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link no.resheim.elibrarium.library.Marker#getId <em>Id</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Marker#getLocation <em>Location</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Marker#getHref <em>Href</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Marker#getTimestamp <em>Timestamp</em>}</li>
@@ -29,6 +30,32 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Marker extends EObject {
+	/**
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Id</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(String)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getMarker_Id()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getId();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Marker#getId <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
+	 * @generated
+	 */
+	void setId(String value);
+
 	/**
 	 * Returns the value of the '<em><b>Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->

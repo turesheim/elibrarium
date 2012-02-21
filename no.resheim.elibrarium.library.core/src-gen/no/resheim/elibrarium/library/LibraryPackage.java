@@ -199,13 +199,22 @@ public interface LibraryPackage extends EPackage {
 	int MARKER = 2;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MARKER__ID = 0;
+
+	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MARKER__LOCATION = 0;
+	int MARKER__LOCATION = 1;
 
 	/**
 	 * The feature id for the '<em><b>Href</b></em>' attribute.
@@ -214,7 +223,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MARKER__HREF = 1;
+	int MARKER__HREF = 2;
 
 	/**
 	 * The feature id for the '<em><b>Timestamp</b></em>' attribute.
@@ -223,7 +232,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MARKER__TIMESTAMP = 2;
+	int MARKER__TIMESTAMP = 3;
 
 	/**
 	 * The number of structural features of the '<em>Marker</em>' class.
@@ -232,7 +241,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MARKER_FEATURE_COUNT = 3;
+	int MARKER_FEATURE_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.AnnotationImpl <em>Annotation</em>}' class.
@@ -243,6 +252,15 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 */
 	int ANNOTATION = 3;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ANNOTATION__ID = MARKER__ID;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -316,6 +334,15 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 */
 	int BOOKMARK = 4;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOKMARK__ID = MARKER__ID;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -559,6 +586,17 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getMarker();
+
+	/**
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Marker#getId <em>Id</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Id</em>'.
+	 * @see no.resheim.elibrarium.library.Marker#getId()
+	 * @see #getMarker()
+	 * @generated
+	 */
+	EAttribute getMarker_Id();
 
 	/**
 	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Marker#getLocation <em>Location</em>}'.
@@ -840,6 +878,14 @@ public interface LibraryPackage extends EPackage {
 		 * @generated
 		 */
 		EClass MARKER = eINSTANCE.getMarker();
+
+		/**
+		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MARKER__ID = eINSTANCE.getMarker_Id();
 
 		/**
 		 * The meta object literal for the '<em><b>Location</b></em>' attribute feature.

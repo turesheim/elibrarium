@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
+ *   <li>{@link no.resheim.elibrarium.library.impl.MarkerImpl#getId <em>Id</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.MarkerImpl#getLocation <em>Location</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.MarkerImpl#getHref <em>Href</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.MarkerImpl#getTimestamp <em>Timestamp</em>}</li>
@@ -34,6 +35,26 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * @generated
  */
 public abstract class MarkerImpl extends EObjectImpl implements Marker {
+	/**
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ID_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+	protected String id = ID_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getLocation() <em>Location</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -118,6 +139,27 @@ public abstract class MarkerImpl extends EObjectImpl implements Marker {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setId(String newId) {
+		String oldId = id;
+		id = newId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.MARKER__ID, oldId, id));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getLocation() {
 		return location;
 	}
@@ -184,6 +226,8 @@ public abstract class MarkerImpl extends EObjectImpl implements Marker {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case LibraryPackage.MARKER__ID:
+				return getId();
 			case LibraryPackage.MARKER__LOCATION:
 				return getLocation();
 			case LibraryPackage.MARKER__HREF:
@@ -202,6 +246,9 @@ public abstract class MarkerImpl extends EObjectImpl implements Marker {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case LibraryPackage.MARKER__ID:
+				setId((String)newValue);
+				return;
 			case LibraryPackage.MARKER__LOCATION:
 				setLocation((String)newValue);
 				return;
@@ -223,6 +270,9 @@ public abstract class MarkerImpl extends EObjectImpl implements Marker {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case LibraryPackage.MARKER__ID:
+				setId(ID_EDEFAULT);
+				return;
 			case LibraryPackage.MARKER__LOCATION:
 				setLocation(LOCATION_EDEFAULT);
 				return;
@@ -244,6 +294,8 @@ public abstract class MarkerImpl extends EObjectImpl implements Marker {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case LibraryPackage.MARKER__ID:
+				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 			case LibraryPackage.MARKER__LOCATION:
 				return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
 			case LibraryPackage.MARKER__HREF:
@@ -264,7 +316,9 @@ public abstract class MarkerImpl extends EObjectImpl implements Marker {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (location: "); //$NON-NLS-1$
+		result.append(" (id: "); //$NON-NLS-1$
+		result.append(id);
+		result.append(", location: "); //$NON-NLS-1$
 		result.append(location);
 		result.append(", href: "); //$NON-NLS-1$
 		result.append(href);

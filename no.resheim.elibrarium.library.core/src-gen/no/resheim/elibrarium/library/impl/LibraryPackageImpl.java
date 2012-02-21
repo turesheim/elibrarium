@@ -271,7 +271,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMarker_Location() {
+	public EAttribute getMarker_Id() {
 		return (EAttribute)markerEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -280,7 +280,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMarker_Href() {
+	public EAttribute getMarker_Location() {
 		return (EAttribute)markerEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -289,8 +289,17 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMarker_Timestamp() {
+	public EAttribute getMarker_Href() {
 		return (EAttribute)markerEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMarker_Timestamp() {
+		return (EAttribute)markerEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -435,6 +444,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		createEReference(bookEClass, BOOK__METADATA);
 
 		markerEClass = createEClass(MARKER);
+		createEAttribute(markerEClass, MARKER__ID);
 		createEAttribute(markerEClass, MARKER__LOCATION);
 		createEAttribute(markerEClass, MARKER__HREF);
 		createEAttribute(markerEClass, MARKER__TIMESTAMP);
@@ -503,6 +513,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		initEReference(getBook_Metadata(), this.getMetadata(), null, "metadata", null, 0, -1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(markerEClass, Marker.class, "Marker", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(getMarker_Id(), ecorePackage.getEString(), "id", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getMarker_Location(), ecorePackage.getEString(), "location", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getMarker_Href(), ecorePackage.getEString(), "href", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getMarker_Timestamp(), ecorePackage.getEDate(), "timestamp", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
