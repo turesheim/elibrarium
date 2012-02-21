@@ -11,6 +11,8 @@
  *******************************************************************************/
 package no.resheim.elibrarium.epub.core;
 
+import no.resheim.elibrarium.library.Book;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.FeatureMap;
@@ -29,7 +31,25 @@ import org.eclipse.mylyn.docs.epub.opf.Role;
  * @author Torkild U. Resheim
  */
 public class EPUBUtil {
+
 	private static final EStructuralFeature TEXT = XMLTypePackage.eINSTANCE.getXMLTypeDocumentRoot_Text();
+
+	/**
+	 * Returns the book corresponding to the given OPS publication if it can be
+	 * found in the library.
+	 * 
+	 * @param ops
+	 *            the OPS publication
+	 * @return the book or <code>null</code>
+	 */
+	public static Book getBook(OPSPublication ops) {
+		String id = EPUBUtil.getIdentifier(ops);
+		if (!EPUBCorePlugin.getCollection().hasBook(id)) {
+			return null;
+		} else {
+			return EPUBCorePlugin.getCollection().getBook(id);
+		}
+	}
 
 	/**
 	 * Returns the name of the first <i>creator</i> with the role of
