@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.Date;
+import java.util.UUID;
 
 import no.resheim.elibrarium.epub.core.EPUBCorePlugin;
 import no.resheim.elibrarium.epub.core.EPUBUtil;
@@ -24,6 +25,7 @@ import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.AnnotationColor;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.LibraryFactory;
+import no.resheim.elibrarium.library.Marker;
 import no.resheim.elibrarium.library.core.LibraryUtil;
 
 import org.eclipse.core.runtime.IPath;
@@ -54,6 +56,8 @@ import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.GestureEvent;
+import org.eclipse.swt.events.GestureListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -183,9 +187,10 @@ public class EPUBReader extends EditorPart {
 				public void widgetSelected(SelectionEvent e) {
 					if (browser.execute("markText('" + currentRange + "');")) {
 						Annotation annotation = LibraryFactory.eINSTANCE.createAnnotation();
+						annotation.setId(UUID.randomUUID().toString());
 						annotation.setTimestamp(new Date());
 						annotation.setLocation(currentRange);
-						annotation.setText("My Text");
+						annotation.setText(currentText);
 						annotation.setColor(AnnotationColor.YELLOW);
 						annotation.setHref(getCurrentHref());
 						currentBook.getAnnotations().add(annotation);
@@ -266,7 +271,7 @@ public class EPUBReader extends EditorPart {
 
 	private Menu menu;
 
-	private Object myOutlinePage;
+	private Object outlinePage;
 
 	private OPSPublication ops;
 
@@ -356,6 +361,7 @@ public class EPUBReader extends EditorPart {
 		label.setLayoutData(gd);
 		label.setText(" ");
 
+		// Install listener to figure out when we need to re-paginate
 		resizeListener = new ResizeListener();
 		browser.addControlListener(resizeListener);
 		browser.getDisplay().addFilter(SWT.MouseDown, resizeListener);
@@ -424,11 +430,6 @@ public class EPUBReader extends EditorPart {
 
 	@Override
 	public void dispose() {
-		// Uninstall pagination listener
-		browser.removeControlListener(resizeListener);
-		browser.getDisplay().removeFilter(SWT.MouseDown, resizeListener);
-		browser.getDisplay().removeFilter(SWT.MouseUp, resizeListener);
-
 		paginationJob.cancel();
 		// Delete the temporary folder where we keep the unpacked content.
 		if (unpackFolder.exists()) {
@@ -459,10 +460,10 @@ public class EPUBReader extends EditorPart {
 	@Override
 	public Object getAdapter(Class required) {
 		if (IContentOutlinePage.class.equals(required)) {
-			if (myOutlinePage == null) {
-				myOutlinePage = new TOCOutlinePage(ops, this);
+			if (outlinePage == null) {
+				outlinePage = new TOCOutlinePage(ops, this);
 			}
-			return myOutlinePage;
+			return outlinePage;
 		}
 		return super.getAdapter(required);
 	}
@@ -723,6 +724,22 @@ public class EPUBReader extends EditorPart {
 		}
 	}
 
+	public void navigateTo(Marker marker) {
+		System.out.println(marker.getLocation());
+		String ref = marker.getHref();
+		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref;
+		if (!getCurrentHref().equals(ref)) {
+			setCurrentHref(ref);
+			direction = Direction.INITIAL;
+			browser.setUrl(url);
+			setPartName(getTitle(ops));
+		}
+		if (browser.execute("navigateTo('" + marker.getLocation() + "');")) {
+		} else {
+			System.err.println("Could not navigate to mark");
+		}
+	}
+
 	/**
 	 * Browse to the next page in the reading order. If already on the last page
 	 * of the chapter, the first page of the next chapter will be shown.
@@ -816,7 +833,6 @@ public class EPUBReader extends EditorPart {
 	}
 
 	private void registerBook(IPath path, OPSPublication ops) {
-		System.out.println("EPUBReader.registerBook()");
 		String title = EPUBUtil.getFirstTitle(ops);
 		String author = EPUBUtil.getFirstAuthor(ops);
 		String id = EPUBUtil.getIdentifier(ops);
