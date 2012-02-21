@@ -1,5 +1,6 @@
 package no.resheim.elibrarium.library.ui;
 
+import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.Book;
 
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
@@ -13,7 +14,10 @@ public class LibraryLabelProvider implements IStyledLabelProvider {
 
 	@Override
 	public Image getImage(Object obj) {
-		return LibraryUIPlugin.getDefault().getImageRegistry().get(LibraryUIPlugin.IMG_BOOK);
+		if (obj instanceof Book) {
+			return LibraryUIPlugin.getDefault().getImageRegistry().get(LibraryUIPlugin.IMG_BOOK);
+		}
+		return null;
 	}
 
 	@Override
@@ -35,12 +39,24 @@ public class LibraryLabelProvider implements IStyledLabelProvider {
 
 	@Override
 	public StyledString getStyledText(Object element) {
-		Book book =  ((Book) element);
-		StyledString string = new StyledString(book.getTitle());
-		String decorated = NLS.bind("{0} - {1}",
-				new String[] { book.getTitle(),book.getAuthor() });
+		if (element instanceof Book) {
+			Book book = ((Book) element);
+			StyledString string = new StyledString(book.getTitle());
+			String decorated = NLS.bind("{0} - {1}", new String[] { book.getTitle(), book.getAuthor() });
+			return StyledCellLabelProvider.styleDecoratedString(decorated, StyledString.QUALIFIER_STYLER, string);
+		}
+		if (element instanceof Annotation) {
+			Annotation note = ((Annotation) element);
+			StyledString string = new StyledString(note.getText());
+			if (note.getComment() != null) {
+				String decorated = NLS.bind("{0} - {1}", new String[] { note.getText(), note.getComment() });
+				return StyledCellLabelProvider.styleDecoratedString(decorated, StyledString.QUALIFIER_STYLER, string);
+			} else {
+				return string;
+			}
+		}
+		return new StyledString();
 
-		return StyledCellLabelProvider.styleDecoratedString(decorated, StyledString.QUALIFIER_STYLER, string);
 	}
 
 }
