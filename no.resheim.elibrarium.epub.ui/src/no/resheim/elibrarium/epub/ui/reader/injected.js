@@ -4,6 +4,7 @@ try {
 	totalHeight = bodyID.offsetHeight;
 	pageCount = Math.floor(totalHeight / desiredHeight) + 1;
 	width = desiredWidth * pageCount;
+	pageWidth = width/pageCount;
 	bodyID.style.width = width + 'px';
 	bodyID.style.height = desiredHeight + 'px';
 	bodyID.style.WebkitColumnCount = pageCount;
@@ -20,26 +21,83 @@ try {
 		}
 	}
 	adjustImages();
-
+	
 	/**
-	 * - Maintain a list over all annotations added (using markText())
-	 * - Test whether or not the current selection is within a range in which
-	 *   case the entire range should be selected.
+	 * Sets the left offset of the body to match the one of the identifier. This
+	 * is done so that a complete page is shown.
+	 * 
+	 * @param identifier the element identifier
 	 */
+	function setOffsetToElement(identifier){
+		var p = $('#'+identifier);
+		if (p.length>0){
+			var offset = p.offset();
+			var page = Math.floor(offset.left/pageWidth);
+			bodyID.scrollLeft = page*pageWidth;
+		}
+	}
+	/**
+	 * Marks the text identified by the serialised range and assigns it an
+	 * element with the given identifier.
+	 * 
+	 * @param serialized the serialised range
+	 * @param identifier the identifier to assign the range
+	 */
+	function markRange(serialized, identifier) {
+		if ($('#'+identifier).length==0){			
+			var selection = rangy.deserializeSelection(serialized);
+			cssApplier.applyToSelection();
+			insertHtmlBeforeSelection("<span id='"+identifier+"'/>");
+		} else {
+			alert('Mark already exists')
+		}
+	}
+	
+	var insertHtmlBeforeSelection, insertHtmlAfterSelection;
+	(function() {
+	    function createInserter(isBefore) {
+	        return function(html) {
+	            var sel, range, node;
+	            if (window.getSelection) {
+	                // IE9 and non-IE
+	                sel = window.getSelection();
+	                if (sel.getRangeAt && sel.rangeCount) {
+	                    range = window.getSelection().getRangeAt(0);
+	                    range.collapse(isBefore);
+
+	                    // Range.createContextualFragment() would be useful here but is
+	                    // non-standard and not supported in all browsers (IE9, for one)
+	                    var el = document.createElement("div");
+	                    el.innerHTML = html;
+	                    var frag = document.createDocumentFragment(), node, lastNode;
+	                    while ( (node = el.firstChild) ) {
+	                        lastNode = frag.appendChild(node);
+	                    }
+	                    range.insertNode(frag);
+	                }
+	            } else if (document.selection && document.selection.createRange) {
+	                // IE < 9
+	                range = document.selection.createRange();
+	                range.collapse(isBefore);
+	                range.pasteHTML(html);
+	            }
+	        }
+	    }
+
+	    insertHtmlBeforeSelection = createInserter(true);
+	    insertHtmlAfterSelection = createInserter(false);
+	})();
 	
 	/***************************************************************************
-	 * Handling of range, selection and marked text.
-	 **************************************************************************/
-	function markText(serialized) {
-		var range = rangy.deserializeRange(serialized);
-		cssApplier.applyToRange(range);			
-		range.detach();
-	}	
-	
+	 * Unmark the text within the Rangy range.
+	 **************************************************************************/	
 	function removeMark(serialized) {
 		cssApplier.undoToSelection();			
 	}	
 
+	/***************************************************************************
+	 * Use Java code to mark the selected range.
+	 **************************************************************************/	
 	function showSelection(e) {
 		var selection = window.getSelection();
 		var serialization = rangy.serializeSelection();
