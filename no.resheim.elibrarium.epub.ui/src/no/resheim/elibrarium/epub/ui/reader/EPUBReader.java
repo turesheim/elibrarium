@@ -16,7 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import no.resheim.elibrarium.epub.core.EPUBCorePlugin;
@@ -56,8 +58,6 @@ import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.GestureEvent;
-import org.eclipse.swt.events.GestureListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -185,17 +185,18 @@ public class EPUBReader extends EditorPart {
 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					if (browser.execute("markText('" + currentRange + "');")) {
+					String id = UUID.randomUUID().toString();
+					if (browser.execute("markRange('" + currentRange + "','" + id + "');")) {
 						Annotation annotation = LibraryFactory.eINSTANCE.createAnnotation();
-						annotation.setId(UUID.randomUUID().toString());
+						annotation.setId(id);
 						annotation.setTimestamp(new Date());
 						annotation.setLocation(currentRange);
 						annotation.setText(currentText);
 						annotation.setColor(AnnotationColor.YELLOW);
-						annotation.setHref(getCurrentHref());
+						annotation.setHref(currentHref);
 						currentBook.getAnnotations().add(annotation);
 					} else {
-						System.err.println("Could not annotate book");
+						System.err.println("Could not mark range!");
 					}
 				}
 			});
@@ -253,7 +254,11 @@ public class EPUBReader extends EditorPart {
 
 	private AnnotationColor currentColor;
 
+	/** The current href, excluding the anchor */
 	private String currentHref;
+
+	/** The current anchor (may be null) */
+	private String currentAnchor;
 
 	private String currentRange;
 
@@ -479,9 +484,6 @@ public class EPUBReader extends EditorPart {
 		EList<Itemref> spineItems = ops.getOpfPackage().getSpine().getSpineItems();
 		EList<Item> items = ops.getOpfPackage().getManifest().getItems();
 		String ref = currentHref;
-		if (ref.indexOf('#') > -1) {
-			ref = ref.substring(0, ref.indexOf('#'));
-		}
 		for (Item item : items) {
 			if (item.getHref().equals(ref)) {
 				for (int c = 0; c < spineItems.size(); c++) {
@@ -517,10 +519,6 @@ public class EPUBReader extends EditorPart {
 		return page;
 	}
 
-	private String getCurrentHref() {
-		return currentHref;
-	}
-
 	private int getCurrentPage() {
 		int page = 0;
 		int chapterPage = getCurrentChapterPage();
@@ -549,7 +547,6 @@ public class EPUBReader extends EditorPart {
 			for (Reference reference : references) {
 				if (reference.getType().equals(Type.TEXT)) {
 					String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + reference.getHref();
-					setCurrentHref(reference.getHref());
 					return url;
 				}
 			}
@@ -560,7 +557,6 @@ public class EPUBReader extends EditorPart {
 			if (itemref.getLinear() == null || Boolean.parseBoolean(itemref.getLinear())) {
 				Item item = ops.getItemById(itemref.getIdref());
 				String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + item.getHref();
-				setCurrentHref(item.getHref());
 				return url;
 			}
 		}
@@ -624,27 +620,69 @@ public class EPUBReader extends EditorPart {
 
 			@Override
 			public void completed(ProgressEvent event) {
-				int page = 1;
-				paginateChapter();
-				switch (direction) {
-				case FORWARD:
-					page = 1;
-					break;
-				case BACKWARD:
-					page = pageCount;
-					break;
-				default:
-					page = 1;
-					break;
+				// Ignore this one.
+				if (browser.getUrl().equals("about:blank")) {
+					return;
 				}
-				// Annotations and markers.
+				// Detect the current href and anchor
+				String url = browser.getUrl().substring(browser.getUrl().lastIndexOf('/') + 1);
+				if (url.indexOf('#') > -1) {
+					currentHref = url.substring(0, url.indexOf('#'));
+					currentAnchor = url.substring(url.indexOf('#') + 1);
+				} else {
+					currentHref = url;
+					currentAnchor = null;
+				}
+
+				// Do the pagination of the chapter
+				paginateChapter();
+
+				// Add annotations and markers.
+				List<Annotation> broken = new ArrayList<Annotation>();
 				EList<Annotation> annotations = currentBook.getAnnotations();
 				for (Annotation annotation : annotations) {
-					if (annotation.getHref() != null && annotation.getHref().equals(getCurrentHref())) {
-						browser.execute("markText('" + annotation.getLocation() + "');");
+					if (annotation.getHref() != null && annotation.getHref().equals(currentHref)) {
+						// XXX: Handling a quirk, must be removed
+						String id = annotation.getId();
+						if (id == null) {
+							id = UUID.randomUUID().toString();
+							annotation.setId(id);
+						}
+						if (!browser.execute("markRange('" + annotation.getLocation() + "','" + id + "');")) {
+							System.err.println("Could not create marker identified by " + id + " at "
+									+ annotation.getLocation());
+							broken.add(annotation);
+						}
 					}
 				}
-				browseToPage(page);
+				// Remote annotations that have been broken.
+				for (Annotation annotation : broken) {
+					currentBook.getAnnotations().remove(annotation);
+				}
+
+				// And adjust offset so that it matches the one of the anchor if
+				// one has been specified.
+				if (currentAnchor != null) {
+					if (browser.execute("setOffsetToElement('" + currentAnchor + "')")) {
+						System.out.println("Adjusted offset for " + currentAnchor);
+					} else {
+						System.err.println("Could not correct position " + currentAnchor);
+					}
+				}
+
+				// Display the first or the last page in the chapter. This is
+				// only happens when the user is browsing the book.
+				switch (direction) {
+				case FORWARD:
+					browseToPage(1);
+					break;
+				case BACKWARD:
+					browseToPage(pageCount);
+					break;
+				default:
+					break;
+				}
+
 				// Size may be 0,0 when the view is first opened so we want to
 				// delay until the browser is resized.
 				if (paginationRequired && browser.getSize().x > 0 && browser.getSize().y > 0) {
@@ -713,31 +751,24 @@ public class EPUBReader extends EditorPart {
 		try {
 			String ref = navPoint.getContent().getSrc();
 			String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref;
-			if (!getCurrentHref().equals(ref)) {
-				setCurrentHref(ref);
-				direction = Direction.INITIAL;
-				browser.setUrl(url);
-				setPartName(getTitle(ops));
-			}
+			direction = Direction.INITIAL;
+			// XXX: Clear URL to force reload
+			browser.setText("<html/>");
+			browser.setUrl(url);
+			setPartName(getTitle(ops));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void navigateTo(Marker marker) {
-		System.out.println(marker.getLocation());
 		String ref = marker.getHref();
-		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref;
-		if (!getCurrentHref().equals(ref)) {
-			setCurrentHref(ref);
-			direction = Direction.INITIAL;
-			browser.setUrl(url);
-			setPartName(getTitle(ops));
-		}
-		if (browser.execute("navigateTo('" + marker.getLocation() + "');")) {
-		} else {
-			System.err.println("Could not navigate to mark");
-		}
+		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref + "#" + marker.getId();
+		direction = Direction.INITIAL;
+		// XXX: Clear URL to force reload
+		browser.setText("<html/>");
+		browser.setUrl(url);
+		setPartName(getTitle(ops));
 	}
 
 	/**
@@ -759,7 +790,6 @@ public class EPUBReader extends EditorPart {
 
 	private void openItem(Item item) {
 		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + item.getHref();
-		setCurrentHref(item.getHref());
 		browser.setUrl(url);
 		setPartName(getTitle(ops));
 		updateLabels();
@@ -779,6 +809,7 @@ public class EPUBReader extends EditorPart {
 			readJS("rangy-core.js", sb);
 			readJS("rangy-serializer.js", sb);
 			readJS("rangy-cssclassapplier.js", sb);
+			readJS("jquery-1.7.1.min.js", sb);
 			readJS("injected.js", sb);
 			boolean ok = browser.execute(sb.toString());
 			if (ok) {
@@ -843,10 +874,6 @@ public class EPUBReader extends EditorPart {
 		} else {
 			currentBook = EPUBCorePlugin.getCollection().getBook(id);
 		}
-	}
-
-	private void setCurrentHref(String href) {
-		currentHref = href;
 	}
 
 	/*
