@@ -19,8 +19,6 @@ public class LibraryUIPlugin extends AbstractUIPlugin {
 
 	public static final String IMG_BOOK = "img_book";
 
-	public static final String IMG_COVER = "img_cover";
-
 	public static final String PLUGIN_ID = "no.resheim.elibrarium.library.ui";
 
 	private static LibraryUIPlugin plugin;
@@ -41,7 +39,6 @@ public class LibraryUIPlugin extends AbstractUIPlugin {
 	protected void initializeImageRegistry(ImageRegistry reg) {
 		super.initializeImageRegistry(reg);
 		reg.put(IMG_BOOK, LibraryUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/book.gif"));
-		reg.put(IMG_COVER, LibraryUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/cover.jpg"));
 	}
 
 }
