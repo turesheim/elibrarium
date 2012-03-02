@@ -86,7 +86,13 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  */
 public class EPUBReader extends EditorPart {
 
+	/**
+	 * Listens to changes in the browser widget's size and starts paginating the
+	 * current chapter and the entire book 500ms after the last resize event.
+	 */
 	private class ResizeListener implements ControlListener, Runnable, Listener {
+
+		private static final int RESIZE_DELAY = 500;
 
 		private long lastEvent = 0;
 
@@ -97,7 +103,7 @@ public class EPUBReader extends EditorPart {
 
 		public void controlResized(ControlEvent e) {
 			lastEvent = System.currentTimeMillis();
-			Display.getDefault().timerExec(500, this);
+			Display.getDefault().timerExec(RESIZE_DELAY, this);
 		}
 
 		private void paginate() {
@@ -110,10 +116,10 @@ public class EPUBReader extends EditorPart {
 
 		@Override
 		public void run() {
-			if ((lastEvent + 500) < System.currentTimeMillis() && mouse) {
+			if ((lastEvent + RESIZE_DELAY) < System.currentTimeMillis() && mouse) {
 					paginate();
 				} else {
-				Display.getDefault().timerExec(500, this);
+				Display.getDefault().timerExec(RESIZE_DELAY, this);
 				}
 		}
 		@Override
@@ -123,16 +129,17 @@ public class EPUBReader extends EditorPart {
 
 	}
 
+	/**
+	 * The direction of browsing.
+	 */
 	private enum Direction {
 		BACKWARD, FORWARD, INITIAL
 	}
 
 	/**
-	 * Handles text markings. The function(Object[]) method is called from
+	 * Handles text selections. The function(Object[]) method is called from
 	 * JavaScript executing in the browser when the user releases the mouse
 	 * button.
-	 * 
-	 * @author Torkild U. Resheim
 	 */
 	private class MarkTextHandler extends BrowserFunction {
 
@@ -163,8 +170,6 @@ public class EPUBReader extends EditorPart {
 
 	/**
 	 * Performs selection of text in the browser.
-	 * 
-	 * @author Torkild U. Resheim
 	 */
 	private class MarkTextItem {
 
@@ -204,6 +209,9 @@ public class EPUBReader extends EditorPart {
 
 	}
 
+	/**
+	 * Listens to the pagination job and updates labels when it is done.
+	 */
 	private class PaginationJobListener extends JobChangeAdapter {
 
 		@Override
@@ -292,13 +300,16 @@ public class EPUBReader extends EditorPart {
 
 	private ResizeListener resizeListener;
 
-	/**
-	 * WebBrowserEditor constructor comment.
-	 */
 	public EPUBReader() {
 		super();
 	}
 
+	/**
+	 * Browses to the next or previous chapter depending on the direction.
+	 * 
+	 * @param direction
+	 *            the browsing direction.
+	 */
 	private void browseChapter(Direction direction) {
 		this.direction = direction;
 		int currentChapter = getCurrentChapter();
@@ -798,8 +809,6 @@ public class EPUBReader extends EditorPart {
 	/**
 	 * Executes JavaScript that will reformat the chapter and obtain information
 	 * that is required for browsing it.
-	 * 
-	 * @return
 	 */
 	private void paginateChapter() {
 		StringBuilder sb = new StringBuilder();

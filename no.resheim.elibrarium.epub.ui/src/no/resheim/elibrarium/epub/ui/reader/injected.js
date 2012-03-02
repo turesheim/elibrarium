@@ -96,7 +96,7 @@ try {
 	}	
 
 	/***************************************************************************
-	 * Use Java code to mark the selected range.
+	 * Notify the Java code about the selected range.
 	 **************************************************************************/	
 	function showSelection(e) {
 		var selection = window.getSelection();
