@@ -16,9 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import no.resheim.elibrarium.epub.core.EPUBCorePlugin;
@@ -35,7 +33,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil.FeatureEList;
@@ -133,7 +135,7 @@ public class EPUBReader extends EditorPart {
 	 * The direction of browsing.
 	 */
 	private enum Direction {
-		BACKWARD, FORWARD, INITIAL
+		BACKWARD, FORWARD, INITIAL, PAGE
 	}
 
 	/**
@@ -240,10 +242,11 @@ public class EPUBReader extends EditorPart {
 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					if (browser.execute("removeMark('" + currentRange + "');")) {
-					} else {
-						System.err.println("Could not remove mark");
-					}
+					//XXX: Does not work!
+//					if (browser.execute("unmarkRange('" + currentRange + "');")) {
+//					} else {
+//						System.err.println("Could not remove mark");
+//					}
 				}
 			});
 		}
@@ -272,7 +275,11 @@ public class EPUBReader extends EditorPart {
 
 	private String currentText;
 
+	/** Used to navigate to a certain page */
 	private Direction direction = Direction.INITIAL;
+
+	/** Page to navigate to if direction is PAGE */
+	private int page;
 
 	private boolean disposed;
 
@@ -606,6 +613,7 @@ public class EPUBReader extends EditorPart {
 				paginationJob.setPriority(Job.LONG);
 				paginationJob.addJobChangeListener(new PaginationJobListener());
 				registerBook(path, ops);
+				installBookListener(currentBook);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -623,6 +631,33 @@ public class EPUBReader extends EditorPart {
 		setInput(input);
 	}
 
+	/**
+	 * Install a listener that will respond to changes in the book.
+	 * 
+	 * @param book
+	 *            the book to listen to
+	 */
+	private void installBookListener(Book book) {
+		Adapter adapter = new AdapterImpl() {
+			@Override
+			public void notifyChanged(Notification notification) {
+				EReference ref = (EReference) notification.getFeature();
+				if (ref.getName().equals("annotations")) {
+					// An annotation has been removed. Due to difficulties
+					// simply removing the marking using JavaScript we reload
+					// the URL and set the page to the current page. That will
+					// refresh the contents, although cause a bit of flickering.
+					if (notification.getEventType() == Notification.REMOVE) {
+						page = getCurrentChapterPage();
+						direction = Direction.PAGE;
+						browser.setUrl(browser.getUrl());
+					}
+				}
+			}
+		};
+		book.eAdapters().add(adapter);
+	}
+
 	private void installInjector() {
 		browser.addProgressListener(new ProgressListener() {
 			@Override
@@ -635,54 +670,26 @@ public class EPUBReader extends EditorPart {
 				if (browser.getUrl().equals("about:blank")) {
 					return;
 				}
-				// Detect the current href and anchor
-				String url = browser.getUrl().substring(browser.getUrl().lastIndexOf('/') + 1);
-				if (url.indexOf('#') > -1) {
-					currentHref = url.substring(0, url.indexOf('#'));
-					currentAnchor = url.substring(url.indexOf('#') + 1);
-				} else {
-					currentHref = url;
-					currentAnchor = null;
-				}
 
 				// Do the pagination of the chapter
 				paginateChapter();
 
 				// Add annotations and markers.
-				List<Annotation> broken = new ArrayList<Annotation>();
 				EList<Annotation> annotations = currentBook.getAnnotations();
 				for (Annotation annotation : annotations) {
 					if (annotation.getHref() != null && annotation.getHref().equals(currentHref)) {
-						// XXX: Handling a quirk, must be removed
 						String id = annotation.getId();
-						if (id == null) {
-							id = UUID.randomUUID().toString();
-							annotation.setId(id);
-						}
 						if (!browser.execute("markRange('" + annotation.getLocation() + "','" + id + "');")) {
 							System.err.println("Could not create marker identified by " + id + " at "
 									+ annotation.getLocation());
-							broken.add(annotation);
 						}
 					}
 				}
-				// Remote annotations that have been broken.
-				for (Annotation annotation : broken) {
-					currentBook.getAnnotations().remove(annotation);
-				}
 
-				// And adjust offset so that it matches the one of the anchor if
-				// one has been specified.
-				if (currentAnchor != null) {
-					if (browser.execute("setOffsetToElement('" + currentAnchor + "')")) {
-						System.out.println("Adjusted offset for " + currentAnchor);
-					} else {
-						System.err.println("Could not correct position " + currentAnchor);
-					}
-				}
+				// Adjust the offset of the page
+				adjustOffset();
 
-				// Display the first or the last page in the chapter. This is
-				// only happens when the user is browsing the book.
+				// Navigate to a a certain page.
 				switch (direction) {
 				case FORWARD:
 					browseToPage(1);
@@ -690,9 +697,13 @@ public class EPUBReader extends EditorPart {
 				case BACKWARD:
 					browseToPage(pageCount);
 					break;
+				case PAGE:
+					browseToPage(page);
+					break;
 				default:
 					break;
 				}
+				direction = Direction.INITIAL;
 
 				// Size may be 0,0 when the view is first opened so we want to
 				// delay until the browser is resized.
@@ -910,5 +921,26 @@ public class EPUBReader extends EditorPart {
 			});
 		}
 
+	}
+
+	private void adjustOffset() {
+		// Detect the current href and anchor
+		String url = browser.getUrl().substring(browser.getUrl().lastIndexOf('/') + 1);
+		if (url.indexOf('#') > -1) {
+			currentHref = url.substring(0, url.indexOf('#'));
+			currentAnchor = url.substring(url.indexOf('#') + 1);
+		} else {
+			currentHref = url;
+			currentAnchor = null;
+		}
+		// And adjust offset so that it matches the one of the anchor if
+		// one has been specified.
+		if (currentAnchor != null) {
+			if (browser.execute("setOffsetToElement('" + currentAnchor + "')")) {
+				System.out.println("Adjusted offset for " + currentAnchor);
+			} else {
+				System.err.println("Could not correct position " + currentAnchor);
+			}
+		}
 	}
 }

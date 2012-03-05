@@ -24,7 +24,8 @@ try {
 	
 	/**
 	 * Sets the left offset of the body to match the one of the identifier. This
-	 * is done so that a complete page is shown.
+	 * is done so that the full width of the page is shown instead of part of
+	 * two pages.
 	 * 
 	 * @param identifier the element identifier
 	 */
@@ -45,28 +46,33 @@ try {
 	 */
 	function markRange(serialized, identifier) {
 		if ($('#'+identifier).length==0){			
-			var selection = rangy.deserializeSelection(serialized);
-			cssApplier.applyToSelection();
-			insertHtmlBeforeSelection("<span id='"+identifier+"'/>");
+			if (rangy.canDeserializeSelection(serialized)){
+				var selection = rangy.deserializeSelection(serialized);
+				cssApplier.applyToSelection();
+				insertHtmlBeforeSelection("<span id='"+identifier+"'/>");
+				selection.removeAllRanges();
+				selection.detach();
+			} else {
+				alert('Could not mark range');
+			}
 		} else {
 			alert('Mark already exists')
 		}
 	}
-	
+			
+	/**
+	 * Insert HTML before or after selection.
+	 */
 	var insertHtmlBeforeSelection, insertHtmlAfterSelection;
 	(function() {
 	    function createInserter(isBefore) {
 	        return function(html) {
 	            var sel, range, node;
 	            if (window.getSelection) {
-	                // IE9 and non-IE
 	                sel = window.getSelection();
 	                if (sel.getRangeAt && sel.rangeCount) {
 	                    range = window.getSelection().getRangeAt(0);
 	                    range.collapse(isBefore);
-
-	                    // Range.createContextualFragment() would be useful here but is
-	                    // non-standard and not supported in all browsers (IE9, for one)
 	                    var el = document.createElement("div");
 	                    el.innerHTML = html;
 	                    var frag = document.createDocumentFragment(), node, lastNode;
@@ -75,11 +81,6 @@ try {
 	                    }
 	                    range.insertNode(frag);
 	                }
-	            } else if (document.selection && document.selection.createRange) {
-	                // IE < 9
-	                range = document.selection.createRange();
-	                range.collapse(isBefore);
-	                range.pasteHTML(html);
 	            }
 	        }
 	    }
@@ -89,20 +90,15 @@ try {
 	})();
 	
 	/***************************************************************************
-	 * Unmark the text within the Rangy range.
-	 **************************************************************************/	
-	function removeMark(serialized) {
-		cssApplier.undoToSelection();			
-	}	
-
-	/***************************************************************************
 	 * Notify the Java code about the selected range.
 	 **************************************************************************/	
 	function showSelection(e) {
-		var selection = window.getSelection();
-		var serialization = rangy.serializeSelection();
+		// Omit checksum
+		var selection = rangy.getSelection();
+		var serialization = rangy.serializeSelection(selection,true);
+		var text = document.getSelection().toString();
 		var yellow = cssApplier.isAppliedToSelection()
-		javaMarkTextHandler(serialization,selection.toString(),yellow);
+		javaMarkTextHandler(serialization,text,yellow);
 	}
 	document.onmouseup = showSelection;
 	
