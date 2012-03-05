@@ -48,7 +48,6 @@ public class AnnotationViewer extends ContentViewer implements ISelectionProvide
 	private final AnnotationMouseListener mouseListener;
 
 	public AnnotationViewer(Composite parent, int style) {
-		
 		mouseListener = new AnnotationMouseListener();
 		rootContainer = new Composite(parent, SWT.NONE);
 		rootContainer.setLayout(new FillLayout());
@@ -96,6 +95,9 @@ public class AnnotationViewer extends ContentViewer implements ISelectionProvide
 
 	@Override
 	protected void handleDispose(DisposeEvent event) {
+		if (rootContainer != null) {
+			rootContainer.dispose();
+		}
 		super.handleDispose(event);
 	}
 
@@ -111,7 +113,6 @@ public class AnnotationViewer extends ContentViewer implements ISelectionProvide
 
 	private class AnnotationMouseListener extends MouseAdapter {
 
-
 		@Override
 		public void mouseDoubleClick(MouseEvent e) {
 			Object[] l = doubleClickListeners.getListeners();
@@ -123,7 +124,7 @@ public class AnnotationViewer extends ContentViewer implements ISelectionProvide
 					public void run() throws Exception {
 						listener.doubleClick(event);
 					}
-				});				
+				});
 			}
 		}
 
@@ -139,8 +140,10 @@ public class AnnotationViewer extends ContentViewer implements ISelectionProvide
 
 	}
 
+	/**
+	 * Clear the the selection and restore color of any selected items.
+	 */
 	private void clearSelection() {
-		// Clear selection
 		if (selection != null) {
 			Object data = ((IStructuredSelection) selection).getFirstElement();
 			Composite composite = getContents();
@@ -153,10 +156,12 @@ public class AnnotationViewer extends ContentViewer implements ISelectionProvide
 			}
 		}
 	}
+
 	@Override
 	public void refresh() {
+		// TODO: Retain selection if the selected item is still present
+		selection = null;
 		if (input != null) {
-			clearSelection();
 			Composite composite = getContents();
 			Control[] children = composite.getChildren();
 			EList<Annotation> annotations = input.getAnnotations();
@@ -176,7 +181,7 @@ public class AnnotationViewer extends ContentViewer implements ISelectionProvide
 				textLabel.setData(annotation);
 				textLabel.setText(annotation.getText());
 			}
-			if (children.length>annotations.size()){
+			if (children.length > annotations.size()) {
 				for (int i = annotations.size(); i < children.length; i++) {
 					children[i].dispose();
 				}
