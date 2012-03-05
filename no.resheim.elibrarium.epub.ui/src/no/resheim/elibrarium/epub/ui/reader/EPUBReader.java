@@ -929,7 +929,7 @@ public class EPUBReader extends EditorPart {
 				public void run() {
 					synchronized (paginationJob) {
 						if (paginationJob.getState() == Job.NONE) {
-							label.setText("" + getCurrentPage() + " of " + paginationJob.getTotalpages());
+							label.setText("Page " + getCurrentPage() + " of " + paginationJob.getTotalpages());
 						} else {
 							label.setText("Paginating...");
 						}
