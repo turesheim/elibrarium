@@ -30,7 +30,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -119,17 +118,17 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		pagebook.setLayout(layout);
 
 		toc = new TreeViewer(pagebook, getTreeStyle());
-		toc.addSelectionChangedListener(this);
 		toc.setContentProvider(new TOCContentProvider());
 		toc.setLabelProvider(new EPUBLabelProvider());
 		toc.addSelectionChangedListener(this);
 		toc.addDoubleClickListener(this);
 
 		notes = new AnnotationViewer(pagebook, SWT.FULL_SELECTION);
-		notes.setLabelProvider(new EPUBLabelProvider());
 		notes.setContentProvider(new AnnotationsContentProvider());
+		notes.setLabelProvider(new EPUBLabelProvider());
 		notes.addSelectionChangedListener(this);
 		notes.addDoubleClickListener(this);
+
 		// Create the context menu for the annotations
 		hookContextMenu();
 
@@ -164,7 +163,13 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(deleteAction);
+		ISelection selection = notes.getSelection();
+		if (selection instanceof IStructuredSelection) {
+			Object o = ((IStructuredSelection) selection).getFirstElement();
+			if (o instanceof Annotation) {
+				manager.add(deleteAction);
+			}
+		}
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
@@ -317,9 +322,5 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		if (toc != null) {
 			toc.setSelection(selection);
 		}
-	}
-
-	private void showMessage(String message) {
-		MessageDialog.openInformation(notes.getControl().getShell(), "Sample View", message);
 	}
 }
