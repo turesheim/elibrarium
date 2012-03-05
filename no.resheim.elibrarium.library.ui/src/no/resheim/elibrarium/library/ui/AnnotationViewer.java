@@ -133,6 +133,7 @@ public class AnnotationViewer extends ContentViewer implements ISelectionProvide
 			clearSelection();
 			selection = new StructuredSelection(e.widget.getData());
 			if (e.widget instanceof Label) {
+				clearSelection();
 				((Label) e.widget).setBackground(e.widget.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 				((Label) e.widget).setForeground(e.widget.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
 			}
