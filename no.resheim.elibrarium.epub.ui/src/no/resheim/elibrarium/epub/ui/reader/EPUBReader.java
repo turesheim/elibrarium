@@ -671,6 +671,16 @@ public class EPUBReader extends EditorPart {
 					return;
 				}
 
+				// Detect the current href and anchor
+				String url = browser.getUrl().substring(browser.getUrl().lastIndexOf('/') + 1);
+				if (url.indexOf('#') > -1) {
+					currentHref = url.substring(0, url.indexOf('#'));
+					currentAnchor = url.substring(url.indexOf('#') + 1);
+				} else {
+					currentHref = url;
+					currentAnchor = null;
+				}
+
 				// Do the pagination of the chapter
 				paginateChapter();
 
@@ -686,8 +696,15 @@ public class EPUBReader extends EditorPart {
 					}
 				}
 
-				// Adjust the offset of the page
-				adjustOffset();
+				// And adjust offset so that it matches the one of the anchor if
+				// one has been specified.
+				if (currentAnchor != null) {
+					if (browser.execute("setOffsetToElement('" + currentAnchor + "')")) {
+						System.out.println("Adjusted offset for " + currentAnchor);
+					} else {
+						System.err.println("Could not correct position " + currentAnchor);
+					}
+				}
 
 				// Navigate to a a certain page.
 				switch (direction) {
@@ -921,26 +938,5 @@ public class EPUBReader extends EditorPart {
 			});
 		}
 
-	}
-
-	private void adjustOffset() {
-		// Detect the current href and anchor
-		String url = browser.getUrl().substring(browser.getUrl().lastIndexOf('/') + 1);
-		if (url.indexOf('#') > -1) {
-			currentHref = url.substring(0, url.indexOf('#'));
-			currentAnchor = url.substring(url.indexOf('#') + 1);
-		} else {
-			currentHref = url;
-			currentAnchor = null;
-		}
-		// And adjust offset so that it matches the one of the anchor if
-		// one has been specified.
-		if (currentAnchor != null) {
-			if (browser.execute("setOffsetToElement('" + currentAnchor + "')")) {
-				System.out.println("Adjusted offset for " + currentAnchor);
-			} else {
-				System.err.println("Could not correct position " + currentAnchor);
-			}
-		}
 	}
 }
