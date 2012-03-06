@@ -5,14 +5,14 @@
          point="org.eclipse.ui.views">
       <category
             id="no.resheim.elibrarium.library.ui"
-            name="Book Library">
+            name="Library">
       </category>
       <view
             category="no.resheim.elibrarium.library.ui"
             class="no.resheim.elibrarium.library.ui.views.LibraryView"
             icon="icons/library.gif"
             id="no.resheim.elibrarium.library.ui.views.LibraryView"
-            name="Book Library">
+            name="Library">
       </view>
    </extension>
    <extension
