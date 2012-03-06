@@ -45,7 +45,7 @@ try {
 	 */
 	function navigateToPage(page) {
 		bodyID.scrollLeft = + (pageWidth * (page - 1));
-		var h1 = $("h1");
+		var h1 = $("h1:first");
 		return h1.text();
 	}
 	
