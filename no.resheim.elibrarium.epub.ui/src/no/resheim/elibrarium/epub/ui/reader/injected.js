@@ -37,6 +37,18 @@ try {
 			bodyID.scrollLeft = page*pageWidth;
 		}
 	}
+	
+	/**
+	 * Adjust the scroll position of the body so that the current page is in view.
+	 * 
+	 * @param page the page number
+	 */
+	function navigateToPage(page) {
+		bodyID.scrollLeft = + (pageWidth * (page - 1));
+		var h1 = $("h1");
+		return h1.text();
+	}
+	
 	/**
 	 * Marks the text identified by the serialised range and assigns it an
 	 * element with the given identifier.

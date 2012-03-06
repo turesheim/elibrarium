@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.Date;
 import java.util.UUID;
@@ -26,6 +27,7 @@ import no.resheim.elibrarium.library.AnnotationColor;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.LibraryFactory;
 import no.resheim.elibrarium.library.Marker;
+import no.resheim.elibrarium.library.core.LibraryPlugin;
 import no.resheim.elibrarium.library.core.LibraryUtil;
 
 import org.eclipse.core.runtime.IPath;
@@ -42,6 +44,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil.FeatureEList;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
+import org.eclipse.jface.preference.JFacePreferences;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.mylyn.docs.epub.core.EPUB;
 import org.eclipse.mylyn.docs.epub.core.OPSPublication;
 import org.eclipse.mylyn.docs.epub.dc.Title;
@@ -303,9 +307,9 @@ public class EPUBReader extends EditorPart {
 
 	boolean paginationRequired = true;
 
-	private File unpackFolder;
-
 	private ResizeListener resizeListener;
+
+	private Label header;
 
 	public EPUBReader() {
 		super();
@@ -317,7 +321,7 @@ public class EPUBReader extends EditorPart {
 	 * @param direction
 	 *            the browsing direction.
 	 */
-	private void browseChapter(Direction direction) {
+	private void navigateChapter(Direction direction) {
 		this.direction = direction;
 		int currentChapter = getCurrentChapter();
 		switch (direction) {
@@ -343,11 +347,21 @@ public class EPUBReader extends EditorPart {
 	 * @param page
 	 *            the page number to go to
 	 */
-	private void browseToPage(int page) {
-		String js = "var bodyID = document.getElementsByTagName('body')[0];" + "bodyID.scrollLeft = "
-				+ (pageWidth * (page - 1)) + ";";
-		if (!browser.execute(js)) {
-			throw new RuntimeException("Could not browse to page " + page + " of chapter");
+	private void navigateToPage(int page) {
+		String title = (String) browser.evaluate("title = navigateToPage(" + page + ");return title;");
+		// Fake a small caps effect.
+		title = title.toUpperCase();
+		StringReader sr = new StringReader(title);
+		StringBuilder sb = new StringBuilder();
+		int c = -1;
+		try {
+			while ((c = sr.read()) > -1) {
+				sb.append((char) c);
+				sb.append(' ');
+			}
+			header.setText(sb.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		updateLabels();
 	}
@@ -373,16 +387,22 @@ public class EPUBReader extends EditorPart {
 		Composite c = new Composite(parent, SWT.NONE);
 		c.setLayout(new GridLayout());
 		c.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+
+		GridData gd = new GridData(SWT.CENTER, SWT.BOTTOM, true, false);
+		header = new Label(c, SWT.CENTER);
+		header.setLayoutData(gd);
+		header.setText(" ");
+		header.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
+
 		// We rely on having a WebKit based browser for now
 		browser = new Browser(c, SWT.WEBKIT);
 		browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		label = new Label(c, SWT.CENTER);
-		// label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
-		GridData gd = new GridData(SWT.CENTER, SWT.BOTTOM, true, false);
 		gd.minimumWidth = 500;
 		label.setLayoutData(gd);
 		label.setText(" ");
+		label.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
 
 		// Install listener to figure out when we need to re-paginate
 		resizeListener = new ResizeListener();
@@ -455,9 +475,9 @@ public class EPUBReader extends EditorPart {
 	public void dispose() {
 		paginationJob.cancel();
 		// Delete the temporary folder where we keep the unpacked content.
-		if (unpackFolder.exists()) {
-			deleteFolder(unpackFolder);
-		}
+		// if (unpackFolder.exists()) {
+		// deleteFolder(unpackFolder);
+		// }
 		if (image != null && !image.isDisposed())
 			image.dispose();
 		image = null;
@@ -603,7 +623,14 @@ public class EPUBReader extends EditorPart {
 			IPath path = pei.getPath();
 			EPUB epub = new EPUB();
 			try {
-				unpackFolder = epub.unpack(path.toFile());
+				// If the EPUB has already been unpacked it's contents will be
+				// used as it is unless the modification dates differ.
+				IPath storageLocation = LibraryPlugin.getDefault().getStorageLocation();
+				File rootFolder = storageLocation.append(path.lastSegment()).toFile();
+				if (rootFolder.lastModified() != path.toFile().lastModified()) {
+					deleteFolder(rootFolder);
+				}
+				epub.unpack(path.toFile(), rootFolder);
 				// Use the first OPS publication we find
 				ops = epub.getOPSPublications().get(0);
 				initialURL = getFirstPublicationPage();
@@ -709,13 +736,13 @@ public class EPUBReader extends EditorPart {
 				// Navigate to a a certain page.
 				switch (direction) {
 				case FORWARD:
-					browseToPage(1);
+					navigateToPage(1);
 					break;
 				case BACKWARD:
-					browseToPage(pageCount);
+					navigateToPage(pageCount);
 					break;
 				case PAGE:
-					browseToPage(page);
+					navigateToPage(page);
 					break;
 				default:
 					break;
@@ -780,6 +807,18 @@ public class EPUBReader extends EditorPart {
 		return false;
 	}
 
+	private void updateHeading(NavPoint navPoint) {
+		FeatureMap fm = navPoint.getNavLabels().get(0).getText().getMixed();
+		Object o = fm.get(TEXT, false);
+		if (o instanceof FeatureEList) {
+			if (((FeatureEList) o).size() > 0) {
+				String label = ((FeatureEList) o).get(0).toString();
+				System.out.println(label);
+			}
+		}
+
+	}
+
 	/**
 	 * Use to navigate to a specific {@link NavPoint}.
 	 * 
@@ -794,6 +833,7 @@ public class EPUBReader extends EditorPart {
 			// XXX: Clear URL to force reload
 			browser.setText("<html/>");
 			browser.setUrl(url);
+			updateHeading(navPoint);
 			setPartName(getTitle(ops));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -817,9 +857,9 @@ public class EPUBReader extends EditorPart {
 	public void nextPage() {
 		int page = getCurrentChapterPage();
 		if (page < pageCount) {
-			browseToPage(++page);
+			navigateToPage(++page);
 		} else if (page >= pageCount) {
-			browseChapter(Direction.FORWARD);
+			navigateChapter(Direction.FORWARD);
 		}
 	}
 
@@ -876,9 +916,9 @@ public class EPUBReader extends EditorPart {
 	public void previousPage() {
 		int page = getCurrentChapterPage();
 		if (page > 1) {
-			browseToPage(--page);
+			navigateToPage(--page);
 		} else {
-			browseChapter(Direction.BACKWARD);
+			navigateChapter(Direction.BACKWARD);
 		}
 	}
 
