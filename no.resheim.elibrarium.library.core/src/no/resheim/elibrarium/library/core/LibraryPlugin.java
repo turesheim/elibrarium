@@ -18,10 +18,12 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.ISafeRunnable;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -38,9 +40,8 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 		public void doneSaving(ISaveContext context) {
 			LibraryPlugin instance = LibraryPlugin.getDefault();
 			// delete the old saved state since it is not necessary anymore
-			int previousSaveNumber = context.getPreviousSaveNumber();
-			String oldFileName = "library-" + Integer.toString(previousSaveNumber) + ".elibrarium";
-			File f = instance.getStateLocation().append(oldFileName).toFile();
+			String oldFileName = "library.old";
+			File f = instance.getStorageLocation().append(oldFileName).toFile();
 			f.delete();
 		}
 
@@ -50,6 +51,13 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 
 		@Override
 		public void rollback(ISaveContext context) {
+			LibraryPlugin instance = LibraryPlugin.getDefault();
+			String oldFileName = "library.old";
+			String saveFileName = "library.xml";
+			File backup = instance.getStorageLocation().append(oldFileName).toFile();
+			File updated = instance.getStorageLocation().append(saveFileName).toFile();
+			updated.delete();
+			backup.renameTo(updated);
 		}
 
 		@Override
@@ -57,18 +65,17 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 			switch (context.getKind()) {
 			case ISaveContext.FULL_SAVE:
 				LibraryPlugin instance = LibraryPlugin.getDefault();
-				// save the plug-in state
-				// int saveNumber = context.getSaveNumber();
-				String saveFileName = "library.elibrarium";
-				// if we fail to write, an exception is thrown and we do not
-				// update the path
+				String oldFileName = "library.old";
+				String saveFileName = "library.xml";
+				File backup = instance.getStorageLocation().append(oldFileName).toFile();
+				File updated = instance.getStorageLocation().append(saveFileName).toFile();
+				updated.renameTo(backup);
 				try {
-					File f = instance.getStorageLocation().append(saveFileName).toFile();
-					instance.writeLibrary(f);
+					instance.writeLibrary(updated);
 					context.map(new Path("library"), new Path(saveFileName));
 					context.needSaveNumber();
 				} catch (IOException e) {
-					e.printStackTrace();
+					throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, "Could not store library database", e));
 				}
 				break;
 			case ISaveContext.PROJECT_SAVE:
@@ -237,7 +244,15 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 		}
 	}
 
-	private IPath getStorageLocation() throws IOException {
+	/**
+	 * Returns the root folder of where Elibrarium stores it's data files. On OS
+	 * X this is <i>~/Library/Elibrarium</i>. On other platforms it is at
+	 * ~/Elibrarium.
+	 * 
+	 * @return the path to the storage location.
+	 * @throws IOException
+	 */
+	public IPath getStorageLocation() {
 		String root = System.getProperty("user.home");
 		String os = System.getProperty("os.name").toLowerCase();
 		if (os.indexOf("mac") > -1) {
