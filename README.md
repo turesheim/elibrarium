@@ -1,7 +1,10 @@
 #Elibrārium
 The name of this project is "elibrārium" which is a word constructed from the English adjective "electronic" and the Latin noun "librārium", meaning bookcase or library. Putting those two toghether should be sufficient to describe the purpose of the project – which is essentially to produce an electronic library and book reader. More specifically an [EPUB](http://en.wikipedia.org/wiki/EPUB) library manager and book reader built on top of the [Eclipse Platform](http://www.eclipse.org/platform/).
 
-> Please note that this project is in it's early stages. So while there is a working EPUB reader – it has not yet reached release quality.
+<img src="https://github.com/turesheim/elibrarium/wiki/collage.png" align="center"/>
+*A showcase of the various features that are already in place*
+
+Please note that this project is in it's early stages. So while there is a working EPUB reader – it has not yet reached release quality. However please take it for a test drive and if you feel inclined -- lend a hand to make it better.
 
 ### Supported platforms
 
