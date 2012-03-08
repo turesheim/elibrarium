@@ -11,6 +11,8 @@
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui.reader;
 
+import no.resheim.elibrarium.library.Annotation;
+
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMapUtil.FeatureEList;
@@ -38,7 +40,15 @@ public class EPUBLabelProvider extends LabelProvider {
 					return ((FeatureEList) o).get(0).toString();
 				}
 			}
+		} else if (element instanceof Annotation) {
+			Annotation note = ((Annotation) element);
+			String text = note.getText();
+			if (text.length() > 140) {
+				text = text.substring(0, 140) + "...";
+			}
+			return text;
 		}
+
 		return super.getText(element);
 	}
 
