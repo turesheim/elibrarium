@@ -11,7 +11,6 @@
  *******************************************************************************/
 package no.resheim.elibrarium.library.ui;
 
-import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.Book;
 
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
@@ -21,6 +20,11 @@ import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 
+/**
+ * Label provider for the library viewer.
+ * 
+ * @author Torkild U. Resheim
+ */
 public class LibraryLabelProvider implements IStyledLabelProvider {
 
 	@Override
@@ -55,16 +59,6 @@ public class LibraryLabelProvider implements IStyledLabelProvider {
 			StyledString string = new StyledString(book.getTitle());
 			String decorated = NLS.bind("{0} - {1}", new String[] { book.getTitle(), book.getAuthor() });
 			return StyledCellLabelProvider.styleDecoratedString(decorated, StyledString.QUALIFIER_STYLER, string);
-		}
-		if (element instanceof Annotation) {
-			Annotation note = ((Annotation) element);
-			StyledString string = new StyledString(note.getText());
-			if (note.getComment() != null) {
-				String decorated = NLS.bind("{0} - {1}", new String[] { note.getText(), note.getComment() });
-				return StyledCellLabelProvider.styleDecoratedString(decorated, StyledString.QUALIFIER_STYLER, string);
-			} else {
-				return string;
-			}
 		}
 		return new StyledString();
 
