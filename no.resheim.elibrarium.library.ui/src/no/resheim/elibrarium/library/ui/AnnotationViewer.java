@@ -13,6 +13,7 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -180,7 +181,7 @@ public class AnnotationViewer extends ContentViewer implements ISelectionProvide
 					textLabel.pack(true);
 				}
 				textLabel.setData(annotation);
-				textLabel.setText(annotation.getText());
+				textLabel.setText(((LabelProvider) getLabelProvider()).getText(annotation));
 			}
 			if (children.length > annotations.size()) {
 				for (int i = annotations.size(); i < children.length; i++) {
