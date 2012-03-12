@@ -13,7 +13,6 @@ import no.resheim.elibrarium.library.LibraryFactory;
 
 import org.eclipse.core.resources.ISaveContext;
 import org.eclipse.core.resources.ISaveParticipant;
-import org.eclipse.core.resources.ISavedState;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -69,7 +68,10 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 				String saveFileName = "library.xml";
 				File backup = instance.getStorageLocation().append(oldFileName).toFile();
 				File updated = instance.getStorageLocation().append(saveFileName).toFile();
-				updated.renameTo(backup);
+				if (updated.exists()) {
+					backup.delete();
+					updated.renameTo(backup);
+				}
 				try {
 					instance.writeLibrary(updated);
 					context.map(new Path("library"), new Path(saveFileName));
@@ -265,17 +267,26 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 
 	private boolean restoreState() {
 		try {
-			ISaveParticipant saveParticipant = new WorkspaceSaveParticipant();
-			ISavedState lastState = ResourcesPlugin.getWorkspace().addSaveParticipant(PLUGIN_ID, saveParticipant);
-			String saveFileName = lastState.lookup(new Path("library")).toString();
-			File f = getStorageLocation().append(saveFileName).toFile();
-			if (f.exists()) {
-				readLibrary(f);
+			LibraryPlugin instance = LibraryPlugin.getDefault();
+			String oldFileName = "library.old";
+			String saveFileName = "library.xml";
+			File backup = instance.getStorageLocation().append(oldFileName).toFile();
+			File updated = instance.getStorageLocation().append(saveFileName).toFile();
+			// If the backup exists we'll use that instead as something went
+			// wrong the last time the database was saved.
+			if (backup.exists()) {
+				updated.delete();
+				backup.renameTo(updated);
+			}
+			if (updated.exists()) {
+				readLibrary(updated);
 				return true;
 			}
-		} catch (CoreException e) {
-			e.printStackTrace();
+			ISaveParticipant saveParticipant = new WorkspaceSaveParticipant();
+			ResourcesPlugin.getWorkspace().addSaveParticipant(PLUGIN_ID, saveParticipant);
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 		return false;
