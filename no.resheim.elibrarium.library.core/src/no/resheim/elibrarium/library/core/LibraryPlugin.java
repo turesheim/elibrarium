@@ -280,10 +280,10 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 			}
 			if (updated.exists()) {
 				readLibrary(updated);
-				return true;
 			}
 			ISaveParticipant saveParticipant = new WorkspaceSaveParticipant();
 			ResourcesPlugin.getWorkspace().addSaveParticipant(PLUGIN_ID, saveParticipant);
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (CoreException e) {
