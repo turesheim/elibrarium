@@ -55,7 +55,6 @@ import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 
-@SuppressWarnings("restriction")
 public class LibraryView extends ViewPart implements ILibraryListener {
 
 	/**
@@ -93,6 +92,12 @@ public class LibraryView extends ViewPart implements ILibraryListener {
 		}
 	}
 
+	/**
+	 * A sorter designed to sort book titles. Will ignore "the" in titles that
+	 * starts with this word.
+	 * 
+	 * @author Torkild U. Resheim
+	 */
 	class NameSorter extends ViewerSorter {
 		@Override
 		public int compare(Viewer viewer, Object e1, Object e2) {
