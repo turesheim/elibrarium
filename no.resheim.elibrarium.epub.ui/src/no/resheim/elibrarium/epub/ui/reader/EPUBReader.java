@@ -116,7 +116,6 @@ public class EPUBReader extends EditorPart {
 			if (browser.getSize().x > 0 && browser.getSize().y > 0) {
 				paginateChapter();
 				paginationJob.update(browser.getSize().x, browser.getSize().y);
-				updateLabels();
 			}
 		}
 
@@ -219,6 +218,11 @@ public class EPUBReader extends EditorPart {
 	 * Listens to the pagination job and updates labels when it is done.
 	 */
 	private class PaginationJobListener extends JobChangeAdapter {
+
+		@Override
+		public void running(IJobChangeEvent event) {
+			updateLabels();
+		}
 
 		@Override
 		public void done(IJobChangeEvent event) {
@@ -474,10 +478,6 @@ public class EPUBReader extends EditorPart {
 	@Override
 	public void dispose() {
 		paginationJob.cancel();
-		// Delete the temporary folder where we keep the unpacked content.
-		// if (unpackFolder.exists()) {
-		// deleteFolder(unpackFolder);
-		// }
 		if (image != null && !image.isDisposed())
 			image.dispose();
 		image = null;
@@ -726,9 +726,7 @@ public class EPUBReader extends EditorPart {
 				// And adjust offset so that it matches the one of the anchor if
 				// one has been specified.
 				if (currentAnchor != null) {
-					if (browser.execute("setOffsetToElement('" + currentAnchor + "')")) {
-						System.out.println("Adjusted offset for " + currentAnchor);
-					} else {
+					if (!browser.execute("setOffsetToElement('" + currentAnchor + "')")) {
 						System.err.println("Could not correct position " + currentAnchor);
 					}
 				}
@@ -813,7 +811,6 @@ public class EPUBReader extends EditorPart {
 		if (o instanceof FeatureEList) {
 			if (((FeatureEList) o).size() > 0) {
 				String label = ((FeatureEList) o).get(0).toString();
-				System.out.println(label);
 			}
 		}
 
@@ -871,7 +868,6 @@ public class EPUBReader extends EditorPart {
 		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + item.getHref();
 		browser.setUrl(url);
 		setPartName(getTitle(ops));
-		updateLabels();
 	}
 
 	/**
