@@ -280,14 +280,15 @@ public class LibraryPlugin extends Plugin implements ILibrarian {
 			}
 			if (updated.exists()) {
 				readLibrary(updated);
+			} else {
+				library = LibraryFactory.eINSTANCE.createLibrary();
 			}
 			ISaveParticipant saveParticipant = new WorkspaceSaveParticipant();
 			ResourcesPlugin.getWorkspace().addSaveParticipant(PLUGIN_ID, saveParticipant);
 			return true;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
+			library = LibraryFactory.eINSTANCE.createLibrary();
 		}
 		return false;
 	}
