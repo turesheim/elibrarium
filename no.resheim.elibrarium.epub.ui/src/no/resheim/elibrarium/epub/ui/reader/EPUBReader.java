@@ -56,6 +56,7 @@ import org.eclipse.mylyn.docs.epub.opf.Reference;
 import org.eclipse.mylyn.docs.epub.opf.Type;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.LocationEvent;
@@ -91,54 +92,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * @author Torkild U. Resheim
  */
 public class EPUBReader extends EditorPart {
-
-	/**
-	 * Listens to changes in the browser widget's size and starts paginating the
-	 * current chapter and the entire book 500ms after the last resize event.
-	 */
-	private class ResizeListener implements ControlListener, Runnable, Listener {
-
-		private static final int RESIZE_DELAY = 500;
-
-		private long lastEvent = 0;
-
-		private boolean mouse = true;
-
-		public void controlMoved(ControlEvent e) {
-		}
-
-		public void controlResized(ControlEvent e) {
-			lastEvent = System.currentTimeMillis();
-			Display.getDefault().timerExec(RESIZE_DELAY, this);
-		}
-
-		private void paginate() {
-			if (browser.getSize().x != x && browser.getSize().y != y) {
-				paginateChapter();
-				paginationJob.update(browser.getSize().x, browser.getSize().y);
-				x = browser.getSize().x;
-				y = browser.getSize().y;
-			}
-		}
-
-		@Override
-		public void run() {
-			if ((lastEvent + RESIZE_DELAY) < System.currentTimeMillis() && mouse) {
-					paginate();
-				} else {
-				Display.getDefault().timerExec(RESIZE_DELAY, this);
-				}
-		}
-		@Override
-		public void handleEvent(Event event) {
-			mouse = event.type == SWT.MouseUp;
-		}
-
-	}
-
-	int x;
-
-	int y;
 
 	/**
 	 * The direction of browsing.
@@ -235,12 +188,12 @@ public class EPUBReader extends EditorPart {
 	private class PaginationJobListener extends JobChangeAdapter {
 
 		@Override
-		public void running(IJobChangeEvent event) {
+		public void done(IJobChangeEvent event) {
 			updateLabels();
 		}
 
 		@Override
-		public void done(IJobChangeEvent event) {
+		public void running(IJobChangeEvent event) {
 			updateLabels();
 		}
 
@@ -265,13 +218,59 @@ public class EPUBReader extends EditorPart {
 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					//XXX: Does not work!
-//					if (browser.execute("unmarkRange('" + currentRange + "');")) {
-//					} else {
-//						System.err.println("Could not remove mark");
-//					}
+					// XXX: Does not work!
+					// if (browser.execute("unmarkRange('" + currentRange +
+					// "');")) {
+					// } else {
+					// System.err.println("Could not remove mark");
+					// }
 				}
 			});
+		}
+
+	}
+
+	/**
+	 * Listens to changes in the browser widget's size and starts paginating the
+	 * current chapter and the entire book 500ms after the last resize event.
+	 */
+	private class ResizeListener implements ControlListener, Runnable, Listener {
+
+		private static final int RESIZE_DELAY = 500;
+
+		private long lastEvent = 0;
+
+		private boolean mouse = true;
+
+		public void controlMoved(ControlEvent e) {
+		}
+
+		public void controlResized(ControlEvent e) {
+			lastEvent = System.currentTimeMillis();
+			Display.getDefault().timerExec(RESIZE_DELAY, this);
+		}
+
+		@Override
+		public void handleEvent(Event event) {
+			mouse = event.type == SWT.MouseUp;
+		}
+
+		private void paginate() {
+			if (browser.getSize().x != lastWidth && browser.getSize().y != lastHeight) {
+				paginateChapter();
+				paginationJob.update(browser.getSize().x, browser.getSize().y);
+				lastWidth = browser.getSize().x;
+				lastHeight = browser.getSize().y;
+			}
+		}
+
+		@Override
+		public void run() {
+			if ((lastEvent + RESIZE_DELAY) < System.currentTimeMillis() && mouse) {
+				paginate();
+			} else {
+				Display.getDefault().timerExec(RESIZE_DELAY, this);
+			}
 		}
 
 	}
@@ -284,6 +283,9 @@ public class EPUBReader extends EditorPart {
 
 	protected Browser browser;
 
+	/** The current anchor (may be null) */
+	private String currentAnchor;
+
 	private Book currentBook;
 
 	private AnnotationColor currentColor;
@@ -291,8 +293,7 @@ public class EPUBReader extends EditorPart {
 	/** The current href, excluding the anchor */
 	private String currentHref;
 
-	/** The current anchor (may be null) */
-	private String currentAnchor;
+	String currentLocation;
 
 	private String currentRange;
 
@@ -301,10 +302,9 @@ public class EPUBReader extends EditorPart {
 	/** Used to navigate to a certain page */
 	private Direction direction = Direction.INITIAL;
 
-	/** Page to navigate to if direction is PAGE */
-	private int page;
-
 	private boolean disposed;
+
+	private Label header;
 
 	protected Image image;
 
@@ -312,11 +312,18 @@ public class EPUBReader extends EditorPart {
 
 	private Label label;
 
+	int lastHeight;
+
+	int lastWidth;
+
 	private Menu menu;
+
+	private OPSPublication ops;
 
 	private Object outlinePage;
 
-	private OPSPublication ops;
+	/** Page to navigate to if direction is PAGE */
+	private int page;
 
 	private int pageCount;
 
@@ -328,69 +335,8 @@ public class EPUBReader extends EditorPart {
 
 	private ResizeListener resizeListener;
 
-	private Label header;
-
 	public EPUBReader() {
 		super();
-	}
-
-	/**
-	 * Browses to the next or previous chapter depending on the direction.
-	 * 
-	 * @param direction
-	 *            the browsing direction.
-	 */
-	private void navigateChapter(Direction direction) {
-		this.direction = direction;
-		int currentChapter = getCurrentChapter();
-		switch (direction) {
-		case FORWARD:
-			currentChapter++;
-			break;
-		case BACKWARD:
-			currentChapter--;
-			break;
-		default:
-			break;
-		}
-		EList<Itemref> spineItems = ops.getOpfPackage().getSpine().getSpineItems();
-		if (currentChapter > 0 && currentChapter <= spineItems.size()) {
-			Item item = ops.getItemById(spineItems.get(currentChapter - 1).getIdref());
-			openItem(item);
-		}
-	}
-
-	String currentLocation;
-
-	/**
-	 * Navigates to the given page number of the chapter.
-	 * 
-	 * @param page
-	 *            the page number to go to
-	 */
-	private void navigateToPage(int page) {
-		browser.evaluate("navigateToPage(" + page + ");");
-		updateTitle();
-		updateLabels();
-	}
-
-	private void updateTitle() {
-		String title = (String) browser.evaluate("title = getChapterTitle();return title;");
-		currentLocation = (String) browser.evaluate("bookmark = getPageBookmark();return bookmark;");
-		// Fake a small caps effect.
-		title = title.toUpperCase();
-		StringReader sr = new StringReader(title);
-		StringBuilder sb = new StringBuilder();
-		int c = -1;
-		try {
-			while ((c = sr.read()) > -1) {
-				sb.append((char) c);
-				sb.append(' ');
-			}
-			header.setText(sb.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -781,7 +727,7 @@ public class EPUBReader extends EditorPart {
 				default:
 					break;
 				}
-				
+
 				// Reset direction
 				// XXX: Do we need this?
 				direction = Direction.INITIAL;
@@ -825,7 +771,7 @@ public class EPUBReader extends EditorPart {
 				}
 			}
 		});
-	};
+	}
 
 	/*
 	 * (non-Javadoc) Returns whether the contents of this editor have changed
@@ -843,6 +789,42 @@ public class EPUBReader extends EditorPart {
 	@Override
 	public boolean isSaveAsAllowed() {
 		return false;
+	}
+
+	/**
+	 * Browses to the next or previous chapter depending on the direction.
+	 * 
+	 * @param direction
+	 *            the browsing direction.
+	 */
+	private void navigateChapter(Direction direction) {
+		this.direction = direction;
+		int currentChapter = getCurrentChapter();
+		switch (direction) {
+		case FORWARD:
+			currentChapter++;
+			break;
+		case BACKWARD:
+			currentChapter--;
+			break;
+		default:
+			break;
+		}
+		EList<Itemref> spineItems = ops.getOpfPackage().getSpine().getSpineItems();
+		if (currentChapter > 0 && currentChapter <= spineItems.size()) {
+			Item item = ops.getItemById(spineItems.get(currentChapter - 1).getIdref());
+			openItem(item);
+		}
+	};
+
+	public void navigateTo(Bookmark marker) {
+		String ref = marker.getHref();
+		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref + "#" + marker.getId();
+		direction = Direction.LOCATION;
+		// XXX: Clear URL to force reload
+		browser.setText("<html/>");
+		browser.setUrl(url);
+		setPartName(getTitle(ops));
 	}
 
 	/**
@@ -865,14 +847,16 @@ public class EPUBReader extends EditorPart {
 		}
 	}
 
-	public void navigateTo(Bookmark marker) {
-		String ref = marker.getHref();
-		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref + "#" + marker.getId();
-		direction = Direction.LOCATION;
-		// XXX: Clear URL to force reload
-		browser.setText("<html/>");
-		browser.setUrl(url);
-		setPartName(getTitle(ops));
+	/**
+	 * Navigates to the given page number of the chapter.
+	 * 
+	 * @param page
+	 *            the page number to go to
+	 */
+	private void navigateToPage(int page) {
+		browser.evaluate("navigateToPage(" + page + ");");
+		updateTitle();
+		updateLabels();
 	}
 
 	/**
@@ -910,17 +894,18 @@ public class EPUBReader extends EditorPart {
 		sb.append("desiredWidth = " + browser.getSize().x + ";");
 		sb.append("desiredHeight = " + (browser.getSize().y - 20) + ";");
 		try {
+			readJS("jquery-1.7.1.js", sb);
 			readJS("rangy-core.js", sb);
 			readJS("rangy-serializer.js", sb);
 			readJS("rangy-cssclassapplier.js", sb);
-			readJS("jquery-1.7.1.min.js", sb);
 			readJS("injected.js", sb);
 			boolean ok = browser.execute(sb.toString());
 			if (ok) {
 				pageCount = (int) Math.round((Double) browser.evaluate("return pageCount"));
 				pageWidth = (int) Math.round((Double) browser.evaluate("return desiredWidth"));
-				x = browser.getSize().x;
-				y = browser.getSize().y;
+				lastWidth = browser.getSize().x;
+				lastHeight = browser.getSize().y;
+				System.out.println("EPUBReader.paginateChapter()");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1005,5 +990,37 @@ public class EPUBReader extends EditorPart {
 			});
 		}
 
+	}
+
+	private void updateTitle() {
+		try {
+			// TODO: Make sure we that Rangy is initialized.
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+			}
+
+			String title = (String) browser.evaluate("title = getChapterTitle();return title;");
+			currentLocation = (String) browser.evaluate("bookmark = getPageBookmark();return bookmark;");
+			// Fake a small caps effect.
+			title = title.toUpperCase();
+			StringReader sr = new StringReader(title);
+			StringBuilder sb = new StringBuilder();
+			int c = -1;
+			try {
+				while ((c = sr.read()) > -1) {
+					sb.append((char) c);
+					sb.append(' ');
+				}
+				header.setText(sb.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (SWTException e) {
+			// We can get an exception here if Rangy is not properly
+			// initialized. If this happens we must implement a better way
+			// of hanlding this situation.
+			e.printStackTrace();
+		}
 	}
 }

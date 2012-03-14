@@ -11,10 +11,10 @@ try {
 	
 	debugging = false;
 
-	/***************************************************************************
-	 * Resize images so that their width is never larger than the width of the
-	 * display.
-	 **************************************************************************/
+	/**
+	 * Resizes images so their width is never larger than the width of the 
+	 * viewport.
+	 */
 	function adjustImages() {
 		var imgs, i;
 		imgs = bodyID.getElementsByTagName('img');
@@ -50,12 +50,21 @@ try {
 		bodyID.scrollLeft = + (pageWidth * (page - 1));
 	}
 	
+	/**
+	 * Returns the title of the chapter. If there are m
+	 * @returns
+	 */
 	function getChapterTitle(){
-		var h1 = $("h1:first");
+		var elem = $('h1').filter(function() {
+		    return ($(this).offset().left <= bodyID.scrollLeft+pageWidth);
+		});
+		var h1 = elem.last();
 		return h1.text();		
 	}
 		
 	/**
+	 * Determines a suitable element on the current page to use as a reference
+	 * and returns the serialized location.
 	 * 
 	 * @returns the serialized page bookmark
 	 */
@@ -75,20 +84,22 @@ try {
 			return serialized;
 		}		
 	}
+	
+	function isInitialized(){
+		return rangy.initialized;
+	}
+	
 	/**
+	 * Navigates to the given bookmark.
 	 * 
 	 * @param serialized the serialized page bookmark
 	 */
 	function navigateToBookmark(serialized){
-		if (rangy.canDeserializeRange(serialized)){
-			range = rangy.deserializeRange(serialized,document);
-			var id = range.startContainer.id;
-			range.startContainer.id='bookmark'; 
-			setOffsetToElement('bookmark');
-			range.detach();
-		} else {
-			alert("Could not restore bookmark");
-		}
+		range = rangy.deserializeRange(serialized,document);
+		var id = range.startContainer.id;
+		range.startContainer.id='bookmark'; 
+		setOffsetToElement('bookmark');
+		range.detach();
 	}
 	
 	/**
