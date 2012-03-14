@@ -1,7 +1,7 @@
 package no.resheim.elibrarium.library.ui;
 
-import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.Book;
+import no.resheim.elibrarium.library.Bookmark;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.SafeRunner;
@@ -163,14 +163,14 @@ public class AnnotationViewer extends ContentViewer implements ISelectionProvide
 	public void refresh() {
 		// TODO: Retain selection if the selected item is still present
 		selection = null;
-		if (input != null) {
+		if (input != null && !rootContainer.isDisposed()) {
 			Composite composite = getContents();
 			Control[] children = composite.getChildren();
-			EList<Annotation> annotations = input.getAnnotations();
+			EList<Bookmark> annotations = input.getBookmarks();
 			GridData gd = new GridData(GridData.FILL, SWT.BEGINNING, true, false);
 			gd.verticalAlignment = SWT.BEGINNING;
 			for (int i = 0; i < annotations.size(); i++) {
-				Annotation annotation = annotations.get(i);
+				Bookmark annotation = annotations.get(i);
 				Label textLabel = null;
 				if (i >= children.length) {
 					textLabel = new Label(composite, SWT.WRAP);
