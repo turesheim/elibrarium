@@ -996,7 +996,7 @@ public class EPUBReader extends EditorPart {
 		try {
 			// TODO: Make sure we that Rangy is initialized.
 			try {
-				Thread.sleep(200);
+				Thread.sleep(800);
 			} catch (InterruptedException e) {
 			}
 
