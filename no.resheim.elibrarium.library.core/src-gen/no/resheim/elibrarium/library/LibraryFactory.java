@@ -44,15 +44,6 @@ public interface LibraryFactory extends EFactory {
 	Book createBook();
 
 	/**
-	 * Returns a new object of class '<em>Annotation</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Annotation</em>'.
-	 * @generated
-	 */
-	Annotation createAnnotation();
-
-	/**
 	 * Returns a new object of class '<em>Bookmark</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -60,6 +51,15 @@ public interface LibraryFactory extends EFactory {
 	 * @generated
 	 */
 	Bookmark createBookmark();
+
+	/**
+	 * Returns a new object of class '<em>Annotation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Annotation</em>'.
+	 * @generated
+	 */
+	Annotation createAnnotation();
 
 	/**
 	 * Returns a new object of class '<em>Metadata</em>'.

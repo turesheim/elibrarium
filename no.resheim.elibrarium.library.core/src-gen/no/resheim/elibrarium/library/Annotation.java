@@ -16,7 +16,6 @@ package no.resheim.elibrarium.library;
  * The following features are supported:
  * <ul>
  *   <li>{@link no.resheim.elibrarium.library.Annotation#getColor <em>Color</em>}</li>
- *   <li>{@link no.resheim.elibrarium.library.Annotation#getText <em>Text</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Annotation#getComment <em>Comment</em>}</li>
  * </ul>
  * </p>
@@ -25,7 +24,7 @@ package no.resheim.elibrarium.library;
  * @model
  * @generated
  */
-public interface Annotation extends Marker {
+public interface Annotation extends Bookmark {
 	/**
 	 * Returns the value of the '<em><b>Color</b></em>' attribute.
 	 * The literals are from the enumeration {@link no.resheim.elibrarium.library.AnnotationColor}.
@@ -54,32 +53,6 @@ public interface Annotation extends Marker {
 	 * @generated
 	 */
 	void setColor(AnnotationColor value);
-
-	/**
-	 * Returns the value of the '<em><b>Text</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Text</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Text</em>' attribute.
-	 * @see #setText(String)
-	 * @see no.resheim.elibrarium.library.LibraryPackage#getAnnotation_Text()
-	 * @model required="true"
-	 * @generated
-	 */
-	String getText();
-
-	/**
-	 * Sets the value of the '{@link no.resheim.elibrarium.library.Annotation#getText <em>Text</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Text</em>' attribute.
-	 * @see #getText()
-	 * @generated
-	 */
-	void setText(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Comment</b></em>' attribute.

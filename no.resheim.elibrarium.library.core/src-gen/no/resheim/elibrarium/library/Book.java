@@ -23,9 +23,10 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link no.resheim.elibrarium.library.Book#getCollection <em>Collection</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Book#getTitle <em>Title</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Book#getAuthor <em>Author</em>}</li>
- *   <li>{@link no.resheim.elibrarium.library.Book#getAnnotations <em>Annotations</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Book#getBookmarks <em>Bookmarks</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Book#getMetadata <em>Metadata</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.Book#getLastHref <em>Last Href</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.Book#getLastLocation <em>Last Location</em>}</li>
  * </ul>
  * </p>
  *
@@ -167,23 +168,6 @@ public interface Book extends EObject {
 	void setAuthor(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Annotations</b></em>' containment reference list.
-	 * The list contents are of type {@link no.resheim.elibrarium.library.Annotation}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Annotations</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Annotations</em>' containment reference list.
-	 * @see no.resheim.elibrarium.library.LibraryPackage#getBook_Annotations()
-	 * @model containment="true"
-	 *        extendedMetaData="name='annotation'"
-	 * @generated
-	 */
-	EList<Annotation> getAnnotations();
-
-	/**
 	 * Returns the value of the '<em><b>Bookmarks</b></em>' containment reference list.
 	 * The list contents are of type {@link no.resheim.elibrarium.library.Bookmark}.
 	 * <!-- begin-user-doc -->
@@ -216,5 +200,57 @@ public interface Book extends EObject {
 	 * @generated
 	 */
 	EList<Metadata> getMetadata();
+
+	/**
+	 * Returns the value of the '<em><b>Last Href</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Last Href</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Last Href</em>' attribute.
+	 * @see #setLastHref(String)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getBook_LastHref()
+	 * @model
+	 * @generated
+	 */
+	String getLastHref();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Book#getLastHref <em>Last Href</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Last Href</em>' attribute.
+	 * @see #getLastHref()
+	 * @generated
+	 */
+	void setLastHref(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Last Location</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Last Location</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Last Location</em>' attribute.
+	 * @see #setLastLocation(String)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getBook_LastLocation()
+	 * @model
+	 * @generated
+	 */
+	String getLastLocation();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Book#getLastLocation <em>Last Location</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Last Location</em>' attribute.
+	 * @see #getLastLocation()
+	 * @generated
+	 */
+	void setLastLocation(String value);
 
 } // Book

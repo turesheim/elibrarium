@@ -24,14 +24,13 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * <ul>
  *   <li>{@link no.resheim.elibrarium.library.impl.AnnotationImpl#getColor <em>Color</em>}</li>
- *   <li>{@link no.resheim.elibrarium.library.impl.AnnotationImpl#getText <em>Text</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.AnnotationImpl#getComment <em>Comment</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class AnnotationImpl extends MarkerImpl implements Annotation {
+public class AnnotationImpl extends BookmarkImpl implements Annotation {
 	/**
 	 * The default value of the '{@link #getColor() <em>Color</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -51,26 +50,6 @@ public class AnnotationImpl extends MarkerImpl implements Annotation {
 	 * @ordered
 	 */
 	protected AnnotationColor color = COLOR_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getText() <em>Text</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getText()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String TEXT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getText() <em>Text</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getText()
-	 * @generated
-	 * @ordered
-	 */
-	protected String text = TEXT_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getComment() <em>Comment</em>}' attribute.
@@ -137,27 +116,6 @@ public class AnnotationImpl extends MarkerImpl implements Annotation {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getText() {
-		return text;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setText(String newText) {
-		String oldText = text;
-		text = newText;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.ANNOTATION__TEXT, oldText, text));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getComment() {
 		return comment;
 	}
@@ -184,8 +142,6 @@ public class AnnotationImpl extends MarkerImpl implements Annotation {
 		switch (featureID) {
 			case LibraryPackage.ANNOTATION__COLOR:
 				return getColor();
-			case LibraryPackage.ANNOTATION__TEXT:
-				return getText();
 			case LibraryPackage.ANNOTATION__COMMENT:
 				return getComment();
 		}
@@ -202,9 +158,6 @@ public class AnnotationImpl extends MarkerImpl implements Annotation {
 		switch (featureID) {
 			case LibraryPackage.ANNOTATION__COLOR:
 				setColor((AnnotationColor)newValue);
-				return;
-			case LibraryPackage.ANNOTATION__TEXT:
-				setText((String)newValue);
 				return;
 			case LibraryPackage.ANNOTATION__COMMENT:
 				setComment((String)newValue);
@@ -224,9 +177,6 @@ public class AnnotationImpl extends MarkerImpl implements Annotation {
 			case LibraryPackage.ANNOTATION__COLOR:
 				setColor(COLOR_EDEFAULT);
 				return;
-			case LibraryPackage.ANNOTATION__TEXT:
-				setText(TEXT_EDEFAULT);
-				return;
 			case LibraryPackage.ANNOTATION__COMMENT:
 				setComment(COMMENT_EDEFAULT);
 				return;
@@ -244,8 +194,6 @@ public class AnnotationImpl extends MarkerImpl implements Annotation {
 		switch (featureID) {
 			case LibraryPackage.ANNOTATION__COLOR:
 				return color != COLOR_EDEFAULT;
-			case LibraryPackage.ANNOTATION__TEXT:
-				return TEXT_EDEFAULT == null ? text != null : !TEXT_EDEFAULT.equals(text);
 			case LibraryPackage.ANNOTATION__COMMENT:
 				return COMMENT_EDEFAULT == null ? comment != null : !COMMENT_EDEFAULT.equals(comment);
 		}
@@ -264,8 +212,6 @@ public class AnnotationImpl extends MarkerImpl implements Annotation {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (color: "); //$NON-NLS-1$
 		result.append(color);
-		result.append(", text: "); //$NON-NLS-1$
-		result.append(text);
 		result.append(", comment: "); //$NON-NLS-1$
 		result.append(comment);
 		result.append(')');

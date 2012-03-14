@@ -6,6 +6,9 @@
  */
 package no.resheim.elibrarium.library;
 
+import java.util.Date;
+
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -15,7 +18,11 @@ package no.resheim.elibrarium.library;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link no.resheim.elibrarium.library.Bookmark#getType <em>Type</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.Bookmark#getId <em>Id</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.Bookmark#getLocation <em>Location</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.Bookmark#getHref <em>Href</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.Bookmark#getTimestamp <em>Timestamp</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.Bookmark#getText <em>Text</em>}</li>
  * </ul>
  * </p>
  *
@@ -23,34 +30,135 @@ package no.resheim.elibrarium.library;
  * @model
  * @generated
  */
-public interface Bookmark extends Marker {
+public interface Bookmark extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Type</b></em>' attribute.
-	 * The literals are from the enumeration {@link no.resheim.elibrarium.library.BookmarkType}.
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Type</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Id</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Type</em>' attribute.
-	 * @see no.resheim.elibrarium.library.BookmarkType
-	 * @see #setType(BookmarkType)
-	 * @see no.resheim.elibrarium.library.LibraryPackage#getBookmark_Type()
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(String)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getBookmark_Id()
 	 * @model required="true"
 	 * @generated
 	 */
-	BookmarkType getType();
+	String getId();
 
 	/**
-	 * Sets the value of the '{@link no.resheim.elibrarium.library.Bookmark#getType <em>Type</em>}' attribute.
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Bookmark#getId <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Type</em>' attribute.
-	 * @see no.resheim.elibrarium.library.BookmarkType
-	 * @see #getType()
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
 	 * @generated
 	 */
-	void setType(BookmarkType value);
+	void setId(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Location</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Location</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Location</em>' attribute.
+	 * @see #setLocation(String)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getBookmark_Location()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getLocation();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Bookmark#getLocation <em>Location</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Location</em>' attribute.
+	 * @see #getLocation()
+	 * @generated
+	 */
+	void setLocation(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Href</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Href</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Href</em>' attribute.
+	 * @see #setHref(String)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getBookmark_Href()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getHref();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Bookmark#getHref <em>Href</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Href</em>' attribute.
+	 * @see #getHref()
+	 * @generated
+	 */
+	void setHref(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Timestamp</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Timestamp</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Timestamp</em>' attribute.
+	 * @see #setTimestamp(Date)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getBookmark_Timestamp()
+	 * @model required="true"
+	 * @generated
+	 */
+	Date getTimestamp();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Bookmark#getTimestamp <em>Timestamp</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Timestamp</em>' attribute.
+	 * @see #getTimestamp()
+	 * @generated
+	 */
+	void setTimestamp(Date value);
+
+	/**
+	 * Returns the value of the '<em><b>Text</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Text</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Text</em>' attribute.
+	 * @see #setText(String)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getBookmark_Text()
+	 * @model required="true"
+	 * @generated
+	 */
+	String getText();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Bookmark#getText <em>Text</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Text</em>' attribute.
+	 * @see #getText()
+	 * @generated
+	 */
+	void setText(String value);
 
 } // Bookmark

@@ -8,7 +8,6 @@ package no.resheim.elibrarium.library.impl;
 
 import java.util.Collection;
 
-import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Bookmark;
 import no.resheim.elibrarium.library.LibraryPackage;
@@ -40,9 +39,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getCollection <em>Collection</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getTitle <em>Title</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getAuthor <em>Author</em>}</li>
- *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getAnnotations <em>Annotations</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getBookmarks <em>Bookmarks</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getMetadata <em>Metadata</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getLastHref <em>Last Href</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getLastLocation <em>Last Location</em>}</li>
  * </ul>
  * </p>
  *
@@ -150,16 +150,6 @@ public class BookImpl extends EObjectImpl implements Book {
 	protected String author = AUTHOR_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getAnnotations() <em>Annotations</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAnnotations()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Annotation> annotations;
-
-	/**
 	 * The cached value of the '{@link #getBookmarks() <em>Bookmarks</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -178,6 +168,46 @@ public class BookImpl extends EObjectImpl implements Book {
 	 * @ordered
 	 */
 	protected EList<Metadata> metadata;
+
+	/**
+	 * The default value of the '{@link #getLastHref() <em>Last Href</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLastHref()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String LAST_HREF_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getLastHref() <em>Last Href</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLastHref()
+	 * @generated
+	 * @ordered
+	 */
+	protected String lastHref = LAST_HREF_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getLastLocation() <em>Last Location</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLastLocation()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String LAST_LOCATION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getLastLocation() <em>Last Location</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLastLocation()
+	 * @generated
+	 * @ordered
+	 */
+	protected String lastLocation = LAST_LOCATION_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -308,18 +338,6 @@ public class BookImpl extends EObjectImpl implements Book {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Annotation> getAnnotations() {
-		if (annotations == null) {
-			annotations = new EObjectContainmentEList<Annotation>(Annotation.class, this, LibraryPackage.BOOK__ANNOTATIONS);
-		}
-		return annotations;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<Bookmark> getBookmarks() {
 		if (bookmarks == null) {
 			bookmarks = new EObjectContainmentEList<Bookmark>(Bookmark.class, this, LibraryPackage.BOOK__BOOKMARKS);
@@ -344,11 +362,51 @@ public class BookImpl extends EObjectImpl implements Book {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getLastHref() {
+		return lastHref;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLastHref(String newLastHref) {
+		String oldLastHref = lastHref;
+		lastHref = newLastHref;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.BOOK__LAST_HREF, oldLastHref, lastHref));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getLastLocation() {
+		return lastLocation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLastLocation(String newLastLocation) {
+		String oldLastLocation = lastLocation;
+		lastLocation = newLastLocation;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.BOOK__LAST_LOCATION, oldLastLocation, lastLocation));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case LibraryPackage.BOOK__ANNOTATIONS:
-				return ((InternalEList<?>)getAnnotations()).basicRemove(otherEnd, msgs);
 			case LibraryPackage.BOOK__BOOKMARKS:
 				return ((InternalEList<?>)getBookmarks()).basicRemove(otherEnd, msgs);
 			case LibraryPackage.BOOK__METADATA:
@@ -375,12 +433,14 @@ public class BookImpl extends EObjectImpl implements Book {
 				return getTitle();
 			case LibraryPackage.BOOK__AUTHOR:
 				return getAuthor();
-			case LibraryPackage.BOOK__ANNOTATIONS:
-				return getAnnotations();
 			case LibraryPackage.BOOK__BOOKMARKS:
 				return getBookmarks();
 			case LibraryPackage.BOOK__METADATA:
 				return getMetadata();
+			case LibraryPackage.BOOK__LAST_HREF:
+				return getLastHref();
+			case LibraryPackage.BOOK__LAST_LOCATION:
+				return getLastLocation();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -409,10 +469,6 @@ public class BookImpl extends EObjectImpl implements Book {
 			case LibraryPackage.BOOK__AUTHOR:
 				setAuthor((String)newValue);
 				return;
-			case LibraryPackage.BOOK__ANNOTATIONS:
-				getAnnotations().clear();
-				getAnnotations().addAll((Collection<? extends Annotation>)newValue);
-				return;
 			case LibraryPackage.BOOK__BOOKMARKS:
 				getBookmarks().clear();
 				getBookmarks().addAll((Collection<? extends Bookmark>)newValue);
@@ -420,6 +476,12 @@ public class BookImpl extends EObjectImpl implements Book {
 			case LibraryPackage.BOOK__METADATA:
 				getMetadata().clear();
 				getMetadata().addAll((Collection<? extends Metadata>)newValue);
+				return;
+			case LibraryPackage.BOOK__LAST_HREF:
+				setLastHref((String)newValue);
+				return;
+			case LibraryPackage.BOOK__LAST_LOCATION:
+				setLastLocation((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -448,14 +510,17 @@ public class BookImpl extends EObjectImpl implements Book {
 			case LibraryPackage.BOOK__AUTHOR:
 				setAuthor(AUTHOR_EDEFAULT);
 				return;
-			case LibraryPackage.BOOK__ANNOTATIONS:
-				getAnnotations().clear();
-				return;
 			case LibraryPackage.BOOK__BOOKMARKS:
 				getBookmarks().clear();
 				return;
 			case LibraryPackage.BOOK__METADATA:
 				getMetadata().clear();
+				return;
+			case LibraryPackage.BOOK__LAST_HREF:
+				setLastHref(LAST_HREF_EDEFAULT);
+				return;
+			case LibraryPackage.BOOK__LAST_LOCATION:
+				setLastLocation(LAST_LOCATION_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -479,12 +544,14 @@ public class BookImpl extends EObjectImpl implements Book {
 				return TITLE_EDEFAULT == null ? title != null : !TITLE_EDEFAULT.equals(title);
 			case LibraryPackage.BOOK__AUTHOR:
 				return AUTHOR_EDEFAULT == null ? author != null : !AUTHOR_EDEFAULT.equals(author);
-			case LibraryPackage.BOOK__ANNOTATIONS:
-				return annotations != null && !annotations.isEmpty();
 			case LibraryPackage.BOOK__BOOKMARKS:
 				return bookmarks != null && !bookmarks.isEmpty();
 			case LibraryPackage.BOOK__METADATA:
 				return metadata != null && !metadata.isEmpty();
+			case LibraryPackage.BOOK__LAST_HREF:
+				return LAST_HREF_EDEFAULT == null ? lastHref != null : !LAST_HREF_EDEFAULT.equals(lastHref);
+			case LibraryPackage.BOOK__LAST_LOCATION:
+				return LAST_LOCATION_EDEFAULT == null ? lastLocation != null : !LAST_LOCATION_EDEFAULT.equals(lastLocation);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -509,6 +576,10 @@ public class BookImpl extends EObjectImpl implements Book {
 		result.append(title);
 		result.append(", author: "); //$NON-NLS-1$
 		result.append(author);
+		result.append(", lastHref: "); //$NON-NLS-1$
+		result.append(lastHref);
+		result.append(", lastLocation: "); //$NON-NLS-1$
+		result.append(lastLocation);
 		result.append(')');
 		return result.toString();
 	}

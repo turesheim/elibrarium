@@ -70,7 +70,17 @@ public enum AnnotationColor implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	PURPLE(5, "Purple", "Purple"); //$NON-NLS-1$ //$NON-NLS-2$
+	PURPLE(5, "Purple", "Purple"), //$NON-NLS-1$ //$NON-NLS-2$
+
+	/**
+	 * The '<em><b>Underline</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #UNDERLINE_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	UNDERLINE(6, "Underline", "Underline"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * The '<em><b>Yellow</b></em>' literal value.
@@ -148,6 +158,21 @@ public enum AnnotationColor implements Enumerator {
 	public static final int PURPLE_VALUE = 5;
 
 	/**
+	 * The '<em><b>Underline</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>Underline</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #UNDERLINE
+	 * @model name="Underline"
+	 * @generated
+	 * @ordered
+	 */
+	public static final int UNDERLINE_VALUE = 6;
+
+	/**
 	 * An array of all the '<em><b>Annotation Color</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -160,6 +185,7 @@ public enum AnnotationColor implements Enumerator {
 			BLUE,
 			RED,
 			PURPLE,
+			UNDERLINE,
 		};
 
 	/**
@@ -215,6 +241,7 @@ public enum AnnotationColor implements Enumerator {
 			case BLUE_VALUE: return BLUE;
 			case RED_VALUE: return RED;
 			case PURPLE_VALUE: return PURPLE;
+			case UNDERLINE_VALUE: return UNDERLINE;
 		}
 		return null;
 	}

@@ -82,23 +82,16 @@ public class LibrarySwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case LibraryPackage.MARKER: {
-				Marker marker = (Marker)theEObject;
-				T result = caseMarker(marker);
+			case LibraryPackage.BOOKMARK: {
+				Bookmark bookmark = (Bookmark)theEObject;
+				T result = caseBookmark(bookmark);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case LibraryPackage.ANNOTATION: {
 				Annotation annotation = (Annotation)theEObject;
 				T result = caseAnnotation(annotation);
-				if (result == null) result = caseMarker(annotation);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case LibraryPackage.BOOKMARK: {
-				Bookmark bookmark = (Bookmark)theEObject;
-				T result = caseBookmark(bookmark);
-				if (result == null) result = caseMarker(bookmark);
+				if (result == null) result = caseBookmark(annotation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -143,17 +136,17 @@ public class LibrarySwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Marker</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Bookmark</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Marker</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Bookmark</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseMarker(Marker object) {
+	public T caseBookmark(Bookmark object) {
 		return null;
 	}
 
@@ -169,21 +162,6 @@ public class LibrarySwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseAnnotation(Annotation object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Bookmark</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Bookmark</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseBookmark(Bookmark object) {
 		return null;
 	}
 

@@ -10,11 +10,9 @@ import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.AnnotationColor;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Bookmark;
-import no.resheim.elibrarium.library.BookmarkType;
 import no.resheim.elibrarium.library.Library;
 import no.resheim.elibrarium.library.LibraryFactory;
 import no.resheim.elibrarium.library.LibraryPackage;
-import no.resheim.elibrarium.library.Marker;
 import no.resheim.elibrarium.library.Metadata;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -51,7 +49,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass markerEClass = null;
+	private EClass bookmarkEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -59,13 +57,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * @generated
 	 */
 	private EClass annotationEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass bookmarkEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -80,13 +71,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * @generated
 	 */
 	private EEnum annotationColorEEnum = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EEnum bookmarkTypeEEnum = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -235,7 +219,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getBook_Annotations() {
+	public EReference getBook_Bookmarks() {
 		return (EReference)bookEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -244,7 +228,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getBook_Bookmarks() {
+	public EReference getBook_Metadata() {
 		return (EReference)bookEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -253,8 +237,8 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getBook_Metadata() {
-		return (EReference)bookEClass.getEStructuralFeatures().get(7);
+	public EAttribute getBook_LastHref() {
+		return (EAttribute)bookEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -262,8 +246,8 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getMarker() {
-		return markerEClass;
+	public EAttribute getBook_LastLocation() {
+		return (EAttribute)bookEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -271,8 +255,8 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMarker_Id() {
-		return (EAttribute)markerEClass.getEStructuralFeatures().get(0);
+	public EClass getBookmark() {
+		return bookmarkEClass;
 	}
 
 	/**
@@ -280,8 +264,8 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMarker_Location() {
-		return (EAttribute)markerEClass.getEStructuralFeatures().get(1);
+	public EAttribute getBookmark_Id() {
+		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -289,8 +273,8 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMarker_Href() {
-		return (EAttribute)markerEClass.getEStructuralFeatures().get(2);
+	public EAttribute getBookmark_Location() {
+		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -298,8 +282,26 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getMarker_Timestamp() {
-		return (EAttribute)markerEClass.getEStructuralFeatures().get(3);
+	public EAttribute getBookmark_Href() {
+		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getBookmark_Timestamp() {
+		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getBookmark_Text() {
+		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -325,35 +327,8 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getAnnotation_Text() {
-		return (EAttribute)annotationEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getAnnotation_Comment() {
-		return (EAttribute)annotationEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getBookmark() {
-		return bookmarkEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getBookmark_Type() {
-		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)annotationEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -397,15 +372,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EEnum getBookmarkType() {
-		return bookmarkTypeEEnum;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public LibraryFactory getLibraryFactory() {
 		return (LibraryFactory)getEFactoryInstance();
 	}
@@ -439,23 +405,21 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		createEAttribute(bookEClass, BOOK__COLLECTION);
 		createEAttribute(bookEClass, BOOK__TITLE);
 		createEAttribute(bookEClass, BOOK__AUTHOR);
-		createEReference(bookEClass, BOOK__ANNOTATIONS);
 		createEReference(bookEClass, BOOK__BOOKMARKS);
 		createEReference(bookEClass, BOOK__METADATA);
+		createEAttribute(bookEClass, BOOK__LAST_HREF);
+		createEAttribute(bookEClass, BOOK__LAST_LOCATION);
 
-		markerEClass = createEClass(MARKER);
-		createEAttribute(markerEClass, MARKER__ID);
-		createEAttribute(markerEClass, MARKER__LOCATION);
-		createEAttribute(markerEClass, MARKER__HREF);
-		createEAttribute(markerEClass, MARKER__TIMESTAMP);
+		bookmarkEClass = createEClass(BOOKMARK);
+		createEAttribute(bookmarkEClass, BOOKMARK__ID);
+		createEAttribute(bookmarkEClass, BOOKMARK__LOCATION);
+		createEAttribute(bookmarkEClass, BOOKMARK__HREF);
+		createEAttribute(bookmarkEClass, BOOKMARK__TIMESTAMP);
+		createEAttribute(bookmarkEClass, BOOKMARK__TEXT);
 
 		annotationEClass = createEClass(ANNOTATION);
 		createEAttribute(annotationEClass, ANNOTATION__COLOR);
-		createEAttribute(annotationEClass, ANNOTATION__TEXT);
 		createEAttribute(annotationEClass, ANNOTATION__COMMENT);
-
-		bookmarkEClass = createEClass(BOOKMARK);
-		createEAttribute(bookmarkEClass, BOOKMARK__TYPE);
 
 		metadataEClass = createEClass(METADATA);
 		createEAttribute(metadataEClass, METADATA__KEY);
@@ -463,7 +427,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 
 		// Create enums
 		annotationColorEEnum = createEEnum(ANNOTATION_COLOR);
-		bookmarkTypeEEnum = createEEnum(BOOKMARK_TYPE);
 	}
 
 	/**
@@ -494,8 +457,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		annotationEClass.getESuperTypes().add(this.getMarker());
-		bookmarkEClass.getESuperTypes().add(this.getMarker());
+		annotationEClass.getESuperTypes().add(this.getBookmark());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(libraryEClass, Library.class, "Library", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -508,23 +470,21 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		initEAttribute(getBook_Collection(), ecorePackage.getEString(), "collection", null, 1, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getBook_Title(), ecorePackage.getEString(), "title", null, 1, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getBook_Author(), ecorePackage.getEString(), "author", null, 1, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(getBook_Annotations(), this.getAnnotation(), null, "annotations", null, 0, -1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEReference(getBook_Bookmarks(), this.getBookmark(), null, "bookmarks", null, 0, -1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEReference(getBook_Metadata(), this.getMetadata(), null, "metadata", null, 0, -1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getBook_LastHref(), ecorePackage.getEString(), "lastHref", null, 0, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getBook_LastLocation(), ecorePackage.getEString(), "lastLocation", null, 0, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(markerEClass, Marker.class, "Marker", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEAttribute(getMarker_Id(), ecorePackage.getEString(), "id", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(getMarker_Location(), ecorePackage.getEString(), "location", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(getMarker_Href(), ecorePackage.getEString(), "href", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(getMarker_Timestamp(), ecorePackage.getEDate(), "timestamp", null, 1, 1, Marker.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEClass(bookmarkEClass, Bookmark.class, "Bookmark", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(getBookmark_Id(), ecorePackage.getEString(), "id", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getBookmark_Location(), ecorePackage.getEString(), "location", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getBookmark_Href(), ecorePackage.getEString(), "href", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getBookmark_Timestamp(), ecorePackage.getEDate(), "timestamp", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getBookmark_Text(), ecorePackage.getEString(), "text", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(annotationEClass, Annotation.class, "Annotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(getAnnotation_Color(), this.getAnnotationColor(), "color", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(getAnnotation_Text(), ecorePackage.getEString(), "text", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getAnnotation_Comment(), ecorePackage.getEString(), "comment", null, 0, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-
-		initEClass(bookmarkEClass, Bookmark.class, "Bookmark", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEAttribute(getBookmark_Type(), this.getBookmarkType(), "type", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(metadataEClass, Metadata.class, "Metadata", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(getMetadata_Key(), ecorePackage.getEString(), "key", null, 1, 1, Metadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
@@ -537,10 +497,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		addEEnumLiteral(annotationColorEEnum, AnnotationColor.BLUE);
 		addEEnumLiteral(annotationColorEEnum, AnnotationColor.RED);
 		addEEnumLiteral(annotationColorEEnum, AnnotationColor.PURPLE);
-
-		initEEnum(bookmarkTypeEEnum, BookmarkType.class, "BookmarkType"); //$NON-NLS-1$
-		addEEnumLiteral(bookmarkTypeEEnum, BookmarkType.LAST);
-		addEEnumLiteral(bookmarkTypeEEnum, BookmarkType.USER);
+		addEEnumLiteral(annotationColorEEnum, AnnotationColor.UNDERLINE);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -581,12 +538,6 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		   source, 
 		   new String[] {
 			 "name", "url" //$NON-NLS-1$ //$NON-NLS-2$
-		   });		
-		addAnnotation
-		  (getBook_Annotations(), 
-		   source, 
-		   new String[] {
-			 "name", "annotation" //$NON-NLS-1$ //$NON-NLS-2$
 		   });		
 		addAnnotation
 		  (getBook_Bookmarks(), 

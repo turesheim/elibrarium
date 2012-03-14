@@ -80,16 +80,12 @@ public class LibraryAdapterFactory extends AdapterFactoryImpl {
 				return createBookAdapter();
 			}
 			@Override
-			public Adapter caseMarker(Marker object) {
-				return createMarkerAdapter();
+			public Adapter caseBookmark(Bookmark object) {
+				return createBookmarkAdapter();
 			}
 			@Override
 			public Adapter caseAnnotation(Annotation object) {
 				return createAnnotationAdapter();
-			}
-			@Override
-			public Adapter caseBookmark(Bookmark object) {
-				return createBookmarkAdapter();
 			}
 			@Override
 			public Adapter caseMetadata(Metadata object) {
@@ -144,16 +140,16 @@ public class LibraryAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link no.resheim.elibrarium.library.Marker <em>Marker</em>}'.
+	 * Creates a new adapter for an object of class '{@link no.resheim.elibrarium.library.Bookmark <em>Bookmark</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see no.resheim.elibrarium.library.Marker
+	 * @see no.resheim.elibrarium.library.Bookmark
 	 * @generated
 	 */
-	public Adapter createMarkerAdapter() {
+	public Adapter createBookmarkAdapter() {
 		return null;
 	}
 
@@ -168,20 +164,6 @@ public class LibraryAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAnnotationAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link no.resheim.elibrarium.library.Bookmark <em>Bookmark</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see no.resheim.elibrarium.library.Bookmark
-	 * @generated
-	 */
-	public Adapter createBookmarkAdapter() {
 		return null;
 	}
 

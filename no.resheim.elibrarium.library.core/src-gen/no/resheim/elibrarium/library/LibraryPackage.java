@@ -153,22 +153,13 @@ public interface LibraryPackage extends EPackage {
 	int BOOK__AUTHOR = 4;
 
 	/**
-	 * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOK__ANNOTATIONS = 5;
-
-	/**
 	 * The feature id for the '<em><b>Bookmarks</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BOOK__BOOKMARKS = 6;
+	int BOOK__BOOKMARKS = 5;
 
 	/**
 	 * The feature id for the '<em><b>Metadata</b></em>' containment reference list.
@@ -177,7 +168,25 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BOOK__METADATA = 7;
+	int BOOK__METADATA = 6;
+
+	/**
+	 * The feature id for the '<em><b>Last Href</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOK__LAST_HREF = 7;
+
+	/**
+	 * The feature id for the '<em><b>Last Location</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOK__LAST_LOCATION = 8;
 
 	/**
 	 * The number of structural features of the '<em>Book</em>' class.
@@ -186,17 +195,17 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BOOK_FEATURE_COUNT = 8;
+	int BOOK_FEATURE_COUNT = 9;
 
 	/**
-	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.MarkerImpl <em>Marker</em>}' class.
+	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.BookmarkImpl <em>Bookmark</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see no.resheim.elibrarium.library.impl.MarkerImpl
-	 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getMarker()
+	 * @see no.resheim.elibrarium.library.impl.BookmarkImpl
+	 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getBookmark()
 	 * @generated
 	 */
-	int MARKER = 2;
+	int BOOKMARK = 2;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -205,7 +214,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MARKER__ID = 0;
+	int BOOKMARK__ID = 0;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -214,7 +223,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MARKER__LOCATION = 1;
+	int BOOKMARK__LOCATION = 1;
 
 	/**
 	 * The feature id for the '<em><b>Href</b></em>' attribute.
@@ -223,7 +232,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MARKER__HREF = 2;
+	int BOOKMARK__HREF = 2;
 
 	/**
 	 * The feature id for the '<em><b>Timestamp</b></em>' attribute.
@@ -232,16 +241,25 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MARKER__TIMESTAMP = 3;
+	int BOOKMARK__TIMESTAMP = 3;
 
 	/**
-	 * The number of structural features of the '<em>Marker</em>' class.
+	 * The feature id for the '<em><b>Text</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MARKER_FEATURE_COUNT = 4;
+	int BOOKMARK__TEXT = 4;
+
+	/**
+	 * The number of structural features of the '<em>Bookmark</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOKMARK_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.AnnotationImpl <em>Annotation</em>}' class.
@@ -260,7 +278,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__ID = MARKER__ID;
+	int ANNOTATION__ID = BOOKMARK__ID;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -269,7 +287,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__LOCATION = MARKER__LOCATION;
+	int ANNOTATION__LOCATION = BOOKMARK__LOCATION;
 
 	/**
 	 * The feature id for the '<em><b>Href</b></em>' attribute.
@@ -278,7 +296,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__HREF = MARKER__HREF;
+	int ANNOTATION__HREF = BOOKMARK__HREF;
 
 	/**
 	 * The feature id for the '<em><b>Timestamp</b></em>' attribute.
@@ -287,16 +305,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__TIMESTAMP = MARKER__TIMESTAMP;
-
-	/**
-	 * The feature id for the '<em><b>Color</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ANNOTATION__COLOR = MARKER_FEATURE_COUNT + 0;
+	int ANNOTATION__TIMESTAMP = BOOKMARK__TIMESTAMP;
 
 	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
@@ -305,7 +314,16 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__TEXT = MARKER_FEATURE_COUNT + 1;
+	int ANNOTATION__TEXT = BOOKMARK__TEXT;
+
+	/**
+	 * The feature id for the '<em><b>Color</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ANNOTATION__COLOR = BOOKMARK_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Comment</b></em>' attribute.
@@ -314,7 +332,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__COMMENT = MARKER_FEATURE_COUNT + 2;
+	int ANNOTATION__COMMENT = BOOKMARK_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Annotation</em>' class.
@@ -323,71 +341,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION_FEATURE_COUNT = MARKER_FEATURE_COUNT + 3;
-
-	/**
-	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.BookmarkImpl <em>Bookmark</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see no.resheim.elibrarium.library.impl.BookmarkImpl
-	 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getBookmark()
-	 * @generated
-	 */
-	int BOOKMARK = 4;
-
-	/**
-	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOKMARK__ID = MARKER__ID;
-
-	/**
-	 * The feature id for the '<em><b>Location</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOKMARK__LOCATION = MARKER__LOCATION;
-
-	/**
-	 * The feature id for the '<em><b>Href</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOKMARK__HREF = MARKER__HREF;
-
-	/**
-	 * The feature id for the '<em><b>Timestamp</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOKMARK__TIMESTAMP = MARKER__TIMESTAMP;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOKMARK__TYPE = MARKER_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Bookmark</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOKMARK_FEATURE_COUNT = MARKER_FEATURE_COUNT + 1;
+	int ANNOTATION_FEATURE_COUNT = BOOKMARK_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.MetadataImpl <em>Metadata</em>}' class.
@@ -397,7 +351,7 @@ public interface LibraryPackage extends EPackage {
 	 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getMetadata()
 	 * @generated
 	 */
-	int METADATA = 5;
+	int METADATA = 4;
 
 	/**
 	 * The feature id for the '<em><b>Key</b></em>' attribute.
@@ -434,17 +388,7 @@ public interface LibraryPackage extends EPackage {
 	 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getAnnotationColor()
 	 * @generated
 	 */
-	int ANNOTATION_COLOR = 6;
-
-	/**
-	 * The meta object id for the '{@link no.resheim.elibrarium.library.BookmarkType <em>Bookmark Type</em>}' enum.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see no.resheim.elibrarium.library.BookmarkType
-	 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getBookmarkType()
-	 * @generated
-	 */
-	int BOOKMARK_TYPE = 7;
+	int ANNOTATION_COLOR = 5;
 
 
 	/**
@@ -545,17 +489,6 @@ public interface LibraryPackage extends EPackage {
 	EAttribute getBook_Author();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link no.resheim.elibrarium.library.Book#getAnnotations <em>Annotations</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Annotations</em>'.
-	 * @see no.resheim.elibrarium.library.Book#getAnnotations()
-	 * @see #getBook()
-	 * @generated
-	 */
-	EReference getBook_Annotations();
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link no.resheim.elibrarium.library.Book#getBookmarks <em>Bookmarks</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -578,58 +511,91 @@ public interface LibraryPackage extends EPackage {
 	EReference getBook_Metadata();
 
 	/**
-	 * Returns the meta object for class '{@link no.resheim.elibrarium.library.Marker <em>Marker</em>}'.
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Book#getLastHref <em>Last Href</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Marker</em>'.
-	 * @see no.resheim.elibrarium.library.Marker
+	 * @return the meta object for the attribute '<em>Last Href</em>'.
+	 * @see no.resheim.elibrarium.library.Book#getLastHref()
+	 * @see #getBook()
 	 * @generated
 	 */
-	EClass getMarker();
+	EAttribute getBook_LastHref();
 
 	/**
-	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Marker#getId <em>Id</em>}'.
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Book#getLastLocation <em>Last Location</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Last Location</em>'.
+	 * @see no.resheim.elibrarium.library.Book#getLastLocation()
+	 * @see #getBook()
+	 * @generated
+	 */
+	EAttribute getBook_LastLocation();
+
+	/**
+	 * Returns the meta object for class '{@link no.resheim.elibrarium.library.Bookmark <em>Bookmark</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Bookmark</em>'.
+	 * @see no.resheim.elibrarium.library.Bookmark
+	 * @generated
+	 */
+	EClass getBookmark();
+
+	/**
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Bookmark#getId <em>Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see no.resheim.elibrarium.library.Marker#getId()
-	 * @see #getMarker()
+	 * @see no.resheim.elibrarium.library.Bookmark#getId()
+	 * @see #getBookmark()
 	 * @generated
 	 */
-	EAttribute getMarker_Id();
+	EAttribute getBookmark_Id();
 
 	/**
-	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Marker#getLocation <em>Location</em>}'.
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Bookmark#getLocation <em>Location</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Location</em>'.
-	 * @see no.resheim.elibrarium.library.Marker#getLocation()
-	 * @see #getMarker()
+	 * @see no.resheim.elibrarium.library.Bookmark#getLocation()
+	 * @see #getBookmark()
 	 * @generated
 	 */
-	EAttribute getMarker_Location();
+	EAttribute getBookmark_Location();
 
 	/**
-	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Marker#getHref <em>Href</em>}'.
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Bookmark#getHref <em>Href</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Href</em>'.
-	 * @see no.resheim.elibrarium.library.Marker#getHref()
-	 * @see #getMarker()
+	 * @see no.resheim.elibrarium.library.Bookmark#getHref()
+	 * @see #getBookmark()
 	 * @generated
 	 */
-	EAttribute getMarker_Href();
+	EAttribute getBookmark_Href();
 
 	/**
-	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Marker#getTimestamp <em>Timestamp</em>}'.
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Bookmark#getTimestamp <em>Timestamp</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Timestamp</em>'.
-	 * @see no.resheim.elibrarium.library.Marker#getTimestamp()
-	 * @see #getMarker()
+	 * @see no.resheim.elibrarium.library.Bookmark#getTimestamp()
+	 * @see #getBookmark()
 	 * @generated
 	 */
-	EAttribute getMarker_Timestamp();
+	EAttribute getBookmark_Timestamp();
+
+	/**
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Bookmark#getText <em>Text</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Text</em>'.
+	 * @see no.resheim.elibrarium.library.Bookmark#getText()
+	 * @see #getBookmark()
+	 * @generated
+	 */
+	EAttribute getBookmark_Text();
 
 	/**
 	 * Returns the meta object for class '{@link no.resheim.elibrarium.library.Annotation <em>Annotation</em>}'.
@@ -653,17 +619,6 @@ public interface LibraryPackage extends EPackage {
 	EAttribute getAnnotation_Color();
 
 	/**
-	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Annotation#getText <em>Text</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Text</em>'.
-	 * @see no.resheim.elibrarium.library.Annotation#getText()
-	 * @see #getAnnotation()
-	 * @generated
-	 */
-	EAttribute getAnnotation_Text();
-
-	/**
 	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Annotation#getComment <em>Comment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -673,27 +628,6 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getAnnotation_Comment();
-
-	/**
-	 * Returns the meta object for class '{@link no.resheim.elibrarium.library.Bookmark <em>Bookmark</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Bookmark</em>'.
-	 * @see no.resheim.elibrarium.library.Bookmark
-	 * @generated
-	 */
-	EClass getBookmark();
-
-	/**
-	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Bookmark#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Type</em>'.
-	 * @see no.resheim.elibrarium.library.Bookmark#getType()
-	 * @see #getBookmark()
-	 * @generated
-	 */
-	EAttribute getBookmark_Type();
 
 	/**
 	 * Returns the meta object for class '{@link no.resheim.elibrarium.library.Metadata <em>Metadata</em>}'.
@@ -736,16 +670,6 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 */
 	EEnum getAnnotationColor();
-
-	/**
-	 * Returns the meta object for enum '{@link no.resheim.elibrarium.library.BookmarkType <em>Bookmark Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Bookmark Type</em>'.
-	 * @see no.resheim.elibrarium.library.BookmarkType
-	 * @generated
-	 */
-	EEnum getBookmarkType();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -846,14 +770,6 @@ public interface LibraryPackage extends EPackage {
 		EAttribute BOOK__AUTHOR = eINSTANCE.getBook_Author();
 
 		/**
-		 * The meta object literal for the '<em><b>Annotations</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference BOOK__ANNOTATIONS = eINSTANCE.getBook_Annotations();
-
-		/**
 		 * The meta object literal for the '<em><b>Bookmarks</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -870,14 +786,30 @@ public interface LibraryPackage extends EPackage {
 		EReference BOOK__METADATA = eINSTANCE.getBook_Metadata();
 
 		/**
-		 * The meta object literal for the '{@link no.resheim.elibrarium.library.impl.MarkerImpl <em>Marker</em>}' class.
+		 * The meta object literal for the '<em><b>Last Href</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see no.resheim.elibrarium.library.impl.MarkerImpl
-		 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getMarker()
 		 * @generated
 		 */
-		EClass MARKER = eINSTANCE.getMarker();
+		EAttribute BOOK__LAST_HREF = eINSTANCE.getBook_LastHref();
+
+		/**
+		 * The meta object literal for the '<em><b>Last Location</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BOOK__LAST_LOCATION = eINSTANCE.getBook_LastLocation();
+
+		/**
+		 * The meta object literal for the '{@link no.resheim.elibrarium.library.impl.BookmarkImpl <em>Bookmark</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see no.resheim.elibrarium.library.impl.BookmarkImpl
+		 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getBookmark()
+		 * @generated
+		 */
+		EClass BOOKMARK = eINSTANCE.getBookmark();
 
 		/**
 		 * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
@@ -885,7 +817,7 @@ public interface LibraryPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MARKER__ID = eINSTANCE.getMarker_Id();
+		EAttribute BOOKMARK__ID = eINSTANCE.getBookmark_Id();
 
 		/**
 		 * The meta object literal for the '<em><b>Location</b></em>' attribute feature.
@@ -893,7 +825,7 @@ public interface LibraryPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MARKER__LOCATION = eINSTANCE.getMarker_Location();
+		EAttribute BOOKMARK__LOCATION = eINSTANCE.getBookmark_Location();
 
 		/**
 		 * The meta object literal for the '<em><b>Href</b></em>' attribute feature.
@@ -901,7 +833,7 @@ public interface LibraryPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MARKER__HREF = eINSTANCE.getMarker_Href();
+		EAttribute BOOKMARK__HREF = eINSTANCE.getBookmark_Href();
 
 		/**
 		 * The meta object literal for the '<em><b>Timestamp</b></em>' attribute feature.
@@ -909,7 +841,15 @@ public interface LibraryPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MARKER__TIMESTAMP = eINSTANCE.getMarker_Timestamp();
+		EAttribute BOOKMARK__TIMESTAMP = eINSTANCE.getBookmark_Timestamp();
+
+		/**
+		 * The meta object literal for the '<em><b>Text</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BOOKMARK__TEXT = eINSTANCE.getBookmark_Text();
 
 		/**
 		 * The meta object literal for the '{@link no.resheim.elibrarium.library.impl.AnnotationImpl <em>Annotation</em>}' class.
@@ -930,38 +870,12 @@ public interface LibraryPackage extends EPackage {
 		EAttribute ANNOTATION__COLOR = eINSTANCE.getAnnotation_Color();
 
 		/**
-		 * The meta object literal for the '<em><b>Text</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute ANNOTATION__TEXT = eINSTANCE.getAnnotation_Text();
-
-		/**
 		 * The meta object literal for the '<em><b>Comment</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute ANNOTATION__COMMENT = eINSTANCE.getAnnotation_Comment();
-
-		/**
-		 * The meta object literal for the '{@link no.resheim.elibrarium.library.impl.BookmarkImpl <em>Bookmark</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see no.resheim.elibrarium.library.impl.BookmarkImpl
-		 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getBookmark()
-		 * @generated
-		 */
-		EClass BOOKMARK = eINSTANCE.getBookmark();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute BOOKMARK__TYPE = eINSTANCE.getBookmark_Type();
 
 		/**
 		 * The meta object literal for the '{@link no.resheim.elibrarium.library.impl.MetadataImpl <em>Metadata</em>}' class.
@@ -998,16 +912,6 @@ public interface LibraryPackage extends EPackage {
 		 * @generated
 		 */
 		EEnum ANNOTATION_COLOR = eINSTANCE.getAnnotationColor();
-
-		/**
-		 * The meta object literal for the '{@link no.resheim.elibrarium.library.BookmarkType <em>Bookmark Type</em>}' enum.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see no.resheim.elibrarium.library.BookmarkType
-		 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getBookmarkType()
-		 * @generated
-		 */
-		EEnum BOOKMARK_TYPE = eINSTANCE.getBookmarkType();
 
 	}
 
