@@ -600,7 +600,8 @@
 		<module>no.resheim.elibrarium.library.ui</module>
 		<module>no.resheim.elibrarium.epub-feature</module>
 		<module>no.resheim.elibrarium.epub.core</module>
-		<module>no.resheim.elibrarium.epub.ui</module>		
+		<module>no.resheim.elibrarium.epub.ui</module>
+		<module>no.resheim.elibrarium.sdk-feature</module>		
 		<module>no.resheim.elibrarium-site</module>
 	</modules>
 </project>
