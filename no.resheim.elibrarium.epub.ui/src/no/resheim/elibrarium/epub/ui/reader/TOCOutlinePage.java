@@ -15,7 +15,7 @@ import no.resheim.elibrarium.epub.core.EPUBUtil;
 import no.resheim.elibrarium.epub.ui.EPUBUIPlugin;
 import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.Book;
-import no.resheim.elibrarium.library.Marker;
+import no.resheim.elibrarium.library.Bookmark;
 import no.resheim.elibrarium.library.ui.AnnotationViewer;
 
 import org.eclipse.core.runtime.ListenerList;
@@ -69,7 +69,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 		public Object[] getElements(Object parent) {
 			if (parent instanceof Book) {
-				return ((Book) parent).getAnnotations().toArray();
+				return ((Book) parent).getBookmarks().toArray();
 			}
 			return new Object[0];
 		}
@@ -157,12 +157,13 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		Object element = s.getFirstElement();
 		if (element instanceof NavPoint) {
 			reader.navigateTo((NavPoint) element);
-		} else if (element instanceof Marker) {
-			reader.navigateTo((Marker) element);
+		} else if (element instanceof Bookmark) {
+			reader.navigateTo((Bookmark) element);
 		}
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
+		System.out.println("TOCOutlinePage.fillContextMenu()");
 		ISelection selection = notes.getSelection();
 		if (selection instanceof IStructuredSelection) {
 			Object o = ((IStructuredSelection) selection).getFirstElement();
@@ -287,7 +288,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 				if (selection instanceof IStructuredSelection) {
 					Object o = ((IStructuredSelection) selection).getFirstElement();
 					if (o instanceof Annotation) {
-						EPUBUtil.getBook(ops).getAnnotations().remove(o);
+						EPUBUtil.getBook(ops).getBookmarks().remove(o);
 					}
 				}
 			}

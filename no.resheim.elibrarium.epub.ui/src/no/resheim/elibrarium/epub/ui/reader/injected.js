@@ -8,6 +8,8 @@ try {
 	bodyID.style.width = width + 'px';
 	bodyID.style.height = desiredHeight + 'px';
 	bodyID.style.WebkitColumnCount = pageCount;
+	
+	debugging = false;
 
 	/***************************************************************************
 	 * Resize images so that their width is never larger than the width of the
@@ -39,14 +41,54 @@ try {
 	}
 	
 	/**
-	 * Adjust the scroll position of the body so that the current page is in view.
+	 * Adjust the scroll position of the body so that the current page is in 
+	 * view. Returns the text of the first H1 element. 
 	 * 
 	 * @param page the page number
 	 */
 	function navigateToPage(page) {
 		bodyID.scrollLeft = + (pageWidth * (page - 1));
+	}
+	
+	function getChapterTitle(){
 		var h1 = $("h1:first");
-		return h1.text();
+		return h1.text();		
+	}
+		
+	/**
+	 * 
+	 * @returns the serialized page bookmark
+	 */
+	function getPageBookmark(){
+		var elem = $('p,h1,h2,h3,h4,h5,h6,pre,img').filter(function() {
+		    return (($(this).offset().left >= bodyID.scrollLeft) 
+		    		&& ($(this).offset().left < bodyID.scrollLeft+pageWidth));
+		});
+		if (elem!=null){
+			var range = rangy.createRangyRange(document);
+			range.startContainer = elem.get(0);
+			range.endContainer = range.startContainer;
+			range.startOffset=0;
+			range.endOffset=0;
+			var serialized = rangy.serializeRange(range,false,document);
+			range.detach();
+			return serialized;
+		}		
+	}
+	/**
+	 * 
+	 * @param serialized the serialized page bookmark
+	 */
+	function navigateToBookmark(serialized){
+		if (rangy.canDeserializeRange(serialized)){
+			range = rangy.deserializeRange(serialized,document);
+			var id = range.startContainer.id;
+			range.startContainer.id='bookmark'; 
+			setOffsetToElement('bookmark');
+			range.detach();
+		} else {
+			alert("Could not restore bookmark");
+		}
 	}
 	
 	/**
