@@ -85,16 +85,15 @@ try {
 		}		
 	}
 	
-	function isInitialized(){
-		return rangy.initialized;
-	}
-	
 	/**
 	 * Navigates to the given bookmark.
 	 * 
 	 * @param serialized the serialized page bookmark
 	 */
 	function navigateToBookmark(serialized){
+		if (!rangy.initialized){
+			rangy.init();
+		}
 		range = rangy.deserializeRange(serialized,document);
 		var id = range.startContainer.id;
 		range.startContainer.id='bookmark'; 

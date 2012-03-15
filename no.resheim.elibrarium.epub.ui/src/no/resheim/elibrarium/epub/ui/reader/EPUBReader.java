@@ -56,7 +56,6 @@ import org.eclipse.mylyn.docs.epub.opf.Reference;
 import org.eclipse.mylyn.docs.epub.opf.Type;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.browser.LocationEvent;
@@ -855,6 +854,7 @@ public class EPUBReader extends EditorPart {
 	 */
 	private void navigateToPage(int page) {
 		browser.evaluate("navigateToPage(" + page + ");");
+		currentLocation = (String) browser.evaluate("bookmark = getPageBookmark();return bookmark;");
 		updateTitle();
 		updateLabels();
 	}
@@ -905,7 +905,6 @@ public class EPUBReader extends EditorPart {
 				pageWidth = (int) Math.round((Double) browser.evaluate("return desiredWidth"));
 				lastWidth = browser.getSize().x;
 				lastHeight = browser.getSize().y;
-				System.out.println("EPUBReader.paginateChapter()");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -993,33 +992,19 @@ public class EPUBReader extends EditorPart {
 	}
 
 	private void updateTitle() {
+		String title = (String) browser.evaluate("title = getChapterTitle();return title;");
+		// Fake a small caps effect.
+		title = title.toUpperCase();
+		StringReader sr = new StringReader(title);
+		StringBuilder sb = new StringBuilder();
+		int c = -1;
 		try {
-			// TODO: Make sure we that Rangy is initialized.
-			try {
-				Thread.sleep(800);
-			} catch (InterruptedException e) {
+			while ((c = sr.read()) > -1) {
+				sb.append((char) c);
+				sb.append(' ');
 			}
-
-			String title = (String) browser.evaluate("title = getChapterTitle();return title;");
-			currentLocation = (String) browser.evaluate("bookmark = getPageBookmark();return bookmark;");
-			// Fake a small caps effect.
-			title = title.toUpperCase();
-			StringReader sr = new StringReader(title);
-			StringBuilder sb = new StringBuilder();
-			int c = -1;
-			try {
-				while ((c = sr.read()) > -1) {
-					sb.append((char) c);
-					sb.append(' ');
-				}
-				header.setText(sb.toString());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (SWTException e) {
-			// We can get an exception here if Rangy is not properly
-			// initialized. If this happens we must implement a better way
-			// of hanlding this situation.
+			header.setText(sb.toString());
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
