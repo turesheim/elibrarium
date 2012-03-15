@@ -9,7 +9,7 @@ Please note that this project is in it's early stages. So while there is a worki
 
 ### Supported platforms
 
-The reader is relying on the WebKit HTML rendering engine so this must be present on the host system. On OS X and i.e. Ubuntu 10.04 this is already the case. On Windows Safari must be installed. Also note that Eclipse version 3.7 or newer is required.
+The reader is relying on the WebKit HTML rendering engine so this must be present on the host system. On OS X and i.e. Ubuntu 10.04 this is already the case. On Windows; Safari must be installed. Also note that Eclipse version 3.7 or newer is required.
 
 <table>
 <tr><th>Platform</th><th>Requirements</th></tr>
