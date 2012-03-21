@@ -820,8 +820,6 @@ public class EPUBReader extends EditorPart {
 		String ref = marker.getHref();
 		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref + "#" + marker.getId();
 		direction = Direction.LOCATION;
-		// XXX: Clear URL to force reload
-		browser.setText("<html/>");
 		browser.setUrl(url);
 		setPartName(getTitle(ops));
 	}
@@ -837,8 +835,6 @@ public class EPUBReader extends EditorPart {
 			String ref = navPoint.getContent().getSrc();
 			String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref;
 			direction = Direction.LOCATION;
-			// XXX: Clear URL to force reload
-			browser.setText("<html/>");
 			browser.setUrl(url);
 			setPartName(getTitle(ops));
 		} catch (Exception e) {
