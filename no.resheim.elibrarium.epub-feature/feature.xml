@@ -18,10 +18,20 @@
       %license
    </license>
 
-   <includes
-         id="org.eclipse.mylyn.docs.epub"
-         version="0.0.0"
-         search-location="both"/>
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.mylyn.docs.epub.core" version="0.8.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.common" version="2.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.ecore" version="2.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.views" version="3.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.browser" version="3.3.100" match="greaterOrEqual"/>
+      <import plugin="no.resheim.elibrarium.epub.core" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="no.resheim.elibrarium.library.core" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="no.resheim.elibrarium.library.ui" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
 
    <plugin
          id="no.resheim.elibrarium.epub.ui"
