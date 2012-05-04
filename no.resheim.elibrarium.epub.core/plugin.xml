@@ -9,4 +9,15 @@
       </initializer>
    </extension>
 
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            describer="no.resheim.elibrarium.epub.core.EpubContentDescriber"
+            file-extensions="epub"
+            id="epubFile"
+            name="EPUB File"
+            priority="high">
+      </content-type>
+   </extension>
+
 </plugin>
