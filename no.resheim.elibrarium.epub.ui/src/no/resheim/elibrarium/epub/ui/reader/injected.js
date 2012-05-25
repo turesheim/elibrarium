@@ -69,7 +69,7 @@ try {
 	 * @returns the serialized page bookmark
 	 */
 	function getPageBookmark(){
-		var elem = $('p,h1,h2,h3,h4,h5,h6,pre,img').filter(function() {
+		var elem = $('p,h1,h2,h3,h4,h5,h6,pre,img,b,i,code,q,a').filter(function() {
 		    return (($(this).offset().left >= bodyID.scrollLeft) 
 		    		&& ($(this).offset().left < bodyID.scrollLeft+pageWidth));
 		});

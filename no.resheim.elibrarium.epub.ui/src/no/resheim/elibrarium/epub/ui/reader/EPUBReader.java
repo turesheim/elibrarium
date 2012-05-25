@@ -837,10 +837,7 @@ public class EPUBReader extends EditorPart {
 
 	public void navigateTo(Bookmark marker) {
 		String ref = marker.getHref();
-		String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref + "#" + marker.getId();
-		direction = Direction.LOCATION;
-		browser.setUrl(url);
-		setPartName(getTitle(ops));
+		navigateTo(ref);
 	}
 
 	/**
@@ -850,27 +847,36 @@ public class EPUBReader extends EditorPart {
 	 *            the point to navigate to
 	 */
 	public void navigateTo(NavPoint navPoint) {
+		String url = navPoint.getContent().getSrc();
+		navigateTo(url);
+	}
+
+	public void navigateTo(String url) {
 		try {
-			String url = navPoint.getContent().getSrc();
 			String newRef = url;
 			String newAnchor = null;
 			if (url.indexOf('#') > -1) {
 				newRef = url.substring(0, url.indexOf('#'));
 				newAnchor = url.substring(url.indexOf('#') + 1);
 			}
-			// New chapter which must be loaded
+			direction = Direction.LOCATION;
 			if (!currentHref.equals(newRef)) {
+				// New chapter which must be loaded
 				String path = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + url;
-				direction = Direction.LOCATION;
 				browser.setUrl(path);
-				setPartName(getTitle(ops));
 			} else {
+				// Browse to the anchor or the first page
 				if (newAnchor != null) {
 					currentAnchor = newAnchor;
 					browser.execute("setOffsetToElement('" + currentAnchor + "')");
 				} else {
 					browser.execute("navigateToPage(1)");
 				}
+				// Determine the current location so that it can be restored
+				// when reopening the book at a later stage.
+				currentLocation = (String) browser.evaluate("bookmark = getPageBookmark();return bookmark;");
+				updateTitle();
+				updateLabels();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -885,6 +891,8 @@ public class EPUBReader extends EditorPart {
 	 */
 	private void navigateToPage(int page) {
 		browser.evaluate("navigateToPage(" + page + ");");
+		// Determine the current location so that it can be restored when
+		// reopening the book at a later stage.
 		currentLocation = (String) browser.evaluate("bookmark = getPageBookmark();return bookmark;");
 		updateTitle();
 		updateLabels();
