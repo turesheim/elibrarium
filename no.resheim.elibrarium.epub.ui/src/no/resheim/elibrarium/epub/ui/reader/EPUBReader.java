@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import no.resheim.elibrarium.epub.core.EPUBCorePlugin;
 import no.resheim.elibrarium.epub.core.EPUBUtil;
+import no.resheim.elibrarium.epub.ui.EPUBUIPlugin;
 import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.AnnotationColor;
 import no.resheim.elibrarium.library.Book;
@@ -32,6 +33,8 @@ import no.resheim.elibrarium.library.core.LibraryUtil;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
@@ -84,6 +87,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 /**
@@ -255,11 +259,16 @@ public class EPUBReader extends EditorPart {
 		}
 
 		private void paginate() {
-			if (browser.getSize().x != lastWidth && browser.getSize().y != lastHeight) {
+			if (closing) {
+				return;
+			}
+			int x = browser.getSize().x;
+			int y = browser.getSize().y;
+			if (x != lastWidth && y != lastHeight) {
 				paginateChapter();
-				paginationJob.update(browser.getSize().x, browser.getSize().y);
-				lastWidth = browser.getSize().x;
-				lastHeight = browser.getSize().y;
+				paginationJob.update(x, y);
+				lastWidth = x;
+				lastHeight = y;
 			}
 		}
 
@@ -334,6 +343,8 @@ public class EPUBReader extends EditorPart {
 
 	private ResizeListener resizeListener;
 
+	private boolean closing;
+
 	public EPUBReader() {
 		super();
 	}
@@ -342,6 +353,7 @@ public class EPUBReader extends EditorPart {
 	 * Close the editor correctly.
 	 */
 	public boolean close() {
+		closing = true;
 		final boolean[] result = new boolean[1];
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -445,13 +457,17 @@ public class EPUBReader extends EditorPart {
 
 	@Override
 	public void dispose() {
-		paginationJob.cancel();
+		if (paginationJob != null) {
+			paginationJob.cancel();
+		}
 		if (image != null && !image.isDisposed())
 			image.dispose();
 		image = null;
 		// Store the last location
-		currentBook.setLastLocation(currentLocation);
-		currentBook.setLastHref(currentHref);
+		if (currentBook != null) {
+			currentBook.setLastLocation(currentLocation);
+			currentBook.setLastHref(currentHref);
+		}
 		disposed = true;
 		super.dispose();
 	}
@@ -605,7 +621,6 @@ public class EPUBReader extends EditorPart {
 				epub.unpack(path.toFile(), rootFolder);
 				// Use the first OPS publication we find
 				ops = epub.getOPSPublications().get(0);
-				setPartName(getTitle(ops));
 				paginationJob = new PaginationJob(ops);
 				paginationJob.setUser(false);
 				paginationJob.setPriority(Job.LONG);
@@ -614,8 +629,12 @@ public class EPUBReader extends EditorPart {
 				installBookListener(currentBook);
 				initialURL = getOpeningPage(currentBook.getLastHref());
 				currentLocation = currentBook.getLastLocation();
+				setPartName(getTitle(ops));
 			} catch (Exception e) {
-				e.printStackTrace();
+				StatusManager.getManager()
+						.handle(new Status(IStatus.ERROR, EPUBUIPlugin.PLUGIN_ID, "Could not open book", e),
+								StatusManager.SHOW);
+				close();
 			}
 
 		} else {
