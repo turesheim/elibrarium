@@ -12,8 +12,10 @@
 package no.resheim.elibrarium.library.ui.views;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.MessageFormat;
 
 import no.resheim.elibrarium.library.Book;
@@ -27,6 +29,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -37,9 +40,11 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -186,6 +191,26 @@ public class LibraryView extends ViewPart implements ILibraryListener {
 		viewer.setSorter(new NameSorter());
 
 		viewer.setLabelProvider(new DecoratingStyledCellLabelProvider(new LibraryLabelProvider(), null, null));
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				ISelection selection = event.getSelection();
+				if (selection instanceof IStructuredSelection) {
+					Object o = ((IStructuredSelection) selection).getFirstElement();
+					if (o instanceof Book) {
+						String urlString = ((Book) o).getBookURL();
+						try {
+							URL url = new URL(urlString);
+							IStatusLineManager manager = getViewSite().getActionBars().getStatusLineManager();
+							manager.setMessage(url.getFile());
+						} catch (MalformedURLException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		});
 		// Register the selection provider
 		getSite().setSelectionProvider(viewer);
 
