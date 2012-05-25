@@ -851,11 +851,27 @@ public class EPUBReader extends EditorPart {
 	 */
 	public void navigateTo(NavPoint navPoint) {
 		try {
-			String ref = navPoint.getContent().getSrc();
-			String url = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + ref;
-			direction = Direction.LOCATION;
-			browser.setUrl(url);
-			setPartName(getTitle(ops));
+			String url = navPoint.getContent().getSrc();
+			String newRef = url;
+			String newAnchor = null;
+			if (url.indexOf('#') > -1) {
+				newRef = url.substring(0, url.indexOf('#'));
+				newAnchor = url.substring(url.indexOf('#') + 1);
+			}
+			// New chapter which must be loaded
+			if (!currentHref.equals(newRef)) {
+				String path = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + url;
+				direction = Direction.LOCATION;
+				browser.setUrl(path);
+				setPartName(getTitle(ops));
+			} else {
+				if (newAnchor != null) {
+					currentAnchor = newAnchor;
+					browser.execute("setOffsetToElement('" + currentAnchor + "')");
+				} else {
+					browser.execute("navigateToPage(1)");
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

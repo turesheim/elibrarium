@@ -36,7 +36,7 @@ try {
 		if (p.length>0){
 			var offset = p.offset();
 			var page = Math.floor(offset.left/pageWidth);
-			bodyID.scrollLeft = page*pageWidth;
+			$('body').scrollLeft(page*pageWidth);
 		}
 	}
 	
