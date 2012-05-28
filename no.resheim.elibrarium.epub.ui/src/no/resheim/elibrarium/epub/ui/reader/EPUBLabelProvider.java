@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Torkild U. Resheim.
+ * Copyright (c) 2011, 2012 Torkild U. Resheim.
  * 
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -11,7 +11,7 @@
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui.reader;
 
-import no.resheim.elibrarium.library.Annotation;
+import no.resheim.elibrarium.library.Bookmark;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.FeatureMap;
@@ -40,9 +40,12 @@ public class EPUBLabelProvider extends LabelProvider {
 					return ((FeatureEList) o).get(0).toString();
 				}
 			}
-		} else if (element instanceof Annotation) {
-			Annotation note = ((Annotation) element);
+		} else if (element instanceof Bookmark) {
+			Bookmark note = ((Bookmark) element);
 			String text = note.getText();
+			if (text == null) {
+				return "<missing text>";
+			}
 			if (text.length() > 140) {
 				text = text.substring(0, 140) + "...";
 			}
