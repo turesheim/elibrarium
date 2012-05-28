@@ -11,6 +11,9 @@
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui;
 
+import no.resheim.elibrarium.library.ui.LibraryUIPlugin;
+
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
@@ -20,6 +23,12 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * 
  */
 public class EPUBUIPlugin extends AbstractUIPlugin {
+
+	/** Image for an inactive bookmark */
+	public static final String IMG_BOOKMARK_INACTIVE = "img_bookmark_inactive";
+
+	/** Image for an active bookmark */
+	public static final String IMG_BOOKMARK_ACTIVE = "img_bookmark_active";
 
 	public EPUBUIPlugin() {
 		plugin = this;
@@ -37,5 +46,13 @@ public class EPUBUIPlugin extends AbstractUIPlugin {
 	}
 
 	private static EPUBUIPlugin plugin;
+
+	@Override
+	protected void initializeImageRegistry(ImageRegistry reg) {
+		super.initializeImageRegistry(reg);
+		reg.put(IMG_BOOKMARK_ACTIVE, LibraryUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/bookmark_active.png"));
+		reg.put(IMG_BOOKMARK_INACTIVE,
+				LibraryUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/bookmark_inactive.png"));
+	}
 
 }
