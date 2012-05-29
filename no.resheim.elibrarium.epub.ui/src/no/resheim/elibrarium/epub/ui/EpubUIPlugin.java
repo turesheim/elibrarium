@@ -22,7 +22,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author Torkild U. Resheim
  * 
  */
-public class EPUBUIPlugin extends AbstractUIPlugin {
+public class EpubUIPlugin extends AbstractUIPlugin {
 
 	/** Image for an inactive bookmark */
 	public static final String IMG_BOOKMARK_INACTIVE = "img_bookmark_inactive";
@@ -30,7 +30,7 @@ public class EPUBUIPlugin extends AbstractUIPlugin {
 	/** Image for an active bookmark */
 	public static final String IMG_BOOKMARK_ACTIVE = "img_bookmark_active";
 
-	public EPUBUIPlugin() {
+	public EpubUIPlugin() {
 		plugin = this;
 	}
 
@@ -41,11 +41,11 @@ public class EPUBUIPlugin extends AbstractUIPlugin {
 	 * 
 	 * @return the shared instance
 	 */
-	public static EPUBUIPlugin getDefault() {
+	public static EpubUIPlugin getDefault() {
 		return plugin;
 	}
 
-	private static EPUBUIPlugin plugin;
+	private static EpubUIPlugin plugin;
 
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {

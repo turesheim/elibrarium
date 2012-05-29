@@ -25,7 +25,7 @@ import org.eclipse.mylyn.docs.epub.ncx.NavPoint;
  * 
  * @author Torkild U. Resheim
  */
-public class EPUBLabelProvider extends LabelProvider {
+public class EpubLabelProvider extends LabelProvider {
 
 	private static final EStructuralFeature TEXT = XMLTypePackage.eINSTANCE.getXMLTypeDocumentRoot_Text();
 

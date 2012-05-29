@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import no.resheim.elibrarium.epub.core.EPUBUtil;
+import no.resheim.elibrarium.epub.core.EpubUtil;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -171,7 +171,7 @@ public class PaginationJob extends Job {
 	private final Shell shell;
 
 	public PaginationJob(OPSPublication ops) {
-		super(MessageFormat.format("Paginating \"{0}\"", EPUBUtil.getFirstTitle(ops)));
+		super(MessageFormat.format("Paginating \"{0}\"", EpubUtil.getFirstTitle(ops)));
 		this.ops = ops;
 		shell = new Shell();
 		browser = new Browser(shell, SWT.NONE);

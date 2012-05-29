@@ -11,8 +11,8 @@
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui.reader;
 
-import no.resheim.elibrarium.epub.core.EPUBUtil;
-import no.resheim.elibrarium.epub.ui.EPUBUIPlugin;
+import no.resheim.elibrarium.epub.core.EpubUtil;
+import no.resheim.elibrarium.epub.ui.EpubUIPlugin;
 import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Bookmark;
@@ -89,7 +89,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 	private Composite pagebook;
 
-	private final EPUBReader reader;
+	private final EpubReader reader;
 
 	private final ListenerList selectionChangedListeners = new ListenerList();
 
@@ -99,7 +99,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 	private TreeViewer toc;
 
-	public TOCOutlinePage(OPSPublication epub, EPUBReader reader) {
+	public TOCOutlinePage(OPSPublication epub, EpubReader reader) {
 		this.ops = epub;
 		this.reader = reader;
 	}
@@ -111,7 +111,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 	@Override
 	public void createControl(Composite parent) {
 
-		Book book = EPUBUtil.getBook(ops);
+		Book book = EpubUtil.getBook(ops);
 
 		pagebook = new Composite(parent, SWT.NONE);
 		layout = new StackLayout();
@@ -119,13 +119,13 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 		toc = new TreeViewer(pagebook, getTreeStyle());
 		toc.setContentProvider(new TOCContentProvider());
-		toc.setLabelProvider(new EPUBLabelProvider());
+		toc.setLabelProvider(new EpubLabelProvider());
 		toc.addSelectionChangedListener(this);
 		toc.addDoubleClickListener(this);
 
 		notes = new AnnotationViewer(pagebook, SWT.FULL_SELECTION);
 		notes.setContentProvider(new AnnotationsContentProvider());
-		notes.setLabelProvider(new EPUBLabelProvider());
+		notes.setLabelProvider(new EpubLabelProvider());
 		notes.addSelectionChangedListener(this);
 		notes.addDoubleClickListener(this);
 
@@ -289,7 +289,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 				if (selection instanceof IStructuredSelection) {
 					Object o = ((IStructuredSelection) selection).getFirstElement();
 					if (o instanceof Annotation) {
-						EPUBUtil.getBook(ops).getBookmarks().remove(o);
+						EpubUtil.getBook(ops).getBookmarks().remove(o);
 					}
 				}
 			}
@@ -298,9 +298,9 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		deleteAction.setToolTipText("Deletes the note");
 
 
-		showTOC.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EPUBUIPlugin.PLUGIN_ID,
+		showTOC.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EpubUIPlugin.PLUGIN_ID,
 				"icons/contents.gif"));
-		showAnnotations.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EPUBUIPlugin.PLUGIN_ID,
+		showAnnotations.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EpubUIPlugin.PLUGIN_ID,
 				"icons/marking.gif"));
 	}
 

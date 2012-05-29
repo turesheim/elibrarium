@@ -20,9 +20,9 @@ import java.net.URI;
 import java.util.Date;
 import java.util.UUID;
 
-import no.resheim.elibrarium.epub.core.EPUBCorePlugin;
-import no.resheim.elibrarium.epub.core.EPUBUtil;
-import no.resheim.elibrarium.epub.ui.EPUBUIPlugin;
+import no.resheim.elibrarium.epub.core.EpubCorePlugin;
+import no.resheim.elibrarium.epub.core.EpubUtil;
+import no.resheim.elibrarium.epub.ui.EpubUIPlugin;
 import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.AnnotationColor;
 import no.resheim.elibrarium.library.Book;
@@ -71,7 +71,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -94,7 +93,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * 
  * @author Torkild U. Resheim
  */
-public class EPUBReader extends EditorPart {
+public class EpubReader extends EditorPart {
 
 	/**
 	 * The direction of browsing.
@@ -316,13 +315,11 @@ public class EPUBReader extends EditorPart {
 
 	private boolean disposed;
 
-	private Label header;
-
-	protected Image image;
+	private Label headerLabel;
 
 	protected String initialURL;
 
-	private Label label;
+	private Label footerLabel;
 
 	int lastHeight;
 
@@ -351,7 +348,7 @@ public class EPUBReader extends EditorPart {
 
 	private Label bookmarkLabel;
 
-	public EPUBReader() {
+	public EpubReader() {
 		super();
 	}
 
@@ -363,7 +360,7 @@ public class EPUBReader extends EditorPart {
 		final boolean[] result = new boolean[1];
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				result[0] = getEditorSite().getPage().closeEditor(EPUBReader.this, false);
+				result[0] = getEditorSite().getPage().closeEditor(EpubReader.this, false);
 			}
 		});
 		return result[0];
@@ -384,17 +381,17 @@ public class EPUBReader extends EditorPart {
 
 		GridData gdHeader = new GridData(SWT.CENTER, SWT.TOP, true, false);
 		gdHeader.minimumWidth = 500;
-		header = new Label(c, SWT.CENTER);
-		header.setLayoutData(gdHeader);
-		header.setText(" ");
-		header.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
+		headerLabel = new Label(c, SWT.CENTER);
+		headerLabel.setLayoutData(gdHeader);
+		headerLabel.setText(" ");
+		headerLabel.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
 
 		GridData gdBookmark = new GridData(SWT.CENTER, SWT.BEGINNING, false, false);
 		gdBookmark.minimumWidth = 32;
 		gdBookmark.widthHint = 32;
 		gdBookmark.verticalSpan = 3;
 		bookmarkLabel = new Label(c, SWT.CENTER);
-		bookmarkLabel.setImage(EPUBUIPlugin.getDefault().getImageRegistry().get(EPUBUIPlugin.IMG_BOOKMARK_INACTIVE));
+		bookmarkLabel.setImage(EpubUIPlugin.getDefault().getImageRegistry().get(EpubUIPlugin.IMG_BOOKMARK_INACTIVE));
 		bookmarkLabel.setLayoutData(gdBookmark);
 		bookmarkLabel.addMouseListener(new MouseListener() {
 
@@ -422,11 +419,11 @@ public class EPUBReader extends EditorPart {
 
 		GridData gdFooter = new GridData(SWT.CENTER, SWT.BOTTOM, true, false);
 		gdFooter.minimumWidth = 500;
-		label = new Label(c, SWT.CENTER);
+		footerLabel = new Label(c, SWT.CENTER);
 		gdFooter.horizontalSpan = 2;
-		label.setLayoutData(gdFooter);
-		label.setText(" ");
-		label.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
+		footerLabel.setLayoutData(gdFooter);
+		footerLabel.setText(" ");
+		footerLabel.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
 
 		// Install listener to figure out when we need to re-paginate
 		resizeListener = new ResizeListener();
@@ -500,9 +497,6 @@ public class EPUBReader extends EditorPart {
 		if (paginationJob != null) {
 			paginationJob.cancel();
 		}
-		if (image != null && !image.isDisposed())
-			image.dispose();
-		image = null;
 		// Store the last location
 		if (currentBook != null) {
 			currentBook.setLastLocation(currentLocation);
@@ -672,7 +666,7 @@ public class EPUBReader extends EditorPart {
 				setPartName(getTitle(ops));
 			} catch (Exception e) {
 				StatusManager.getManager()
-						.handle(new Status(IStatus.ERROR, EPUBUIPlugin.PLUGIN_ID, "Could not open book", e),
+						.handle(new Status(IStatus.ERROR, EpubUIPlugin.PLUGIN_ID, "Could not open book", e),
 								StatusManager.SHOW);
 				close();
 			}
@@ -1005,12 +999,12 @@ public class EPUBReader extends EditorPart {
 						currentLocation = location;
 						Bookmark b = hasBookmark();
 						if (b != null) {
-							bookmarkLabel.setImage(EPUBUIPlugin.getDefault().getImageRegistry()
-									.get(EPUBUIPlugin.IMG_BOOKMARK_ACTIVE));
+							bookmarkLabel.setImage(EpubUIPlugin.getDefault().getImageRegistry()
+									.get(EpubUIPlugin.IMG_BOOKMARK_ACTIVE));
 							bookmarkLabel.setToolTipText(b.getText() + "\n(Click to remove bookmark)");
 						} else {
-							bookmarkLabel.setImage(EPUBUIPlugin.getDefault().getImageRegistry()
-									.get(EPUBUIPlugin.IMG_BOOKMARK_INACTIVE));
+							bookmarkLabel.setImage(EpubUIPlugin.getDefault().getImageRegistry()
+									.get(EpubUIPlugin.IMG_BOOKMARK_INACTIVE));
 							bookmarkLabel.setToolTipText("Click to add bookmark");
 						}
 					} catch (Exception e) {
@@ -1028,7 +1022,7 @@ public class EPUBReader extends EditorPart {
 							sb.append((char) c);
 							sb.append(' ');
 						}
-						header.setText(sb.toString());
+						headerLabel.setText(sb.toString());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -1036,14 +1030,14 @@ public class EPUBReader extends EditorPart {
 
 			});
 			// Update page number
-			label.getDisplay().asyncExec(new Runnable() {
+			footerLabel.getDisplay().asyncExec(new Runnable() {
 				@Override
 				public void run() {
 					synchronized (paginationJob) {
 						if (paginationJob.getState() == Job.NONE) {
-							label.setText("Page " + getCurrentPage() + " of " + paginationJob.getTotalpages());
+							footerLabel.setText("Page " + getCurrentPage() + " of " + paginationJob.getTotalpages());
 						} else {
-							label.setText("Paginating...");
+							footerLabel.setText("Paginating...");
 						}
 					}
 				}
@@ -1156,15 +1150,15 @@ public class EPUBReader extends EditorPart {
 	}
 
 	private void registerBook(IPath path, OPSPublication ops) {
-		String title = EPUBUtil.getFirstTitle(ops);
-		String author = EPUBUtil.getFirstAuthor(ops);
-		String id = EPUBUtil.getIdentifier(ops);
-		if (!EPUBCorePlugin.getCollection().hasBook(id)) {
+		String title = EpubUtil.getFirstTitle(ops);
+		String author = EpubUtil.getFirstAuthor(ops);
+		String id = EpubUtil.getIdentifier(ops);
+		if (!EpubCorePlugin.getCollection().hasBook(id)) {
 			URI uri = path.toFile().toURI();
-			currentBook = LibraryUtil.createNewBook(EPUBCorePlugin.COLLECTION_ID, uri, id, title, author);
-			EPUBCorePlugin.getCollection().add(currentBook);
+			currentBook = LibraryUtil.createNewBook(EpubCorePlugin.COLLECTION_ID, uri, id, title, author);
+			EpubCorePlugin.getCollection().add(currentBook);
 		} else {
-			currentBook = EPUBCorePlugin.getCollection().getBook(id);
+			currentBook = EpubCorePlugin.getCollection().getBook(id);
 		}
 	}
 

@@ -30,7 +30,7 @@ import org.eclipse.mylyn.docs.epub.opf.Role;
  * 
  * @author Torkild U. Resheim
  */
-public class EPUBUtil {
+public class EpubUtil {
 
 	private static final EStructuralFeature TEXT = XMLTypePackage.eINSTANCE.getXMLTypeDocumentRoot_Text();
 
@@ -43,11 +43,11 @@ public class EPUBUtil {
 	 * @return the book or <code>null</code>
 	 */
 	public static Book getBook(OPSPublication ops) {
-		String id = EPUBUtil.getIdentifier(ops);
-		if (!EPUBCorePlugin.getCollection().hasBook(id)) {
+		String id = EpubUtil.getIdentifier(ops);
+		if (!EpubCorePlugin.getCollection().hasBook(id)) {
 			return null;
 		} else {
-			return EPUBCorePlugin.getCollection().getBook(id);
+			return EpubCorePlugin.getCollection().getBook(id);
 		}
 	}
 

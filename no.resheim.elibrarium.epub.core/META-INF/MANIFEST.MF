@@ -8,6 +8,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.mylyn.docs.epub.core;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: no.resheim.elibrarium.epub.core
-Bundle-Activator: no.resheim.elibrarium.epub.core.EPUBCorePlugin
+Bundle-Activator: no.resheim.elibrarium.epub.core.EpubCorePlugin
 Bundle-Vendor: Torkild U. Resheim
 Bundle-ActivationPolicy: lazy
