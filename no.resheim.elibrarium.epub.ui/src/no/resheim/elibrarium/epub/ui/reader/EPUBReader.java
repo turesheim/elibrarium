@@ -61,14 +61,14 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
-import org.eclipse.swt.browser.LocationEvent;
-import org.eclipse.swt.browser.LocationListener;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
@@ -192,12 +192,12 @@ public class EPUBReader extends EditorPart {
 
 		@Override
 		public void done(IJobChangeEvent event) {
-			updateLabels();
+			updateLocation();
 		}
 
 		@Override
 		public void running(IJobChangeEvent event) {
-			updateLabels();
+			updateLocation();
 		}
 
 	}
@@ -301,7 +301,11 @@ public class EPUBReader extends EditorPart {
 	/** The current href, excluding the anchor */
 	private String currentHref;
 
-	String currentLocation;
+	/**
+	 * The current location – for use in page bookmarks. This is specified in
+	 * Rangy format
+	 */
+	private String currentLocation;
 
 	private String currentRange;
 
@@ -345,6 +349,8 @@ public class EPUBReader extends EditorPart {
 
 	private boolean closing;
 
+	private Label bookmarkLabel;
+
 	public EPUBReader() {
 		super();
 	}
@@ -369,22 +375,56 @@ public class EPUBReader extends EditorPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite c = new Composite(parent, SWT.NONE);
-		c.setLayout(new GridLayout());
+		c.setBackground(JFaceResources.getColorRegistry().get(JFacePreferences.ERROR_COLOR));
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.marginTop = 0;
+		c.setLayout(layout);
 		c.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 
-		GridData gd = new GridData(SWT.CENTER, SWT.BOTTOM, true, false);
+		GridData gdHeader = new GridData(SWT.CENTER, SWT.TOP, true, false);
+		gdHeader.minimumWidth = 500;
 		header = new Label(c, SWT.CENTER);
-		header.setLayoutData(gd);
+		header.setLayoutData(gdHeader);
 		header.setText(" ");
 		header.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
 
-		// We rely on having a WebKit based browser for now
-		browser = new Browser(c, SWT.WEBKIT);
-		browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		GridData gdBookmark = new GridData(SWT.CENTER, SWT.BEGINNING, false, false);
+		gdBookmark.minimumWidth = 32;
+		gdBookmark.widthHint = 32;
+		gdBookmark.verticalSpan = 3;
+		bookmarkLabel = new Label(c, SWT.CENTER);
+		bookmarkLabel.setImage(EPUBUIPlugin.getDefault().getImageRegistry().get(EPUBUIPlugin.IMG_BOOKMARK_INACTIVE));
+		bookmarkLabel.setLayoutData(gdBookmark);
+		bookmarkLabel.addMouseListener(new MouseListener() {
 
+			@Override
+			public void mouseUp(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				addBookmark();
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		// We rely on having a WebKit based browser
+		GridData gdBrowser = new GridData(SWT.FILL, SWT.FILL, true, true);
+		browser = new Browser(c, SWT.WEBKIT);
+		browser.setLayoutData(gdBrowser);
+		browser.setBackground(JFaceResources.getColorRegistry().get(JFacePreferences.ERROR_COLOR));
+
+		GridData gdFooter = new GridData(SWT.CENTER, SWT.BOTTOM, true, false);
+		gdFooter.minimumWidth = 500;
 		label = new Label(c, SWT.CENTER);
-		gd.minimumWidth = 500;
-		label.setLayoutData(gd);
+		gdFooter.horizontalSpan = 2;
+		label.setLayoutData(gdFooter);
 		label.setText(" ");
 		label.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
 
@@ -404,17 +444,17 @@ public class EPUBReader extends EditorPart {
 		// changed, that is when the URL has changed. It may or may not be
 		// within the document currently open. It does normally not change when
 		// browsing between pages unless the chapter has been changed.
-		browser.addLocationListener(new LocationListener() {
-
-			@Override
-			public void changed(LocationEvent event) {
-				updateLabels();
-			}
-
-			@Override
-			public void changing(LocationEvent event) {
-			}
-		});
+		// browser.addLocationListener(new LocationListener() {
+		//
+		// @Override
+		// public void changed(LocationEvent event) {
+		// updateLocation();
+		// }
+		//
+		// @Override
+		// public void changing(LocationEvent event) {
+		// }
+		// });
 
 		browser.setCapture(false);
 		if (browser != null) {
@@ -706,14 +746,24 @@ public class EPUBReader extends EditorPart {
 				// Do the pagination of the chapter
 				paginateChapter();
 
-				// Add annotations and markers.
-				EList<Bookmark> annotations = currentBook.getBookmarks();
-				for (Bookmark annotation : annotations) {
-					if (annotation.getHref() != null && annotation.getHref().equals(currentHref)) {
-						String id = annotation.getId();
-						if (!browser.execute("markRange('" + annotation.getLocation() + "','" + id + "');")) {
-							System.err.println("Could not create marker identified by " + id + " at "
-									+ annotation.getLocation());
+				// Iterate over all annotations and mark the ranges
+				EList<Bookmark> bookmarks = currentBook.getBookmarks();
+				for (Bookmark bookmark : bookmarks) {
+					if (bookmark.getHref() != null && bookmark.getHref().equals(currentHref)) {
+						String id = bookmark.getId();
+						// Mark text
+						if (bookmark instanceof Annotation) {
+							System.out.println("Marking " + id);
+							if (!browser.execute("markRange('" + bookmark.getLocation() + "','" + id + "');")) {
+								System.err.println("Could not create marker identified by " + bookmark.getHref() + "#"
+										+ id + " at " + bookmark.getLocation());
+							}
+						} else {
+							System.out.println("Page " + id);
+							if (!browser.execute("injectIdentifier('" + bookmark.getLocation() + "','" + id + "');")) {
+								System.err.println("Could not create identifier element " + bookmark.getHref() + "#"
+										+ id + " at " + bookmark.getLocation());
+							}
 						}
 					}
 				}
@@ -721,16 +771,20 @@ public class EPUBReader extends EditorPart {
 				// Navigate to a a certain page.
 				switch (direction) {
 				case INITIAL:
+					// Navigates to the given location.
 					if (currentLocation != null) {
-						browser.execute("navigateToBookmark('" + currentLocation + "');");
-						updateTitle();
+						browser.execute("navigateToLocation('" + currentLocation + "');");
+						updateLocation();
 					} else {
 						navigateToPage(1);
 					}
 					break;
 				case LOCATION:
+					// Navigates to the location of the current anchor
 					if (currentAnchor != null) {
+						System.out.println("Navigating to " + currentAnchor);
 						browser.execute("setOffsetToElement('" + currentAnchor + "')");
+						updateLocation();
 					}
 					break;
 				case FORWARD:
@@ -835,8 +889,19 @@ public class EPUBReader extends EditorPart {
 		}
 	};
 
-	public void navigateTo(Bookmark marker) {
-		String ref = marker.getHref();
+	/**
+	 * Navigates to the given bookmark. When a chapter is loaded all bookmarks
+	 * are handled and identifying elements are created in the document.
+	 * 
+	 * @param bookmark
+	 *            the marker to navigate to
+	 */
+	public void navigateTo(Bookmark bookmark) {
+		String ref = bookmark.getHref();
+		String id = bookmark.getId();
+		if (id != null) {
+			ref = ref + "#" + id;
+		}
 		navigateTo(ref);
 	}
 
@@ -851,7 +916,11 @@ public class EPUBReader extends EditorPart {
 		navigateTo(url);
 	}
 
-	public void navigateTo(String url) {
+	/**
+	 * 
+	 * @param url
+	 */
+	private void navigateTo(String url) {
 		try {
 			String newRef = url;
 			String newAnchor = null;
@@ -859,6 +928,7 @@ public class EPUBReader extends EditorPart {
 				newRef = url.substring(0, url.indexOf('#'));
 				newAnchor = url.substring(url.indexOf('#') + 1);
 			}
+			// Navigate to a specific location
 			direction = Direction.LOCATION;
 			if (!currentHref.equals(newRef)) {
 				// New chapter which must be loaded
@@ -872,16 +942,115 @@ public class EPUBReader extends EditorPart {
 				} else {
 					browser.execute("navigateToPage(1)");
 				}
-				// Determine the current location so that it can be restored
-				// when reopening the book at a later stage.
-				currentLocation = (String) browser.evaluate("bookmark = getPageBookmark();return bookmark;");
-				updateTitle();
-				updateLabels();
+				updateLocation();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Adds a bookmark at the current location unless there is already one
+	 * present.
+	 */
+	private void addBookmark() {
+		Bookmark existing = hasBookmark();
+		if (existing == null) {
+			String title = (String) browser.evaluate("title = getBookmarkTitle();return title;");
+			Bookmark annotation = LibraryFactory.eINSTANCE.createBookmark();
+			String id = UUID.randomUUID().toString();
+			annotation.setId(id);
+			annotation.setTimestamp(new Date());
+			annotation.setHref(currentHref);
+			annotation.setLocation(currentLocation);
+			annotation.setText(title);
+			currentBook.getBookmarks().add(annotation);
+			browser.execute("injectIdentifier('" + currentLocation + "','" + id + "');");
+			updateLocation();
+		} else {
+			currentBook.getBookmarks().remove(existing);
+			updateLocation();
+		}
+
+	}
+
+	private Bookmark hasBookmark() {
+		Bookmark marked = null;
+		EList<Bookmark> bookmarks = currentBook.getBookmarks();
+		for (Bookmark bookmark : bookmarks) {
+			if (bookmark.getHref() != null && bookmark.getHref().equals(currentHref)) {
+				// Only looking for page bookmarks
+				if (!(bookmark instanceof Annotation)) {
+				Boolean intersects = (Boolean) browser.evaluate("bookmark = intersects('" + bookmark.getLocation()
+						+ "');return bookmark;");
+				if (intersects) {
+						marked = bookmark;
+					}
+				}
+			}
+		}
+		return marked;
+	}
+
+	public void updateLocation() {
+		// Determine the current location so that it can be restored
+		// when reopening the book at a later stage.
+		if (!disposed) {
+			browser.getDisplay().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					// See issue 28
+					try {
+						String location = (String) browser.evaluate("bookmark = getPageLocation();return bookmark;");
+						currentLocation = location;
+						Bookmark b = hasBookmark();
+						if (b != null) {
+							bookmarkLabel.setImage(EPUBUIPlugin.getDefault().getImageRegistry()
+									.get(EPUBUIPlugin.IMG_BOOKMARK_ACTIVE));
+							bookmarkLabel.setToolTipText(b.getText() + "\n(Click to remove bookmark)");
+						} else {
+							bookmarkLabel.setImage(EPUBUIPlugin.getDefault().getImageRegistry()
+									.get(EPUBUIPlugin.IMG_BOOKMARK_INACTIVE));
+							bookmarkLabel.setToolTipText("Click to add bookmark");
+						}
+					} catch (Exception e) {
+						System.err.println("Could not determine current location.");
+					}
+					// Set the title
+					String title = (String) browser.evaluate("title = getChapterTitle();return title;");
+					// Fake a small caps effect.
+					title = title.toUpperCase();
+					StringReader sr = new StringReader(title);
+					StringBuilder sb = new StringBuilder();
+					int c = -1;
+					try {
+						while ((c = sr.read()) > -1) {
+							sb.append((char) c);
+							sb.append(' ');
+						}
+						header.setText(sb.toString());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+
+			});
+			// Update page number
+			label.getDisplay().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					synchronized (paginationJob) {
+						if (paginationJob.getState() == Job.NONE) {
+							label.setText("Page " + getCurrentPage() + " of " + paginationJob.getTotalpages());
+						} else {
+							label.setText("Paginating...");
+						}
+					}
+				}
+			});
+		}
+	}
+
 
 	/**
 	 * Navigates to the given page number of the chapter.
@@ -891,11 +1060,7 @@ public class EPUBReader extends EditorPart {
 	 */
 	private void navigateToPage(int page) {
 		browser.evaluate("navigateToPage(" + page + ");");
-		// Determine the current location so that it can be restored when
-		// reopening the book at a later stage.
-		currentLocation = (String) browser.evaluate("bookmark = getPageBookmark();return bookmark;");
-		updateTitle();
-		updateLabels();
+		updateLocation();
 	}
 
 	/**
@@ -1012,39 +1177,4 @@ public class EPUBReader extends EditorPart {
 			browser.setFocus();
 	}
 
-	private void updateLabels() {
-		if (!disposed) {
-			label.getDisplay().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					synchronized (paginationJob) {
-						if (paginationJob.getState() == Job.NONE) {
-							label.setText("Page " + getCurrentPage() + " of " + paginationJob.getTotalpages());
-						} else {
-							label.setText("Paginating...");
-						}
-					}
-				}
-			});
-		}
-
-	}
-
-	private void updateTitle() {
-		String title = (String) browser.evaluate("title = getChapterTitle();return title;");
-		// Fake a small caps effect.
-		title = title.toUpperCase();
-		StringReader sr = new StringReader(title);
-		StringBuilder sb = new StringBuilder();
-		int c = -1;
-		try {
-			while ((c = sr.read()) > -1) {
-				sb.append((char) c);
-				sb.append(' ');
-			}
-			header.setText(sb.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }

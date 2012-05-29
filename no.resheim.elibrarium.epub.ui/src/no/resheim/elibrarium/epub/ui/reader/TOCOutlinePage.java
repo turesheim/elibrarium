@@ -157,13 +157,14 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		Object element = s.getFirstElement();
 		if (element instanceof NavPoint) {
 			reader.navigateTo((NavPoint) element);
+		} else if (element instanceof Annotation) {
+			reader.navigateTo((Annotation) element);
 		} else if (element instanceof Bookmark) {
 			reader.navigateTo((Bookmark) element);
 		}
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		System.out.println("TOCOutlinePage.fillContextMenu()");
 		ISelection selection = notes.getSelection();
 		if (selection instanceof IStructuredSelection) {
 			Object o = ((IStructuredSelection) selection).getFirstElement();
