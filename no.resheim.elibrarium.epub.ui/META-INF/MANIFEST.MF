@@ -23,3 +23,5 @@ Bundle-Activator: no.resheim.elibrarium.epub.ui.EpubUIPlugin
 Export-Package: no.resheim.elibrarium.epub.ui,
  no.resheim.elibrarium.epub.ui.preferences,
  no.resheim.elibrarium.epub.ui.reader
+Bundle-ClassPath: lib/prettytime-1.0.8.Final.jar,
+ .
