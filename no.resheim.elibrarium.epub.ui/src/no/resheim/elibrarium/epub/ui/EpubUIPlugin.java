@@ -30,6 +30,9 @@ public class EpubUIPlugin extends AbstractUIPlugin {
 	/** Image for an active bookmark */
 	public static final String IMG_BOOKMARK_ACTIVE = "img_bookmark_active";
 
+	/** Image for an active bookmark */
+	public static final String IMG_BOOKMARK = "img_bookmark";
+
 	public EpubUIPlugin() {
 		plugin = this;
 	}
@@ -53,6 +56,7 @@ public class EpubUIPlugin extends AbstractUIPlugin {
 		reg.put(IMG_BOOKMARK_ACTIVE, LibraryUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/bookmark_active.png"));
 		reg.put(IMG_BOOKMARK_INACTIVE,
 				LibraryUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/bookmark_inactive.png"));
+		reg.put(IMG_BOOKMARK, LibraryUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, "icons/bookmark.png"));
 	}
 
 }
