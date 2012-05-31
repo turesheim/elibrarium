@@ -22,5 +22,30 @@
             name="EPUB Scanning">
       </page>
    </extension>
+   <extension
+         point="org.eclipse.ui.themes">
+      <themeElementCategory
+            id="no.resheim.elibrarium.epub.ui.theme"
+            label="EPUB Reader">
+      </themeElementCategory>
+      <fontDefinition
+            categoryId="no.resheim.elibrarium.epub.ui.theme"
+            id="no.resheim.elibrarium.epub.ui.titleFont"
+            label="Bookmark title font">
+         <fontValue
+               os="macosx"
+               value="Lucida Sans-12-bold">
+         </fontValue>
+      </fontDefinition>
+      <fontDefinition
+            categoryId="no.resheim.elibrarium.epub.ui.theme"
+            id="no.resheim.elibrarium.epub.ui.dateFont"
+            label="Bookmark date font">
+         <fontValue
+               os="macosx"
+               value="Lucida Sans-11-italic">
+         </fontValue>
+      </fontDefinition>
+   </extension>
    
 </plugin>
