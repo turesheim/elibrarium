@@ -282,7 +282,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getBookmark_Href() {
+	public EAttribute getBookmark_Page() {
 		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -291,7 +291,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getBookmark_Timestamp() {
+	public EAttribute getBookmark_Href() {
 		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -300,8 +300,17 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getBookmark_Text() {
+	public EAttribute getBookmark_Timestamp() {
 		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getBookmark_Text() {
+		return (EAttribute)bookmarkEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -413,6 +422,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		bookmarkEClass = createEClass(BOOKMARK);
 		createEAttribute(bookmarkEClass, BOOKMARK__ID);
 		createEAttribute(bookmarkEClass, BOOKMARK__LOCATION);
+		createEAttribute(bookmarkEClass, BOOKMARK__PAGE);
 		createEAttribute(bookmarkEClass, BOOKMARK__HREF);
 		createEAttribute(bookmarkEClass, BOOKMARK__TIMESTAMP);
 		createEAttribute(bookmarkEClass, BOOKMARK__TEXT);
@@ -478,6 +488,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		initEClass(bookmarkEClass, Bookmark.class, "Bookmark", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(getBookmark_Id(), ecorePackage.getEString(), "id", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getBookmark_Location(), ecorePackage.getEString(), "location", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(getBookmark_Page(), ecorePackage.getEInt(), "page", null, 0, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getBookmark_Href(), ecorePackage.getEString(), "href", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getBookmark_Timestamp(), ecorePackage.getEDate(), "timestamp", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(getBookmark_Text(), ecorePackage.getEString(), "text", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$

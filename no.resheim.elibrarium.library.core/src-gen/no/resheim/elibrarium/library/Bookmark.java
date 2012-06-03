@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link no.resheim.elibrarium.library.Bookmark#getId <em>Id</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Bookmark#getLocation <em>Location</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.Bookmark#getPage <em>Page</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Bookmark#getHref <em>Href</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Bookmark#getTimestamp <em>Timestamp</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Bookmark#getText <em>Text</em>}</li>
@@ -82,6 +83,32 @@ public interface Bookmark extends EObject {
 	 * @generated
 	 */
 	void setLocation(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Page</b></em>' attribute. <!--
+	 * begin-user-doc -->
+	 * <p>
+	 * The page number of the bookmark after pagination.
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Page</em>' attribute.
+	 * @see #setPage(int)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getBookmark_Page()
+	 * @model
+	 * @generated
+	 */
+	int getPage();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Bookmark#getPage <em>Page</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Page</em>' attribute.
+	 * @see #getPage()
+	 * @generated
+	 */
+	void setPage(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Href</b></em>' attribute.

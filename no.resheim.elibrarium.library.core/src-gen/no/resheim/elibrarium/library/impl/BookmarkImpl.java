@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <ul>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookmarkImpl#getId <em>Id</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookmarkImpl#getLocation <em>Location</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.impl.BookmarkImpl#getPage <em>Page</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookmarkImpl#getHref <em>Href</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookmarkImpl#getTimestamp <em>Timestamp</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookmarkImpl#getText <em>Text</em>}</li>
@@ -75,6 +76,26 @@ public class BookmarkImpl extends EObjectImpl implements Bookmark {
 	 * @ordered
 	 */
 	protected String location = LOCATION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getPage() <em>Page</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPage()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int PAGE_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getPage() <em>Page</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPage()
+	 * @generated
+	 * @ordered
+	 */
+	protected int page = PAGE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getHref() <em>Href</em>}' attribute.
@@ -202,6 +223,27 @@ public class BookmarkImpl extends EObjectImpl implements Bookmark {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getPage() {
+		return page;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPage(int newPage) {
+		int oldPage = page;
+		page = newPage;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, LibraryPackage.BOOKMARK__PAGE, oldPage, page));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getHref() {
 		return href;
 	}
@@ -272,6 +314,8 @@ public class BookmarkImpl extends EObjectImpl implements Bookmark {
 				return getId();
 			case LibraryPackage.BOOKMARK__LOCATION:
 				return getLocation();
+			case LibraryPackage.BOOKMARK__PAGE:
+				return getPage();
 			case LibraryPackage.BOOKMARK__HREF:
 				return getHref();
 			case LibraryPackage.BOOKMARK__TIMESTAMP:
@@ -295,6 +339,9 @@ public class BookmarkImpl extends EObjectImpl implements Bookmark {
 				return;
 			case LibraryPackage.BOOKMARK__LOCATION:
 				setLocation((String)newValue);
+				return;
+			case LibraryPackage.BOOKMARK__PAGE:
+				setPage((Integer)newValue);
 				return;
 			case LibraryPackage.BOOKMARK__HREF:
 				setHref((String)newValue);
@@ -323,6 +370,9 @@ public class BookmarkImpl extends EObjectImpl implements Bookmark {
 			case LibraryPackage.BOOKMARK__LOCATION:
 				setLocation(LOCATION_EDEFAULT);
 				return;
+			case LibraryPackage.BOOKMARK__PAGE:
+				setPage(PAGE_EDEFAULT);
+				return;
 			case LibraryPackage.BOOKMARK__HREF:
 				setHref(HREF_EDEFAULT);
 				return;
@@ -348,6 +398,8 @@ public class BookmarkImpl extends EObjectImpl implements Bookmark {
 				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
 			case LibraryPackage.BOOKMARK__LOCATION:
 				return LOCATION_EDEFAULT == null ? location != null : !LOCATION_EDEFAULT.equals(location);
+			case LibraryPackage.BOOKMARK__PAGE:
+				return page != PAGE_EDEFAULT;
 			case LibraryPackage.BOOKMARK__HREF:
 				return HREF_EDEFAULT == null ? href != null : !HREF_EDEFAULT.equals(href);
 			case LibraryPackage.BOOKMARK__TIMESTAMP:
@@ -372,6 +424,8 @@ public class BookmarkImpl extends EObjectImpl implements Bookmark {
 		result.append(id);
 		result.append(", location: "); //$NON-NLS-1$
 		result.append(location);
+		result.append(", page: "); //$NON-NLS-1$
+		result.append(page);
 		result.append(", href: "); //$NON-NLS-1$
 		result.append(href);
 		result.append(", timestamp: "); //$NON-NLS-1$

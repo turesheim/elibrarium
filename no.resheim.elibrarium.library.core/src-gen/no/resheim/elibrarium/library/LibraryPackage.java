@@ -226,13 +226,22 @@ public interface LibraryPackage extends EPackage {
 	int BOOKMARK__LOCATION = 1;
 
 	/**
+	 * The feature id for the '<em><b>Page</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOKMARK__PAGE = 2;
+
+	/**
 	 * The feature id for the '<em><b>Href</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BOOKMARK__HREF = 2;
+	int BOOKMARK__HREF = 3;
 
 	/**
 	 * The feature id for the '<em><b>Timestamp</b></em>' attribute.
@@ -241,7 +250,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BOOKMARK__TIMESTAMP = 3;
+	int BOOKMARK__TIMESTAMP = 4;
 
 	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
@@ -250,7 +259,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BOOKMARK__TEXT = 4;
+	int BOOKMARK__TEXT = 5;
 
 	/**
 	 * The number of structural features of the '<em>Bookmark</em>' class.
@@ -259,7 +268,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BOOKMARK_FEATURE_COUNT = 5;
+	int BOOKMARK_FEATURE_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.AnnotationImpl <em>Annotation</em>}' class.
@@ -288,6 +297,15 @@ public interface LibraryPackage extends EPackage {
 	 * @ordered
 	 */
 	int ANNOTATION__LOCATION = BOOKMARK__LOCATION;
+
+	/**
+	 * The feature id for the '<em><b>Page</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ANNOTATION__PAGE = BOOKMARK__PAGE;
 
 	/**
 	 * The feature id for the '<em><b>Href</b></em>' attribute.
@@ -565,6 +583,17 @@ public interface LibraryPackage extends EPackage {
 	EAttribute getBookmark_Location();
 
 	/**
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Bookmark#getPage <em>Page</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Page</em>'.
+	 * @see no.resheim.elibrarium.library.Bookmark#getPage()
+	 * @see #getBookmark()
+	 * @generated
+	 */
+	EAttribute getBookmark_Page();
+
+	/**
 	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Bookmark#getHref <em>Href</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -826,6 +855,14 @@ public interface LibraryPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute BOOKMARK__LOCATION = eINSTANCE.getBookmark_Location();
+
+		/**
+		 * The meta object literal for the '<em><b>Page</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BOOKMARK__PAGE = eINSTANCE.getBookmark_Page();
 
 		/**
 		 * The meta object literal for the '<em><b>Href</b></em>' attribute feature.
