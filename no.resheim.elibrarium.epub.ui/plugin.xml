@@ -31,6 +31,7 @@
       <fontDefinition
             categoryId="no.resheim.elibrarium.epub.ui.theme"
             id="no.resheim.elibrarium.epub.ui.titleFont"
+            isEditable="true"
             label="Bookmark title font">
          <fontValue
                os="macosx"
@@ -40,12 +41,51 @@
       <fontDefinition
             categoryId="no.resheim.elibrarium.epub.ui.theme"
             id="no.resheim.elibrarium.epub.ui.dateFont"
+            isEditable="true"
             label="Bookmark date font">
          <fontValue
                os="macosx"
                value="Lucida Sans-11-italic">
          </fontValue>
       </fontDefinition>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="no.resheim.elbrarium.epub.ui.commands.DeleteBookmarkHandler"
+            id="no.resheim.elibrarium.deleteBookmarkCommand"
+            name="Delete Bookmark">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            description="EPUB bookmarks view"
+            id="no.resheim.elibrarium.bookmarks"
+            name="Bookmark View">
+      </context>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="no.resheim.elibrarium.deleteBookmarkCommand"
+            contextId="no.resheim.elibrarium.bookmarks"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="DEL">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:no.resheim.elibrarium.bookmarks?before=additions">
+         <command
+               commandId="no.resheim.elibrarium.deleteBookmarkCommand"
+               label="Delete">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    
 </plugin>

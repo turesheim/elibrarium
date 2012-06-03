@@ -30,6 +30,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.JFacePreferences;
+import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -61,12 +62,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.themes.ITheme;
+import org.eclipse.ui.themes.IThemeManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.ocpsoft.pretty.time.PrettyTime;
 
@@ -78,10 +82,6 @@ import org.ocpsoft.pretty.time.PrettyTime;
 public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelectionChangedListener,
 		IDoubleClickListener, IPropertyChangeListener {
 
-	private Font titleFont;
-
-	private Font dateFont;
-
 	class AnnotationsContentProvider implements IStructuredContentProvider {
 
 		public void dispose() {
@@ -91,12 +91,6 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 			if (parent instanceof Book) {
 				Bookmark[] bookmarks = (Bookmark[]) ((Book) parent).getBookmarks().toArray();
 				return bookmarks;
-				// LineEntry[] entries = new LineEntry[bookmarks.length];
-				// for (int i = 0; i < bookmarks.length; i++) {
-				// Bookmark bookmark = bookmarks[i];
-				// entries[i] = new LineEntry(bookmark.getText(), 35);
-				// }
-				// return entries;
 			}
 			return new Object[0];
 		}
@@ -105,8 +99,6 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		}
 
 	}
-
-	private Action deleteAction;
 
 	private StackLayout layout;
 
@@ -136,11 +128,15 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 	}
 
 	@Override
-	public void createControl(Composite parent) {
-		titleFont = JFaceResources.getFont("no.resheim.elibrarium.epub.ui.titleFont");
-		dateFont = JFaceResources.getFont("no.resheim.elibrarium.epub.ui.dateFont");
+	public void dispose() {
+		// No longer listen to events from this book
+		book.eAdapters().remove(bookAdapter);
+		super.dispose();
+	}
 
-		Book book = EpubUtil.getBook(ops);
+	@Override
+	public void createControl(Composite parent) {
+		book = EpubUtil.getBook(ops);
 
 		pagebook = new Composite(parent, SWT.NONE);
 		layout = new StackLayout();
@@ -157,44 +153,42 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		notes.addDoubleClickListener(this);
 		notes.getTable().setHeaderVisible(false);
 		final TableViewerColumn column = new TableViewerColumn(notes, SWT.LEFT);
+		// Special drawing of bookmarks table
 		installLabelProvider(column);
+		// Automatic layout of bookmarks table
 		installControlAdapter(column);
-
-		notes.getTable().addListener(SWT.EraseItem, new Listener() {
-			public void handleEvent(Event event) {
-				event.detail &= ~SWT.HOT;
-				event.detail &= ~SWT.SELECTED;
-			}
-		});
 
 		GridData data = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.FILL_BOTH);
 
 		notes.getControl().setLayoutData(data);
 		// Create the context menu for the annotations
-		hookContextMenu();
+		hookContextMenu(notes.getControl());
 
 		// Set the input
 		toc.setInput(ops);
 		toc.expandAll();
 		notes.setInput(book);
 
-		Adapter adapter = new AdapterImpl() {
+		bookAdapter = new AdapterImpl() {
 			@Override
 			public void notifyChanged(Notification notification) {
-				notes.refresh();
+				if (!notes.getControl().isDisposed()) {
+					notes.refresh();
+				}
 			}
 		};
-		book.eAdapters().add(adapter);
+		book.eAdapters().add(bookAdapter);
 
 		// Start by showing the table of contents
 		showTOC.setChecked(true);
 		layout.topControl = toc.getControl();
 		pagebook.layout();
-
 		JFaceResources.getFontRegistry().addListener(this);
+		// Activate UI context for o.e.u.meny contributes items
+		activateContext();
 	}
 
-	public void installControlAdapter(final TableViewerColumn column) {
+	private void installControlAdapter(final TableViewerColumn column) {
 		// Automatically adjust column and table sizes
 		pagebook.addControlListener(new ControlAdapter() {
 			@Override
@@ -226,7 +220,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		});
 	}
 
-	public void installLabelProvider(final TableViewerColumn column) {
+	private void installLabelProvider(final TableViewerColumn column) {
 		final PrettyTime pt = new PrettyTime();
 		column.setLabelProvider(new OwnerDrawLabelProvider() {
 
@@ -260,27 +254,40 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 				// gc.setBackground(background);
 				// event.detail &= ~SWT.SELECTED;
 				// }
-				gc.setFont(dateFont);
+				gc.setFont(getFont("no.resheim.elibrarium.epub.ui.dateFont"));
 				gc.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
 				gc.drawText(date, width - size.x, event.y + size.y, true);
 
 				drawUnderline(event, gc, width, size, halfHeight);
 
-				gc.setFont(titleFont);
-				gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_FOREGROUND));
+				gc.setFont(getFont("no.resheim.elibrarium.epub.ui.titleFont"));
+				gc.setForeground(display.getSystemColor(SWT.COLOR_LIST_FOREGROUND));
+				String text = bookmark.getText();
+				if (text == null) {
+					text = "<missing text>";
+				}
 				if (bookmark instanceof Annotation) {
 					if ((event.detail & SWT.SELECTED) == 0) {
-						gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW));
-						gc.drawText(bookmark.getText(), event.x + 1, event.y, false);
+						gc.setBackground(display.getSystemColor(SWT.COLOR_YELLOW));
+						gc.drawText(text, event.x + 1, event.y, false);
 					} else {
-						gc.drawText(bookmark.getText(), event.x + 1, event.y, true);
+						gc.drawText(text, event.x + 1, event.y, true);
 					}
 				} else {
 					int x = width - 9;
 					gc.drawImage(EpubUIPlugin.getDefault().getImageRegistry().get(EpubUIPlugin.IMG_BOOKMARK), x,
 							event.y + 1);
-					gc.drawText(bookmark.getText(), event.x + 1, event.y, true);
+					gc.drawText(text, event.x + 1, event.y, true);
 				}
+			}
+
+			public Font getFont(String fontName) {
+				IThemeManager themeManager = PlatformUI.getWorkbench().getThemeManager();
+				ITheme currentTheme = themeManager.getCurrentTheme();
+
+				FontRegistry fontRegistry = currentTheme.getFontRegistry();
+				Font font = fontRegistry.get(fontName);
+				return font;
 			}
 
 			/**
@@ -323,13 +330,6 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		ISelection selection = notes.getSelection();
-		if (selection instanceof IStructuredSelection) {
-			Object o = ((IStructuredSelection) selection).getFirstElement();
-			if (o instanceof Annotation) {
-				manager.add(deleteAction);
-			}
-		}
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
@@ -401,7 +401,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		return toc;
 	}
 
-	private void hookContextMenu() {
+	private void hookContextMenu(Control control) {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
@@ -410,8 +410,8 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(notes.getControl());
-		notes.getControl().setMenu(menu);
-		getSite().registerContextMenu("duh", menuMgr, notes);
+		control.setMenu(menu);
+		getSite().registerContextMenu("no.resheim.elibrarium.bookmarks", menuMgr, notes);
 	}
 
 	@Override
@@ -440,20 +440,6 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 				pagebook.layout();
 			}
 		};
-		deleteAction = new Action() {
-			@Override
-			public void run() {
-				ISelection selection = notes.getSelection();
-				if (selection instanceof IStructuredSelection) {
-					Object o = ((IStructuredSelection) selection).getFirstElement();
-					if (o instanceof Annotation) {
-						EpubUtil.getBook(ops).getBookmarks().remove(o);
-					}
-				}
-			}
-		};
-		deleteAction.setText("Delete");
-		deleteAction.setToolTipText("Deletes the note");
 
 		showTOC.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EpubUIPlugin.PLUGIN_ID,
 				"icons/contents.gif"));
@@ -483,9 +469,23 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		}
 	}
 
+	private static final String VIEW_CONTEXT_ID = "no.resheim.elibrarium.bookmarks"; //$NON-NLS-1$
+
+	private Adapter bookAdapter;
+
+	private Book book;
+	/**
+	 * Activate a context that this view uses. It will be tied to this view
+	 * activation events and will be removed when the view is disposed.
+	 */
+	private void activateContext() {
+		IContextService contextService = (IContextService) getSite()
+				.getService(IContextService.class);
+		contextService.activateContext(VIEW_CONTEXT_ID);
+	}
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		titleFont = JFaceResources.getFont("no.resheim.elibrarium.epub.ui.titleFont");
-		dateFont = JFaceResources.getFont("no.resheim.elibrarium.epub.ui.dateFont");
+//		titleFont = JFaceResources.getFont("no.resheim.elibrarium.epub.ui.titleFont");
+//		dateFont = JFaceResources.getFont("no.resheim.elibrarium.epub.ui.dateFont");
 	}
 }
