@@ -747,13 +747,11 @@ public class EpubReader extends EditorPart {
 						String id = bookmark.getId();
 						// Mark text
 						if (bookmark instanceof Annotation) {
-							System.out.println("Marking " + id);
 							if (!browser.execute("markRange('" + bookmark.getLocation() + "','" + id + "');")) {
 								System.err.println("Could not create marker identified by " + bookmark.getHref() + "#"
 										+ id + " at " + bookmark.getLocation());
 							}
 						} else {
-							System.out.println("Page " + id);
 							if (!browser.execute("injectIdentifier('" + bookmark.getLocation() + "','" + id + "');")) {
 								System.err.println("Could not create identifier element " + bookmark.getHref() + "#"
 										+ id + " at " + bookmark.getLocation());
@@ -776,7 +774,6 @@ public class EpubReader extends EditorPart {
 				case LOCATION:
 					// Navigates to the location of the current anchor
 					if (currentAnchor != null) {
-						System.out.println("Navigating to " + currentAnchor);
 						browser.execute("setOffsetToElement('" + currentAnchor + "')");
 						updateLocation();
 					}
@@ -915,6 +912,7 @@ public class EpubReader extends EditorPart {
 	 * @param url
 	 */
 	private void navigateTo(String url) {
+		System.out.println("Navigating to: " + url);
 		try {
 			String newRef = url;
 			String newAnchor = null;
@@ -924,6 +922,7 @@ public class EpubReader extends EditorPart {
 			}
 			// Navigate to a specific location
 			direction = Direction.LOCATION;
+			// Load a new XHTML file
 			if (!currentHref.equals(newRef)) {
 				// New chapter which must be loaded
 				String path = "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + url;
@@ -933,10 +932,10 @@ public class EpubReader extends EditorPart {
 				if (newAnchor != null) {
 					currentAnchor = newAnchor;
 					browser.execute("setOffsetToElement('" + currentAnchor + "')");
+					updateLocation();
 				} else {
-					browser.execute("navigateToPage(1)");
+					navigateToPage(1);
 				}
-				updateLocation();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -990,7 +989,7 @@ public class EpubReader extends EditorPart {
 		// Determine the current location so that it can be restored
 		// when reopening the book at a later stage.
 		if (!disposed) {
-			browser.getDisplay().asyncExec(new Runnable() {
+			browser.getDisplay().syncExec(new Runnable() {
 				@Override
 				public void run() {
 					// See issue 28
