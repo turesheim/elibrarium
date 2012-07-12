@@ -9,14 +9,14 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.ui.editors,
- org.eclipse.mylyn.docs.epub.core;bundle-version="0.8.0",
+ org.eclipse.mylyn.docs.epub.core;bundle-version="1.0.0",
  org.eclipse.emf.common;bundle-version="2.7.0",
  org.eclipse.emf.ecore;bundle-version="2.7.0",
  org.eclipse.ui.views;bundle-version="3.6.0",
  org.eclipse.ui.browser;bundle-version="3.3.100",
- no.resheim.elibrarium.epub.core;bundle-version="1.0.0",
- no.resheim.elibrarium.library.core;bundle-version="1.0.0",
- no.resheim.elibrarium.library.ui;bundle-version="1.0.0"
+ no.resheim.elibrarium.epub.core,
+ no.resheim.elibrarium.library.core,
+ no.resheim.elibrarium.library.ui
 Import-Package: org.eclipse.ui.internal.browser
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: no.resheim.elibrarium.epub.ui.EpubUIPlugin

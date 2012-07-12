@@ -5,7 +5,7 @@ Bundle-SymbolicName: no.resheim.elibrarium.epub.core;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  no.resheim.elibrarium.library.core,
- org.eclipse.mylyn.docs.epub.core;bundle-version="0.8.0"
+ org.eclipse.mylyn.docs.epub.core;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: no.resheim.elibrarium.epub.core
 Bundle-Activator: no.resheim.elibrarium.epub.core.EpubCorePlugin
