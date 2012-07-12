@@ -3,19 +3,23 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>no.resheim.elibrarium</groupId>
 	<artifactId>no.resheim.elibrarium-parent</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-  <properties>
-    <tycho-version>0.13.0</tycho-version>
-		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/S20110907174232/repository/</orbit-repository-url>
-	</properties>
-	
 	<prerequisites>
 		<maven>3.0</maven>
 	</prerequisites>
+
+	<properties>
+		<mylyn-version>3.8.0-SNAPSHOT</mylyn-version>
+		<tycho-version>0.15.0</tycho-version>
+		<orbit-repository-url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</orbit-repository-url>
+		<mylyn-docs-repository-url>http://download.eclipse.org/mylyn/snapshots/nightly/docs/</mylyn-docs-repository-url>
+	</properties>
+
 
 	<repositories>
 		<repository>
@@ -56,13 +60,17 @@
 		</license>
 	</licenses>
 
+	<organization>
+		<name>Torkild U. Resheim</name>
+		<url>http://torkildr.blogspot.com/</url>
+	</organization>
+
 	<issueManagement>
 		<url>https://github.com/turesheim/reader/issues</url>
 		<system>Git</system>
 	</issueManagement>
 
 	<profiles>
-		<!-- Target profiles -->
 		<profile>
 			<id>default-target</id>
 			<activation>
@@ -72,40 +80,11 @@
 			</activation>
 			<!-- Properties get overridden if a specific target profile is activated. -->
 			<properties>
-				<target-version>3.7</target-version>
-				<target-platform>mylyn-e3.7</target-platform>
-				<platform-repository-url>http://download.eclipse.org/releases/indigo/</platform-repository-url>
+				<target-version>4.2</target-version>
+				<target-platform>mylyn-e4.2</target-platform>
+				<platform-repository-url>http://download.eclipse.org/releases/staging/</platform-repository-url>
+				<egit-repository-url>http://download.eclipse.org/egit/updates-1.3/</egit-repository-url>
 				<swtbot-repository-url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</swtbot-repository-url>
-			</properties>
-		</profile>
-		<profile>
-			<id>ganymede</id>
-			<activation>
-				<property>
-					<name>target-profile</name>
-					<value>ganymede</value>
-				</property>
-			</activation>
-			<properties>
-				<target-version>3.4</target-version>
-				<target-platform>mylyn-e3.4</target-platform>
-				<platform-repository-url>http://download.eclipse.org/releases/ganymede/</platform-repository-url>
-				<swtbot-repository-url>http://download.eclipse.org/technology/swtbot/ganymede/dev-build/update-site/</swtbot-repository-url>
-			</properties>
-		</profile>
-		<profile>
-			<id>galileo</id>
-			<activation>
-				<property>
-					<name>target-profile</name>
-					<value>galileo</value>
-				</property>
-			</activation>
-			<properties>
-				<target-version>3.5</target-version>
-				<target-platform>mylyn-e3.5</target-platform>
-				<platform-repository-url>http://download.eclipse.org/releases/galileo/</platform-repository-url>
-				<swtbot-repository-url>http://download.eclipse.org/technology/swtbot/galileo/dev-build/update-site/</swtbot-repository-url>
 			</properties>
 		</profile>
 		<profile>
@@ -119,7 +98,8 @@
 			<properties>
 				<target-version>3.6</target-version>
 				<target-platform>mylyn-e3.6</target-platform>
-				<platform-repository-url>http://download.eclipse.org/releases/helios/</platform-repository-url>
+				<platform-repository-url>http://download.eclipse.org/releases/helios/201102250900/</platform-repository-url>
+				<egit-repository-url>http://download.eclipse.org/egit/updates-1.3/</egit-repository-url>
 				<swtbot-repository-url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</swtbot-repository-url>
 			</properties>
 		</profile>
@@ -127,14 +107,31 @@
 			<id>indigo</id>
 			<activation>
 				<property>
-					<name>t</name>
+					<name>target-profile</name>
 					<value>indigo</value>
 				</property>
 			</activation>
 			<properties>
 				<target-version>3.7</target-version>
 				<target-platform>mylyn-e3.7</target-platform>
-				<platform-repository-url>http://download.eclipse.org/releases/indigo/</platform-repository-url>
+				<platform-repository-url>http://download.eclipse.org/releases/indigo/201202240900/</platform-repository-url>
+				<egit-repository-url>http://download.eclipse.org/egit/updates-1.3/</egit-repository-url>
+				<swtbot-repository-url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</swtbot-repository-url>
+			</properties>
+		</profile>
+		<profile>
+			<id>e3.8</id>
+			<activation>
+				<property>
+					<name>target-profile</name>
+					<value>e3.8</value>
+				</property>
+			</activation>
+			<properties>
+				<target-version>3.8</target-version>
+				<target-platform>mylyn-e3.8</target-platform>
+				<platform-repository-url>http://download.eclipse.org/releases/staging/</platform-repository-url>
+				<egit-repository-url>http://download.eclipse.org/egit/updates-1.3/</egit-repository-url>
 				<swtbot-repository-url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</swtbot-repository-url>
 			</properties>
 		</profile>
@@ -147,39 +144,10 @@
 				</property>
 			</activation>
 			<properties>
-				<target-version>3.8</target-version>
-				<target-platform>mylyn-e3.8</target-platform>
-				<platform-repository-url>http://download.eclipse.org/releases/staging/</platform-repository-url>
-				<swtbot-repository-url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</swtbot-repository-url>
-			</properties>
-		</profile>
-		<profile>
-			<id>e4.1</id>
-			<activation>
-				<property>
-					<name>target-profile</name>
-					<value>e4.1</value>
-				</property>
-			</activation>
-			<properties>
-				<target-version>4.1</target-version>
-				<target-platform>mylyn-e4.1</target-platform>
-				<platform-repository-url>http://download.eclipse.org/releases/indigo/</platform-repository-url>
-				<swtbot-repository-url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</swtbot-repository-url>
-			</properties>
-		</profile>
-		<profile>
-			<id>e4.2</id>
-			<activation>
-				<property>
-					<name>target-profile</name>
-					<value>e4.2</value>
-				</property>
-			</activation>
-			<properties>
 				<target-version>4.2</target-version>
 				<target-platform>mylyn-e4.2</target-platform>
 				<platform-repository-url>http://download.eclipse.org/releases/staging/</platform-repository-url>
+				<egit-repository-url>http://download.eclipse.org/egit/updates-1.3/</egit-repository-url>
 				<swtbot-repository-url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</swtbot-repository-url>
 			</properties>
 		</profile>
@@ -202,9 +170,9 @@
 							<resolver>p2</resolver>
 							<target>
 								<artifact>
-									<groupId>org.eclipse.mylyn</groupId>
-									<artifactId>org.eclipse.mylyn-target</artifactId>
-									<version>3.7.0-SNAPSHOT</version>
+									<groupId>no.resheim.elibrarium</groupId>
+									<artifactId>no.resheim.elibrarium-target</artifactId>
+									<version>1.0.0-SNAPSHOT</version>
 									<classifier>${target-platform}</classifier>
 								</artifact>
 							</target>
@@ -220,8 +188,6 @@
 									<ws>cocoa</ws>
 									<arch>x86_64</arch>
 								</environment>
-								<!-- <environment> <os>macosx</os> <ws>carbon</ws> <arch>x86</arch> 
-									</environment> -->
 								<environment>
 									<os>win32</os>
 									<ws>win32</ws>
@@ -248,6 +214,7 @@
 				</plugins>
 			</build>
 		</profile>
+
 		<profile>
 			<id>implicit-target</id>
 			<activation>
@@ -275,8 +242,6 @@
 									<ws>cocoa</ws>
 									<arch>x86_64</arch>
 								</environment>
-								<!-- <environment> <os>macosx</os> <ws>carbon</ws> <arch>x86</arch> 
-									</environment> -->
 								<environment>
 									<os>win32</os>
 									<ws>win32</ws>
@@ -302,6 +267,7 @@
 					</plugin>
 				</plugins>
 			</build>
+
 			<repositories>
 				<repository>
 					<id>eclipse-platform</id>
@@ -313,8 +279,6 @@
 					<layout>p2</layout>
 					<url>${orbit-repository-url}</url>
 				</repository>
-				<!-- <repository> <id>eclipse-mylyn</id> <layout>p2</layout> <url>${mylyn-repository-url}</url> 
-					</repository> -->
 			</repositories>
 		</profile>
 
@@ -342,10 +306,9 @@
 			<properties>
 				<mylyn-credentials>/shared/mylyn/.credentials.properties</mylyn-credentials>
 				<test.vmargs>-ea -Dmylyn.credentials=${mylyn-credentials}
-					-Dorg.eclipse.mylyn.wikitext.tests.disableOutput=true
+					-Dno.resheim.elibrarium.tests.disableOutput=true
 					-Dhttp.proxyHost=proxy.eclipse.org -Dhttp.proxyPort=9898
 					-DhttpnonProxyHosts=wiki.eclipse.org</test.vmargs>
-				<!-- <mylyn-test-append>@e${target-version}</mylyn-test-append> -->
 				<dist.pack200>/shared/common/jdk-1.5.0-22.x86_64/bin</dist.pack200>
 				<maven.test.error.ignore>true</maven.test.error.ignore>
 				<maven.test.failure.ignore>true</maven.test.failure.ignore>
@@ -406,11 +369,6 @@
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId> 
-				<version>1.6</version> <executions> <execution> <phase>pre-integration-test</phase> 
-				<configuration> <target if="test.suite"> <echo file="${test.keyring.password}">.</echo> 
-				</target> </configuration> <goals> <goal>run</goal> </goals> </execution> 
-				</executions> </plugin> -->
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -601,7 +559,8 @@
 		<module>no.resheim.elibrarium.epub-feature</module>
 		<module>no.resheim.elibrarium.epub.core</module>
 		<module>no.resheim.elibrarium.epub.ui</module>
-		<module>no.resheim.elibrarium.sdk-feature</module>		
+		<module>no.resheim.elibrarium.sdk-feature</module>
 		<module>no.resheim.elibrarium-site</module>
 	</modules>
+
 </project>
