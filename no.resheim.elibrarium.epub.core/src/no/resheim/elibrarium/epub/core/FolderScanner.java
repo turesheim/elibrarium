@@ -12,6 +12,7 @@
 package no.resheim.elibrarium.epub.core;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.net.URI;
 import java.util.List;
@@ -75,30 +76,45 @@ public class FolderScanner extends Job {
 			String[] folders = paths.split(File.pathSeparator);
 			for (String string : folders) {
 				File folder = new File(string);
-				if (folder.isDirectory()) {
-					File[] epubs = folder.listFiles(new FilenameFilter() {
-
-						@Override
-						public boolean accept(File dir, String name) {
-							if (name.toLowerCase().endsWith(".epub")) {
-								return true;
-							}
-							return false;
-						}
-					});
-
-					for (File file : epubs) {
-						if (!EpubCorePlugin.getCollection().hasBook(file)) {
-							try {
-								registerBooks(file);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					}
-				}
+				scanFolder(folder);
 			}
 		}
 		return Status.OK_STATUS;
+	}
+
+	public void scanFolder(File folder) {
+		if (folder.isDirectory()) {
+			// Locate all EPUB's and handle these
+			File[] epubs = folder.listFiles(new FilenameFilter() {
+
+				@Override
+				public boolean accept(File dir, String name) {
+					if (name.toLowerCase().endsWith(".epub")) {
+						return true;
+					}
+					return false;
+				}
+			});
+			for (File file : epubs) {
+				if (!EpubCorePlugin.getCollection().hasBook(file)) {
+					try {
+						registerBooks(file);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			// Also check any sub folders
+			File[] folders = folder.listFiles(new FileFilter() {
+
+				@Override
+				public boolean accept(File arg0) {
+					return arg0.isDirectory();
+				}
+			});
+			for (File file : folders) {
+				scanFolder(file);
+			}
+		}
 	}
 }
