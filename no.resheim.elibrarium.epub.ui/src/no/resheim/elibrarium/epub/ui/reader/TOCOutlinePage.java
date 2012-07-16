@@ -58,6 +58,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -83,6 +84,9 @@ import org.ocpsoft.pretty.time.PrettyTime;
 public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelectionChangedListener,
 		IDoubleClickListener, IPropertyChangeListener {
 
+	private static final String TITLE_FONT = "no.resheim.elibrarium.epub.ui.titleFont";
+
+	private static final String DATE_FONT = "no.resheim.elibrarium.epub.ui.dateFont";
 	/**
 	 * Use to sort bookmarks by page numbers. The bookmark with the lowest
 	 * number will come first.
@@ -261,6 +265,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 				// Calculate the size of the date string
 				Point size = event.gc.textExtent(date, SWT.DRAW_DELIMITER | SWT.DRAW_TAB);
 				int halfHeight = size.y / 2;
+				int height = size.y;
 				// if ((event.detail & SWT.SELECTED) != 0) {
 				// Region region = new Region();
 				// gc.getClipping(region);
@@ -281,14 +286,32 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 				// gc.setBackground(background);
 				// event.detail &= ~SWT.SELECTED;
 				// }
-				gc.setFont(getFont("no.resheim.elibrarium.epub.ui.dateFont"));
+
+				// Draw the date
+				gc.setFont(getFont(DATE_FONT));
 				gc.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
 				gc.drawText(date, width - size.x, event.y + size.y, true);
-
-				drawUnderline(event, gc, width, size, halfHeight);
-
-				gc.setFont(getFont("no.resheim.elibrarium.epub.ui.titleFont"));
+				// Paint the page number of the bookmark
+				int pageNumber = bookmark.getPage();
+				String page = Integer.toString(pageNumber);
+				Point pageSize = event.gc.textExtent(page, SWT.DRAW_DELIMITER | SWT.DRAW_TAB);
+				gc.drawText(page, width - 16 - pageSize.x, event.y, true);
+				// Draw icon
+				if (bookmark instanceof Annotation) {
+				} else {
+					int x = width - 9;
+					gc.drawImage(EpubUIPlugin.getDefault().getImageRegistry().get(EpubUIPlugin.IMG_BOOKMARK), x,
+							event.y + 1);
+				}
+				// Draw title
+				gc.setFont(getFont(TITLE_FONT));
 				gc.setForeground(display.getSystemColor(SWT.COLOR_LIST_FOREGROUND));
+				// Make sure text does not span to far
+				Region region = new Region();
+				gc.getClipping(region);
+				region.subtract(width - 32 - pageSize.x, event.y, width, height);
+				gc.setClipping(region);
+				region.dispose();
 				String text = bookmark.getText();
 				if (text == null) {
 					text = "<missing text>";
@@ -301,16 +324,10 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 						gc.drawText(text, event.x + 1, event.y, true);
 					}
 				} else {
-					int x = width - 9;
-					gc.drawImage(EpubUIPlugin.getDefault().getImageRegistry().get(EpubUIPlugin.IMG_BOOKMARK), x,
-							event.y + 1);
 					gc.drawText(text, event.x + 1, event.y, true);
 				}
-				// Paint the page number of the bookmark
-				int pageNumber = bookmark.getPage();
-				String page = Integer.toString(pageNumber);
-				Point pageSize = event.gc.textExtent(page, SWT.DRAW_DELIMITER | SWT.DRAW_TAB);
-				gc.drawText(page, width - 16 - pageSize.x, event.y, true);
+				// Draw separator
+				drawUnderline(event, gc, width, size, halfHeight);
 			}
 
 			public Font getFont(String fontName) {
