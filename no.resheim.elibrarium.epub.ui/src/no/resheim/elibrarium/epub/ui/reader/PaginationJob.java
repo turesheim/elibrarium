@@ -11,7 +11,10 @@
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui.reader;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -20,6 +23,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import no.resheim.elibrarium.epub.core.EpubUtil;
+import no.resheim.elibrarium.library.Annotation;
+import no.resheim.elibrarium.library.Book;
+import no.resheim.elibrarium.library.Bookmark;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -42,15 +48,17 @@ import org.eclipse.swt.widgets.Shell;
 public class PaginationJob extends Job {
 
 	private class Paginator implements Runnable, ProgressListener {
-		
+
 		/**
 		 * Used to synchronise the two threads working on paginating a chapter.
 		 */
 		private final CyclicBarrier barrier = new CyclicBarrier(2);
-		
-		private final Itemref ref;
+
+		private String currentHref;
 
 		private final IProgressMonitor monitor;
+
+		private final Itemref ref;
 
 		public Paginator(Itemref ref, IProgressMonitor monitor) {
 			this.ref = ref;
@@ -73,55 +81,99 @@ public class PaginationJob extends Job {
 				return;
 			}
 			browser.removeProgressListener(this);
+			int[] newSizes = new int[chapterSizes.length + 1];
+			System.arraycopy(chapterSizes, 0, newSizes, 0, chapterSizes.length);
+			newSizes[chapterSizes.length] = paginateChapter();
+			chapterSizes = newSizes;
+			try {
+				barrier.await();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (BrokenBarrierException e) {
+				e.printStackTrace();
+			}
+		}
+
+		/**
+		 * Executes JavaScript that will reformat the chapter and obtain
+		 * information that is required for browsing it.
+		 * 
+		 * @return the number of pages in the chapter
+		 */
+		private int paginateChapter() {
+			int pageCount = -1;
 			StringBuilder sb = new StringBuilder();
-			sb.append("try {");
-			sb.append("desiredWidth=" + browser.getSize().x + ";");
-			sb.append("htmlID=document.getElementsByTagName('html')[0];");
-			sb.append("bodyID=document.getElementsByTagName('body')[0];");
+			sb.append("desiredWidth = " + browser.getSize().x + ";");
 			sb.append("desiredHeight = " + (browser.getSize().y - 20) + ";");
-			sb.append("totalHeight=bodyID.offsetHeight;");
-			sb.append("pageCount=Math.floor(totalHeight/desiredHeight)+1;");
-			sb.append("width=desiredWidth*pageCount;");
-			sb.append("bodyID.style.width=width+'px';");
-			sb.append("bodyID.style.height=desiredHeight+'px';");
-			sb.append("bodyID.style.WebkitColumnCount=pageCount;");
-			sb.append("function adjustImages() {");
-			sb.append("  var imgs, i;");
-			sb.append("  imgs=bodyID.getElementsByTagName('img');");
-			sb.append("  for(i=0;i<imgs.length;i++) {");
-			sb.append("    imgs[i].style.maxWidth = (desiredWidth-10)+'px';");
-			sb.append("  }");
-			sb.append("}");
-			sb.append("adjustImages();");
-			sb.append("bodyID.style.overflow='hidden'");
-			sb.append("}catch(e){document.write(e);}");
-			boolean ok = browser.execute(sb.toString());
-			if (ok) {
-				int count = (int) Math.round((Double) browser.evaluate("return pageCount"));
-				int[] newSizes = new int[chapterSizes.length + 1];
-				System.arraycopy(chapterSizes, 0, newSizes, 0, chapterSizes.length);
-				newSizes[chapterSizes.length] = count;
-				chapterSizes = newSizes;
-				try {
-					barrier.await();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (BrokenBarrierException e) {
-					e.printStackTrace();
+			try {
+				readJS("jquery-1.7.1.js", sb);
+				readJS("rangy-core.js", sb);
+				readJS("rangy-serializer.js", sb);
+				readJS("rangy-cssclassapplier.js", sb);
+				readJS("injected.js", sb);
+				boolean ok = browser.execute(sb.toString());
+				if (ok) {
+					pageCount = (int) Math.round((Double) browser.evaluate("return pageCount"));
+					// Iterate over all bookmarks and annotations in order to
+					// determine their page numbers. The data
+					// model will be updated at this stage.
+					EList<Bookmark> bookmarks = book.getBookmarks();
+					for (Bookmark bookmark : bookmarks) {
+						if (bookmark.getHref() != null && bookmark.getHref().equals(currentHref)) {
+							String id = bookmark.getId();
+							if (bookmark instanceof Annotation) {
+								int page = (int) Math.round((Double) browser.evaluate("page=markRange('"
+										+ bookmark.getLocation() + "','" + id + "');return page;"));
+								for (int i = 0; i < chapterSizes.length; i++) {
+									page += chapterSizes[i];
+								}
+								bookmark.setPage(page + 1);
+							} else {
+								int page = (int) Math.round((Double) browser.evaluate("page=injectIdentifier('"
+										+ bookmark.getLocation() + "','" + id + "');return page;"));
+								for (int i = 0; i < chapterSizes.length; i++) {
+									page += chapterSizes[i];
+								}
+								bookmark.setPage(page + 1);
+							}
+						}
+					} // for
 				}
-			} else {
-				throw new RuntimeException("Could not paginate");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return pageCount;
+		}
+
+		/**
+		 * Reads the (JavaScript) file and appends the content to the given
+		 * buffer.
+		 * 
+		 * @param filename
+		 *            file to read
+		 * @param sb
+		 *            buffer to add to
+		 * @throws IOException
+		 */
+		private void readJS(String filename, StringBuilder sb) throws IOException {
+			String in;
+			BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(filename)));
+			while ((in = br.readLine()) != null) {
+				sb.append(in);
+				sb.append('\n');
 			}
 		}
 
 		@Override
 		public void run() {
 			browser.getDisplay().asyncExec(new Runnable() {
+
 				@Override
 				public void run() {
 					browser.addProgressListener(Paginator.this);
 					Item item = ops.getItemById(ref.getIdref());
-					String filePath = ops.getRootFolder().getAbsolutePath() + File.separator + item.getHref();
+					currentHref = item.getHref();
+					String filePath = ops.getRootFolder().getAbsolutePath() + File.separator + currentHref;
 					File file = new File(filePath);
 					if (file.exists()) {
 						String url = "file:" + filePath;
@@ -139,9 +191,14 @@ public class PaginationJob extends Job {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
+	/**
+	 * The book currently open in the editor.
+	 */
+	private final Book book;
+
 	/**
 	 * A private browser instance used for paginating the EPUB.
 	 */
@@ -153,28 +210,30 @@ public class PaginationJob extends Job {
 	private int[] chapterSizes = new int[0];
 
 	/**
+	 * The OPS publication being paginated.
+	 */
+	private final OPSPublication ops;
+
+	private final Shell shell;
+
+	/**
 	 * The width of the page
 	 */
 	private int width;
 
-	/**
-	 * Returns the width of the book page.
-	 * 
-	 * @return
-	 */
-	public int getWidth() {
-		return width;
-	}
-
-	private OPSPublication ops;
-
-	private final Shell shell;
-
-	public PaginationJob(OPSPublication ops) {
+	public PaginationJob(Book book, OPSPublication ops) {
 		super(MessageFormat.format("Paginating \"{0}\"", EpubUtil.getFirstTitle(ops)));
 		this.ops = ops;
+		this.book = book;
 		shell = new Shell();
 		browser = new Browser(shell, SWT.NONE);
+	}
+
+	public int[] getChapterSizes() {
+		// Make copy to help avoid threading issues.
+		int[] sizes = new int[chapterSizes.length];
+		System.arraycopy(chapterSizes, 0, sizes, 0, sizes.length);
+		return sizes;
 	}
 
 	/**
@@ -188,6 +247,15 @@ public class PaginationJob extends Job {
 			total += size;
 		}
 		return total;
+	}
+
+	/**
+	 * Returns the width of the book page.
+	 * 
+	 * @return
+	 */
+	public int getWidth() {
+		return width;
 	}
 
 	@Override
@@ -216,10 +284,6 @@ public class PaginationJob extends Job {
 		return Status.OK_STATUS;
 	}
 
-	public void setPublication(OPSPublication ops) {
-		this.ops = ops;
-	}
-
 	public synchronized void update(int width, int height) {
 		if (width == 0 || height == 0) {
 			throw new IllegalArgumentException("Height or width cannot be 0");
@@ -230,13 +294,6 @@ public class PaginationJob extends Job {
 		}
 		browser.setSize(width, height);
 		this.schedule();
-	}
-
-	public int[] getChapterSizes() {
-		// Make copy to help avoid threading issues.
-		int[] sizes = new int[chapterSizes.length];
-		System.arraycopy(chapterSizes, 0, sizes, 0, sizes.length);
-		return sizes;
 	}
 
 }

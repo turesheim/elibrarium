@@ -30,6 +30,7 @@ try {
 	 * two pages.
 	 * 
 	 * @param identifier the element identifier
+	 * @returns the page number of the element
 	 */
 	function setOffsetToElement(identifier) {
 		var p = $('#' + identifier);
@@ -37,6 +38,7 @@ try {
 			var offset = p.offset();
 			var page = Math.floor(offset.left / pageWidth);
 			$('body').scrollLeft(page * pageWidth);
+			return page;
 		} else {
 			alert("not found");
 		}
@@ -188,6 +190,11 @@ try {
 				createIdentifiedSpan(identifier);
 				selection.removeAllRanges();
 				selection.detach();
+				// Determine the offset
+				var p = $('#' + identifier);
+				var offset = p.offset();
+				var page = Math.floor(offset.left / pageWidth);
+				return page;
 			}
 		}
 	}
@@ -198,6 +205,7 @@ try {
 	 * 
 	 * @param serialized the serialized range
 	 * @param identifier the identifier
+	 * @returns the page number of the element
 	 */
 	function injectIdentifier(serialized, identifier) {
 		if ($('#' + identifier).length == 0) {
@@ -208,6 +216,11 @@ try {
 				createIdentifiedSpan(identifier);
 				selection.removeAllRanges();
 				selection.detach();
+				// Determine the offset
+				var p = $('#' + identifier);
+				var offset = p.offset();
+				var page = Math.floor(offset.left / pageWidth);
+				return page;
 			}
 		}
 	}

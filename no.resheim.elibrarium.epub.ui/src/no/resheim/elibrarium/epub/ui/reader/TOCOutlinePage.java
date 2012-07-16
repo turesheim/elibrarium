@@ -48,6 +48,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.mylyn.docs.epub.core.OPSPublication;
 import org.eclipse.mylyn.docs.epub.ncx.NavPoint;
 import org.eclipse.swt.SWT;
@@ -82,7 +83,26 @@ import org.ocpsoft.pretty.time.PrettyTime;
 public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelectionChangedListener,
 		IDoubleClickListener, IPropertyChangeListener {
 
-	class AnnotationsContentProvider implements IStructuredContentProvider {
+	/**
+	 * Use to sort bookmarks by page numbers. The bookmark with the lowest
+	 * number will come first.
+	 */
+	private final class BookmarksComparator extends ViewerComparator {
+		@Override
+		public int compare(Viewer viewer, Object e1, Object e2) {
+			if (e1 instanceof Bookmark && e2 instanceof Bookmark) {
+				int page_e1 = ((Bookmark) e1).getPage();
+				int page_e2 = ((Bookmark) e2).getPage();
+				return page_e1 - page_e2;
+			}
+			return super.compare(viewer, e1, e2);
+		}
+	}
+
+	/**
+	 * Lists bookmarks
+	 */
+	private final class BookmarksContentProvider implements IStructuredContentProvider {
 
 		public void dispose() {
 		}
@@ -102,7 +122,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 	private StackLayout layout;
 
-	private TableViewer notes;
+	private TableViewer bookmarks;
 
 	private final OPSPublication ops;
 
@@ -147,12 +167,13 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		toc.setLabelProvider(new EpubLabelProvider());
 		toc.addSelectionChangedListener(this);
 		toc.addDoubleClickListener(this);
-		notes = new TableViewer(pagebook, SWT.NONE);
-		notes.setContentProvider(new AnnotationsContentProvider());
-		notes.addSelectionChangedListener(this);
-		notes.addDoubleClickListener(this);
-		notes.getTable().setHeaderVisible(false);
-		final TableViewerColumn column = new TableViewerColumn(notes, SWT.LEFT);
+		bookmarks = new TableViewer(pagebook, SWT.NONE);
+		bookmarks.setContentProvider(new BookmarksContentProvider());
+		bookmarks.setComparator(new BookmarksComparator());
+		bookmarks.addSelectionChangedListener(this);
+		bookmarks.addDoubleClickListener(this);
+		bookmarks.getTable().setHeaderVisible(false);
+		final TableViewerColumn column = new TableViewerColumn(bookmarks, SWT.LEFT);
 		// Special drawing of bookmarks table
 		installLabelProvider(column);
 		// Automatic layout of bookmarks table
@@ -160,20 +181,26 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 		GridData data = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.FILL_BOTH);
 
-		notes.getControl().setLayoutData(data);
+		bookmarks.getControl().setLayoutData(data);
 		// Create the context menu for the annotations
-		hookContextMenu(notes.getControl());
+		hookContextMenu(bookmarks.getControl());
 
 		// Set the input
 		toc.setInput(ops);
 		toc.expandAll();
-		notes.setInput(book);
+		bookmarks.setInput(book);
 
+		// Handles changes in the book and will refresh the bookmarks view.
 		bookAdapter = new AdapterImpl() {
 			@Override
 			public void notifyChanged(Notification notification) {
-				if (!notes.getControl().isDisposed()) {
-					notes.refresh();
+				if (!bookmarks.getControl().isDisposed()) {
+					bookmarks.getControl().getDisplay().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							bookmarks.refresh(true);
+						}
+					});
 				}
 			}
 		};
@@ -194,27 +221,27 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 			@Override
 			public void controlResized(ControlEvent e) {
 				org.eclipse.swt.graphics.Rectangle area = pagebook.getClientArea();
-				Point preferredSize = notes.getTable().computeSize(SWT.DEFAULT, SWT.DEFAULT);
-				int width = area.width - 2 * notes.getTable().getBorderWidth();
-				if (preferredSize.y > area.height + notes.getTable().getHeaderHeight()) {
+				Point preferredSize = bookmarks.getTable().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+				int width = area.width - 2 * bookmarks.getTable().getBorderWidth();
+				if (preferredSize.y > area.height + bookmarks.getTable().getHeaderHeight()) {
 					// Subtract the scrollbar width from the total column width
 					// if a vertical scrollbar will be required
-					Point vBarSize = notes.getTable().getVerticalBar().getSize();
+					Point vBarSize = bookmarks.getTable().getVerticalBar().getSize();
 					width -= vBarSize.x;
 				}
-				Point oldSize = notes.getTable().getSize();
+				Point oldSize = bookmarks.getTable().getSize();
 				if (oldSize.x > area.width) {
 					// table is getting smaller so make the columns
 					// smaller first and then resize the table to
 					// match the client area width
 					column.getColumn().setWidth(width);
-					notes.getTable().setSize(area.width, area.height);
+					bookmarks.getTable().setSize(area.width, area.height);
 				} else {
 					// table is getting bigger so make the table
 					// bigger first and then make the columns wider
 					// to match the client area width
 					column.getColumn().setWidth(width);
-					notes.getTable().setSize(area.width, area.height);
+					bookmarks.getTable().setSize(area.width, area.height);
 				}
 			}
 		});
@@ -279,6 +306,11 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 							event.y + 1);
 					gc.drawText(text, event.x + 1, event.y, true);
 				}
+				// Paint the page number of the bookmark
+				int pageNumber = bookmark.getPage();
+				String page = Integer.toString(pageNumber);
+				Point pageSize = event.gc.textExtent(page, SWT.DRAW_DELIMITER | SWT.DRAW_TAB);
+				gc.drawText(page, width - 16 - pageSize.x, event.y, true);
 			}
 
 			public Font getFont(String fontName) {
@@ -308,7 +340,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 			protected void measure(Event event, Object element) {
 				String text = "A";
 				Point size = event.gc.textExtent(text, SWT.DRAW_DELIMITER | SWT.DRAW_TAB);
-				event.width = notes.getTable().getColumn(event.index).getWidth();
+				event.width = bookmarks.getTable().getColumn(event.index).getWidth();
 				// we need two lines of text and some space
 				int halfHeight = size.y / 2;
 				event.height = size.y * 2 + halfHeight;
@@ -409,9 +441,9 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 				TOCOutlinePage.this.fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(notes.getControl());
+		Menu menu = menuMgr.createContextMenu(bookmarks.getControl());
 		control.setMenu(menu);
-		getSite().registerContextMenu("no.resheim.elibrarium.bookmarks", menuMgr, notes);
+		getSite().registerContextMenu("no.resheim.elibrarium.bookmarks", menuMgr, bookmarks);
 	}
 
 	@Override
@@ -436,7 +468,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		showAnnotations = new Action("Notes", IAction.AS_RADIO_BUTTON) {
 			@Override
 			public void run() {
-				layout.topControl = notes.getControl();
+				layout.topControl = bookmarks.getControl();
 				pagebook.layout();
 			}
 		};

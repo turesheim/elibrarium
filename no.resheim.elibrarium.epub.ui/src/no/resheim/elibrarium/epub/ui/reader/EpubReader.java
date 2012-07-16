@@ -146,11 +146,11 @@ public class EpubReader extends EditorPart {
 	/**
 	 * Performs selection of text in the browser.
 	 */
-	private class MarkTextItem {
+	private class MarkTextMenuItem {
 
 		public MenuItem menuItem;
 
-		public MarkTextItem(Menu parent, int style) {
+		public MarkTextMenuItem(Menu parent, int style) {
 			menuItem = new MenuItem(parent, style);
 			menuItem.setText("Mark text");
 			installListener();
@@ -165,19 +165,7 @@ public class EpubReader extends EditorPart {
 
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					String id = UUID.randomUUID().toString();
-					if (browser.execute("markRange('" + currentRange + "','" + id + "');")) {
-						Annotation annotation = LibraryFactory.eINSTANCE.createAnnotation();
-						annotation.setId(id);
-						annotation.setTimestamp(new Date());
-						annotation.setLocation(currentRange);
-						annotation.setText(currentText);
-						annotation.setColor(AnnotationColor.YELLOW);
-						annotation.setHref(currentHref);
-						currentBook.getBookmarks().add(annotation);
-					} else {
-						System.err.println("Could not mark range!");
-					}
+					toggleTextMarking();
 				}
 			});
 		}
@@ -401,13 +389,11 @@ public class EpubReader extends EditorPart {
 
 			@Override
 			public void mouseDown(MouseEvent e) {
-				addBookmark();
+				toggleBookmark();
 			}
 
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 
@@ -578,9 +564,25 @@ public class EpubReader extends EditorPart {
 		return page;
 	}
 
-	private int getCurrentPage() {
+	/**
+	 * Calculates the book relative page index of the currently displayed page.
+	 * Note that the index of the first page is "0".
+	 * 
+	 * @return the currently displayed page index
+	 */
+	private int getCurrentPageIndex() {
+		return getCurrentChapterPage() + getCurrentChapterPageIndex();
+	}
+
+	/**
+	 * Calculates the book relative page index at the beginning of the chapter -
+	 * using information of chapter lengths obtained from the pagination job.
+	 * Note that the index of the first page is
+	 * 
+	 * @return the page number at the start of the chapter
+	 */
+	private int getCurrentChapterPageIndex() {
 		int page = 0;
-		int chapterPage = getCurrentChapterPage();
 		int chapter = getCurrentChapter();
 		int[] chapterSizes = paginationJob.getChapterSizes();
 		if (chapterSizes.length < chapter) {
@@ -589,7 +591,6 @@ public class EpubReader extends EditorPart {
 		for (int i = 0; i < chapter - 1; i++) {
 			page += chapterSizes[i];
 		}
-		page += chapterPage;
 		return page;
 	}
 
@@ -655,15 +656,15 @@ public class EpubReader extends EditorPart {
 				epub.unpack(path.toFile(), rootFolder);
 				// Use the first OPS publication we find
 				ops = epub.getOPSPublications().get(0);
-				paginationJob = new PaginationJob(ops);
-				paginationJob.setUser(false);
-				paginationJob.setPriority(Job.LONG);
-				paginationJob.addJobChangeListener(new PaginationJobListener());
 				registerBook(path, ops);
 				installBookListener(currentBook);
 				initialURL = getOpeningPage(currentBook.getLastHref());
 				currentLocation = currentBook.getLastLocation();
 				setPartName(getTitle(ops));
+				paginationJob = new PaginationJob(currentBook, ops);
+				paginationJob.setUser(false);
+				paginationJob.setPriority(Job.LONG);
+				paginationJob.addJobChangeListener(new PaginationJobListener());
 			} catch (Exception e) {
 				StatusManager.getManager()
 						.handle(new Status(IStatus.ERROR, EpubUIPlugin.PLUGIN_ID, "Could not open book", e),
@@ -740,7 +741,8 @@ public class EpubReader extends EditorPart {
 				// Do the pagination of the chapter
 				paginateChapter();
 
-				// Iterate over all annotations and mark the ranges
+				// Iterate over all bookmarks and annotations and insert markers
+				// into the HTML code. Also update page numbers.
 				EList<Bookmark> bookmarks = currentBook.getBookmarks();
 				for (Bookmark bookmark : bookmarks) {
 					if (bookmark.getHref() != null && bookmark.getHref().equals(currentHref)) {
@@ -748,14 +750,14 @@ public class EpubReader extends EditorPart {
 						// Mark text
 						if (bookmark instanceof Annotation) {
 							if (!browser.execute("markRange('" + bookmark.getLocation() + "','" + id + "');")) {
-								System.err.println("Could not create marker identified by " + bookmark.getHref() + "#"
-										+ id + " at " + bookmark.getLocation());
 							}
+							// Page Bookmark
 						} else {
-							if (!browser.execute("injectIdentifier('" + bookmark.getLocation() + "','" + id + "');")) {
-								System.err.println("Could not create identifier element " + bookmark.getHref() + "#"
-										+ id + " at " + bookmark.getLocation());
-							}
+							int page = (int) Math.round((Double) browser.evaluate("page=injectIdentifier('"
+									+ bookmark.getLocation() + "','" + id + "');return page;"));
+							page = getCurrentChapterPageIndex() + page + 1;
+							// Update the page number
+							bookmark.setPage(page);
 						}
 					}
 				}
@@ -944,27 +946,45 @@ public class EpubReader extends EditorPart {
 
 	/**
 	 * Adds a bookmark at the current location unless there is already one
-	 * present.
+	 * present. If there is a bookmark already present it will be removed.
 	 */
-	private void addBookmark() {
+	private void toggleBookmark() {
 		Bookmark existing = hasBookmark();
 		if (existing == null) {
 			String title = (String) browser.evaluate("title = getBookmarkTitle();return title;");
-			Bookmark annotation = LibraryFactory.eINSTANCE.createBookmark();
+			Bookmark bookmark = LibraryFactory.eINSTANCE.createBookmark();
 			String id = UUID.randomUUID().toString();
-			annotation.setId(id);
-			annotation.setTimestamp(new Date());
-			annotation.setHref(currentHref);
-			annotation.setLocation(currentLocation);
-			annotation.setText(title);
-			currentBook.getBookmarks().add(annotation);
-			browser.execute("injectIdentifier('" + currentLocation + "','" + id + "');");
+			bookmark.setId(id);
+			bookmark.setTimestamp(new Date());
+			bookmark.setHref(currentHref);
+			bookmark.setLocation(currentLocation);
+			bookmark.setText(title);
+			currentBook.getBookmarks().add(bookmark);
+			int bookmarkPage = (int) Math.round((Double) browser.evaluate("page=injectIdentifier('" + currentLocation
+					+ "','" + id + "');return page;"));
+			bookmarkPage = getCurrentChapterPageIndex() + bookmarkPage + 1;
+			bookmark.setPage(bookmarkPage);
 			updateLocation();
 		} else {
 			currentBook.getBookmarks().remove(existing);
 			updateLocation();
 		}
+	}
 
+	private void toggleTextMarking() {
+		String id = UUID.randomUUID().toString();
+		Annotation annotation = LibraryFactory.eINSTANCE.createAnnotation();
+		annotation.setId(id);
+		annotation.setTimestamp(new Date());
+		annotation.setColor(AnnotationColor.YELLOW);
+		annotation.setHref(currentHref);
+		annotation.setLocation(currentRange);
+		annotation.setText(currentText);
+		int annotationPage = (int) Math.round((Double) browser.evaluate("page=markRange('" + currentRange + "','" + id
+				+ "');return page;"));
+		annotationPage = getCurrentChapterPageIndex() + annotationPage + 1;
+		annotation.setPage(annotationPage);
+		currentBook.getBookmarks().add(annotation);
 	}
 
 	private Bookmark hasBookmark() {
@@ -974,9 +994,9 @@ public class EpubReader extends EditorPart {
 			if (bookmark.getHref() != null && bookmark.getHref().equals(currentHref)) {
 				// Only looking for page bookmarks
 				if (!(bookmark instanceof Annotation)) {
-				Boolean intersects = (Boolean) browser.evaluate("bookmark = intersects('" + bookmark.getLocation()
-						+ "');return bookmark;");
-				if (intersects) {
+					Boolean intersects = (Boolean) browser.evaluate("bookmark = intersects('" + bookmark.getLocation()
+							+ "');return bookmark;");
+					if (intersects) {
 						marked = bookmark;
 					}
 				}
@@ -1034,7 +1054,8 @@ public class EpubReader extends EditorPart {
 				public void run() {
 					synchronized (paginationJob) {
 						if (paginationJob.getState() == Job.NONE) {
-							footerLabel.setText("Page " + getCurrentPage() + " of " + paginationJob.getTotalpages());
+							footerLabel.setText("Page " + getCurrentPageIndex() + " of "
+									+ paginationJob.getTotalpages());
 						} else {
 							footerLabel.setText("Paginating...");
 						}
@@ -1043,7 +1064,6 @@ public class EpubReader extends EditorPart {
 			});
 		}
 	}
-
 
 	/**
 	 * Navigates to the given page number of the chapter.
@@ -1084,9 +1104,6 @@ public class EpubReader extends EditorPart {
 	 * that is required for browsing it.
 	 */
 	private void paginateChapter() {
-		// if (browser.getSize().x == x && browser.getSize().y == y) {
-		// return;
-		// }
 		StringBuilder sb = new StringBuilder();
 		sb.append("desiredWidth = " + browser.getSize().x + ";");
 		sb.append("desiredHeight = " + (browser.getSize().y - 20) + ";");
@@ -1113,7 +1130,7 @@ public class EpubReader extends EditorPart {
 			new RemoveMarkedItem(menu, SWT.PUSH);
 		} else if (currentRange != null) {
 			// Allow text to be marked
-			new MarkTextItem(menu, SWT.PUSH);
+			new MarkTextMenuItem(menu, SWT.PUSH);
 		}
 	}
 
