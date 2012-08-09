@@ -3,7 +3,7 @@
       id="no.resheim.elibrarium.epub"
       label="%featureName"
       version="1.0.0.qualifier"
-      provider-name="%featureName"
+      provider-name="%providerName"
       plugin="no.resheim.elibrarium.epub.ui">
 
    <description>
