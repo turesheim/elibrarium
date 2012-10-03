@@ -44,10 +44,10 @@ public class EpubUtil {
 	 */
 	public static Book getBook(OPSPublication ops) {
 		String id = EpubUtil.getIdentifier(ops);
-		if (!EpubCorePlugin.getCollection().hasBook(id)) {
+		if (!EpubCollection.getCollection().hasBook(id)) {
 			return null;
 		} else {
-			return EpubCorePlugin.getCollection().getBook(id);
+			return EpubCollection.getCollection().getBook(id);
 		}
 	}
 

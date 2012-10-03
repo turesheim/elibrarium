@@ -19,7 +19,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
 	@Override
 	public void initializeDefaultPreferences() {
-		IEclipsePreferences preferences = DefaultScope.INSTANCE.getNode(EpubCorePlugin.PLUGIN_ID);
+		IEclipsePreferences preferences = DefaultScope.INSTANCE.getNode(EpubCollection.PLUGIN_ID);
 		preferences.putBoolean(PreferenceConstants.SCAN_FOLDERS, false);
 		preferences.putBoolean(PreferenceConstants.SCAN_NOTIFY, true);
 		preferences.putInt(PreferenceConstants.SCAN_INTERVAL, 10);

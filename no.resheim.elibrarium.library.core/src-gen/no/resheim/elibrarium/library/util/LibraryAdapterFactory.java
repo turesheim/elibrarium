@@ -84,8 +84,8 @@ public class LibraryAdapterFactory extends AdapterFactoryImpl {
 				return createBookmarkAdapter();
 			}
 			@Override
-			public Adapter caseAnnotation(Annotation object) {
-				return createAnnotationAdapter();
+			public Adapter caseTextAnnotation(TextAnnotation object) {
+				return createTextAnnotationAdapter();
 			}
 			@Override
 			public Adapter caseMetadata(Metadata object) {
@@ -154,16 +154,16 @@ public class LibraryAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link no.resheim.elibrarium.library.Annotation <em>Annotation</em>}'.
+	 * Creates a new adapter for an object of class '{@link no.resheim.elibrarium.library.TextAnnotation <em>Text Annotation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see no.resheim.elibrarium.library.Annotation
+	 * @see no.resheim.elibrarium.library.TextAnnotation
 	 * @generated
 	 */
-	public Adapter createAnnotationAdapter() {
+	public Adapter createTextAnnotationAdapter() {
 		return null;
 	}
 

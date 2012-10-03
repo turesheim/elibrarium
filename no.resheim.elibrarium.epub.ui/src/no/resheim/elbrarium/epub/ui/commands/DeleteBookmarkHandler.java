@@ -13,6 +13,8 @@ package no.resheim.elbrarium.epub.ui.commands;
 
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Bookmark;
+import no.resheim.elibrarium.library.core.ILibraryCatalog;
+import no.resheim.elibrarium.library.core.ILibraryCatalog.ITransactionalOperation;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -26,9 +28,18 @@ public class DeleteBookmarkHandler extends AbstractHandler implements IHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Bookmark bookmark = getSelection(event);
+		final Bookmark bookmark = getSelection(event);
 		if (bookmark.eContainer() instanceof Book) {
-			((Book) bookmark.eContainer()).getBookmarks().remove(bookmark);
+			Book book = (Book) bookmark.eContainer();
+			// Wrap the operation of removing a bookmark into a transaction
+			ILibraryCatalog.INSTANCE.modify(book, new ITransactionalOperation<Book>() {
+				@Override
+				public Object execute(Book object) {
+					object.cdoWriteLock().lock();
+					object.getBookmarks().remove(bookmark);
+					return null;
+				}
+			});
 		}
 		return null;
 	}

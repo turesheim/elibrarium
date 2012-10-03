@@ -20,7 +20,7 @@ import java.net.URI;
 import java.util.Date;
 import java.util.UUID;
 
-import no.resheim.elibrarium.epub.core.EpubCorePlugin;
+import no.resheim.elibrarium.epub.core.EpubCollection;
 import no.resheim.elibrarium.epub.core.EpubUtil;
 import no.resheim.elibrarium.epub.ui.EpubUIPlugin;
 import no.resheim.elibrarium.library.Annotation;
@@ -28,7 +28,10 @@ import no.resheim.elibrarium.library.AnnotationColor;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Bookmark;
 import no.resheim.elibrarium.library.LibraryFactory;
-import no.resheim.elibrarium.library.core.LibraryPlugin;
+import no.resheim.elibrarium.library.TextAnnotation;
+import no.resheim.elibrarium.library.core.ILibraryCatalog;
+import no.resheim.elibrarium.library.core.ILibraryCatalog.ITransactionalOperation;
+import no.resheim.elibrarium.library.core.Librarian;
 import no.resheim.elibrarium.library.core.LibraryUtil;
 
 import org.eclipse.core.runtime.IPath;
@@ -485,8 +488,15 @@ public class EpubReader extends EditorPart {
 		}
 		// Store the last location
 		if (currentBook != null) {
-			currentBook.setLastLocation(currentLocation);
-			currentBook.setLastHref(currentHref);
+			ILibraryCatalog.INSTANCE.modify(currentBook, new ITransactionalOperation<Book>() {
+				@Override
+				public Object execute(Book object) {
+					object.cdoWriteLock().lock();
+					object.setLastLocation(currentLocation);
+					object.setLastHref(currentHref);
+					return null;
+				}
+			});
 		}
 		disposed = true;
 		super.dispose();
@@ -648,7 +658,7 @@ public class EpubReader extends EditorPart {
 			try {
 				// If the EPUB has already been unpacked it's contents will be
 				// used as it is unless the modification dates differ.
-				IPath storageLocation = LibraryPlugin.getDefault().getStorageLocation();
+				IPath storageLocation = Librarian.getDefault().getStorageLocation();
 				File rootFolder = storageLocation.append(path.lastSegment()).toFile();
 				if (rootFolder.lastModified() != path.toFile().lastModified()) {
 					deleteFolder(rootFolder);
@@ -744,7 +754,7 @@ public class EpubReader extends EditorPart {
 				// Iterate over all bookmarks and annotations and insert markers
 				// into the HTML code. Also update page numbers.
 				EList<Bookmark> bookmarks = currentBook.getBookmarks();
-				for (Bookmark bookmark : bookmarks) {
+				for (final Bookmark bookmark : bookmarks) {
 					if (bookmark.getHref() != null && bookmark.getHref().equals(currentHref)) {
 						String id = bookmark.getId();
 						// Mark text
@@ -755,9 +765,18 @@ public class EpubReader extends EditorPart {
 						} else {
 							int page = (int) Math.round((Double) browser.evaluate("page=injectIdentifier('"
 									+ bookmark.getLocation() + "','" + id + "');return page;"));
-							page = getCurrentChapterPageIndex() + page + 1;
+							final int adjustedPage = getCurrentChapterPageIndex() + page + 1;
 							// Update the page number
-							bookmark.setPage(page);
+							ILibraryCatalog.INSTANCE.modify(bookmark,
+									new ILibraryCatalog.ITransactionalOperation<Bookmark>() {
+
+										@Override
+										public Object execute(Bookmark object) {
+											object.cdoWriteLock();
+											object.setPage(adjustedPage);
+											return null;
+										}
+									});
 						}
 					}
 				}
@@ -949,31 +968,46 @@ public class EpubReader extends EditorPart {
 	 * present. If there is a bookmark already present it will be removed.
 	 */
 	private void toggleBookmark() {
-		Bookmark existing = hasBookmark();
+		final Bookmark existing = hasBookmark();
 		if (existing == null) {
 			String title = (String) browser.evaluate("title = getBookmarkTitle();return title;");
-			Bookmark bookmark = LibraryFactory.eINSTANCE.createBookmark();
+			final Bookmark bookmark = LibraryFactory.eINSTANCE.createBookmark();
 			String id = UUID.randomUUID().toString();
 			bookmark.setId(id);
 			bookmark.setTimestamp(new Date());
 			bookmark.setHref(currentHref);
 			bookmark.setLocation(currentLocation);
 			bookmark.setText(title);
-			currentBook.getBookmarks().add(bookmark);
 			int bookmarkPage = (int) Math.round((Double) browser.evaluate("page=injectIdentifier('" + currentLocation
 					+ "','" + id + "');return page;"));
 			bookmarkPage = getCurrentChapterPageIndex() + bookmarkPage + 1;
 			bookmark.setPage(bookmarkPage);
-			updateLocation();
+			// Wrap the operation of adding a bookmark into a transaction
+			ILibraryCatalog.INSTANCE.modify(currentBook, new ITransactionalOperation<Book>() {
+				@Override
+				public Object execute(Book object) {
+					object.cdoWriteLock().lock();
+					object.getBookmarks().add(bookmark);
+					return null;
+				}
+			});
 		} else {
-			currentBook.getBookmarks().remove(existing);
-			updateLocation();
+			// Wrap the operation of adding a bookmark into a transaction
+			ILibraryCatalog.INSTANCE.modify(currentBook, new ITransactionalOperation<Book>() {
+				@Override
+				public Object execute(Book object) {
+					object.cdoWriteLock().lock();
+					object.getBookmarks().remove(existing);
+					return null;
+				}
+			});
 		}
+		updateLocation();
 	}
 
 	private void toggleTextMarking() {
 		String id = UUID.randomUUID().toString();
-		Annotation annotation = LibraryFactory.eINSTANCE.createAnnotation();
+		final TextAnnotation annotation = LibraryFactory.eINSTANCE.createTextAnnotation();
 		annotation.setId(id);
 		annotation.setTimestamp(new Date());
 		annotation.setColor(AnnotationColor.YELLOW);
@@ -984,7 +1018,16 @@ public class EpubReader extends EditorPart {
 				+ "');return page;"));
 		annotationPage = getCurrentChapterPageIndex() + annotationPage + 1;
 		annotation.setPage(annotationPage);
-		currentBook.getBookmarks().add(annotation);
+
+		// Wrap the operation of adding a bookmark into a transaction
+		ILibraryCatalog.INSTANCE.modify(currentBook, new ITransactionalOperation<Book>() {
+			@Override
+			public Object execute(Book object) {
+				object.cdoWriteLock().lock();
+				object.getBookmarks().add(annotation);
+				return null;
+			}
+		});
 	}
 
 	private Bookmark hasBookmark() {
@@ -1169,12 +1212,12 @@ public class EpubReader extends EditorPart {
 		String title = EpubUtil.getFirstTitle(ops);
 		String author = EpubUtil.getFirstAuthor(ops);
 		String id = EpubUtil.getIdentifier(ops);
-		if (!EpubCorePlugin.getCollection().hasBook(id)) {
+		if (!EpubCollection.getCollection().hasBook(id)) {
 			URI uri = path.toFile().toURI();
-			currentBook = LibraryUtil.createNewBook(EpubCorePlugin.COLLECTION_ID, uri, id, title, author);
-			EpubCorePlugin.getCollection().add(currentBook);
+			currentBook = LibraryUtil.createNewBook(EpubCollection.COLLECTION_ID, uri, id, title, author);
+			EpubCollection.getCollection().add(currentBook);
 		} else {
-			currentBook = EpubCorePlugin.getCollection().getBook(id);
+			currentBook = EpubCollection.getCollection().getBook(id);
 		}
 	}
 

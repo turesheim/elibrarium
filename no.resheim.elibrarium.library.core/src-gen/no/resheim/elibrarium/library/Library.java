@@ -6,6 +6,7 @@
  */
 package no.resheim.elibrarium.library;
 
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -25,9 +26,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see no.resheim.elibrarium.library.LibraryPackage#getLibrary()
  * @model extendedMetaData="namespace='http://resheim.no/elibrarium/library'"
+ * @extends CDOObject
  * @generated
  */
-public interface Library extends EObject {
+public interface Library extends CDOObject {
 	/**
 	 * Returns the value of the '<em><b>Version</b></em>' attribute.
 	 * <!-- begin-user-doc -->

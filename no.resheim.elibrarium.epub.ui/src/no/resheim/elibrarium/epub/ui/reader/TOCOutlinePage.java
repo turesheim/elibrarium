@@ -113,8 +113,8 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 		public Object[] getElements(Object parent) {
 			if (parent instanceof Book) {
-				Bookmark[] bookmarks = (Bookmark[]) ((Book) parent).getBookmarks().toArray();
-				return bookmarks;
+				Book book = (Book) parent;
+				return book.getBookmarks().toArray();
 			}
 			return new Object[0];
 		}

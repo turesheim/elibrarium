@@ -65,7 +65,7 @@
     <eLiterals name="Purple" value="5"/>
     <eLiterals name="Underline" value="6"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Annotation" eSuperTypes="#//Bookmark">
+  <eClassifiers xsi:type="ecore:EClass" name="TextAnnotation" eSuperTypes="#//Bookmark">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" lowerBound="1" eType="#//AnnotationColor"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="comment" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>

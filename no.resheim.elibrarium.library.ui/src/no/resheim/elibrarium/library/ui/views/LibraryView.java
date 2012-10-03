@@ -20,7 +20,7 @@ import java.text.MessageFormat;
 
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.core.ILibraryListener;
-import no.resheim.elibrarium.library.core.LibraryPlugin;
+import no.resheim.elibrarium.library.core.Librarian;
 import no.resheim.elibrarium.library.ui.LibraryLabelProvider;
 
 import org.eclipse.core.filesystem.EFS;
@@ -92,7 +92,7 @@ public class LibraryView extends ViewPart implements ILibraryListener {
 		}
 
 		public Object[] getElements(Object parent) {
-			EList<Book> books = LibraryPlugin.getDefault().getLibrary().getBooks();
+			EList<Book> books = Librarian.getDefault().getLibrary().getBooks();
 			return books.toArray();
 		}
 	}
@@ -226,7 +226,7 @@ public class LibraryView extends ViewPart implements ILibraryListener {
 			}
 		});
 		// Set contents
-		LibraryPlugin.getDefault().addListener(this);
+		Librarian.getDefault().addListener(this);
 		viewer.setInput(getViewSite());
 	}
 

@@ -18,7 +18,7 @@ import java.util.List;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.core.ICollection;
 import no.resheim.elibrarium.library.core.ILibrarian;
-import no.resheim.elibrarium.library.core.LibraryPlugin;
+import no.resheim.elibrarium.library.core.Librarian;
 
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.ListenerList;
@@ -33,7 +33,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-public class EpubCorePlugin extends Plugin implements BundleActivator, ICollection, IPreferenceChangeListener {
+public class EpubCollection extends Plugin implements BundleActivator, ICollection, IPreferenceChangeListener {
 
 	public static final String PLUGIN_ID = "no.resheim.elibrarium.epub.core";
 
@@ -41,7 +41,7 @@ public class EpubCorePlugin extends Plugin implements BundleActivator, ICollecti
 
 	public static final String COLLECTION_ID = "no.resheim.elibrarium.epub";
 
-	private static EpubCorePlugin collection;
+	private static EpubCollection collection;
 
 	private final FolderScanner scanner;
 
@@ -57,7 +57,7 @@ public class EpubCorePlugin extends Plugin implements BundleActivator, ICollecti
 		public void done(IJobChangeEvent event) {
 			super.done(event);
 			if (isDiscoveryEnabled()) {
-				IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EpubCorePlugin.PLUGIN_ID);
+				IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EpubCollection.PLUGIN_ID);
 				int minutes = preferences.getInt(PreferenceConstants.SCAN_INTERVAL,
 						PreferenceConstants.DEFAULT_SCAN_INTERVAL);
 				scanner.schedule(60000 * minutes);
@@ -67,17 +67,17 @@ public class EpubCorePlugin extends Plugin implements BundleActivator, ICollecti
 	}
 
 	private boolean isDiscoveryEnabled() {
-		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EpubCorePlugin.PLUGIN_ID);
+		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EpubCollection.PLUGIN_ID);
 		return preferences.getBoolean(PreferenceConstants.SCAN_ENABLE, false);
 	}
 
-	public EpubCorePlugin() {
+	public EpubCollection() {
 		collection = this;
 		listeners = new ListenerList();
 		scanner = new FolderScanner("Scanning");
 	}
 
-	public static EpubCorePlugin getCollection() {
+	public static EpubCollection getCollection() {
 		return collection;
 	}
 
@@ -85,9 +85,9 @@ public class EpubCorePlugin extends Plugin implements BundleActivator, ICollecti
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		scanner.addJobChangeListener(new Scheduler(scanner));
-		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EpubCorePlugin.PLUGIN_ID);
+		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EpubCollection.PLUGIN_ID);
 		preferences.addPreferenceChangeListener(this);
-		LibraryPlugin.getDefault().addCollection(this);
+		Librarian.getDefault().addCollection(this);
 		if (isDiscoveryEnabled()) {
 			// Wait ten seconds before starting the first time
 			scanner.schedule(10000);
@@ -139,7 +139,7 @@ public class EpubCorePlugin extends Plugin implements BundleActivator, ICollecti
 	}
 
 	private List<Book> getBooks() {
-		return LibraryPlugin.getDefault().getBooksByCollection(COLLECTION_ID);
+		return Librarian.getDefault().getBooksByCollection(COLLECTION_ID);
 	}
 
 	/**

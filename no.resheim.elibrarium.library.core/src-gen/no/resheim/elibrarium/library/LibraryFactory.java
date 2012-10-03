@@ -53,13 +53,13 @@ public interface LibraryFactory extends EFactory {
 	Bookmark createBookmark();
 
 	/**
-	 * Returns a new object of class '<em>Annotation</em>'.
+	 * Returns a new object of class '<em>Text Annotation</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Annotation</em>'.
+	 * @return a new object of class '<em>Text Annotation</em>'.
 	 * @generated
 	 */
-	Annotation createAnnotation();
+	TextAnnotation createTextAnnotation();
 
 	/**
 	 * Returns a new object of class '<em>Metadata</em>'.

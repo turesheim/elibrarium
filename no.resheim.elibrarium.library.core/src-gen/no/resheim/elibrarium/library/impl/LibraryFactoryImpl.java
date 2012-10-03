@@ -32,7 +32,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 */
 	public static LibraryFactory init() {
 		try {
-			LibraryFactory theLibraryFactory = (LibraryFactory)EPackage.Registry.INSTANCE.getEFactory("http://resheim.no/elibrarium/library"); //$NON-NLS-1$ 
+			LibraryFactory theLibraryFactory = (LibraryFactory)EPackage.Registry.INSTANCE.getEFactory("http://resheim.no/elibrarium/library"); 
 			if (theLibraryFactory != null) {
 				return theLibraryFactory;
 			}
@@ -61,13 +61,13 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case LibraryPackage.LIBRARY: return createLibrary();
-			case LibraryPackage.BOOK: return createBook();
-			case LibraryPackage.BOOKMARK: return createBookmark();
-			case LibraryPackage.ANNOTATION: return createAnnotation();
-			case LibraryPackage.METADATA: return createMetadata();
+			case LibraryPackage.LIBRARY: return (EObject)createLibrary();
+			case LibraryPackage.BOOK: return (EObject)createBook();
+			case LibraryPackage.BOOKMARK: return (EObject)createBookmark();
+			case LibraryPackage.TEXT_ANNOTATION: return (EObject)createTextAnnotation();
+			case LibraryPackage.METADATA: return (EObject)createMetadata();
 			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -82,7 +82,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 			case LibraryPackage.ANNOTATION_COLOR:
 				return createAnnotationColorFromString(eDataType, initialValue);
 			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -97,7 +97,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 			case LibraryPackage.ANNOTATION_COLOR:
 				return convertAnnotationColorToString(eDataType, instanceValue);
 			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -136,9 +136,9 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Annotation createAnnotation() {
-		AnnotationImpl annotation = new AnnotationImpl();
-		return annotation;
+	public TextAnnotation createTextAnnotation() {
+		TextAnnotationImpl textAnnotation = new TextAnnotationImpl();
+		return textAnnotation;
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 */
 	public AnnotationColor createAnnotationColorFromString(EDataType eDataType, String initialValue) {
 		AnnotationColor result = AnnotationColor.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
 

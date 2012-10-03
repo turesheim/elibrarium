@@ -26,6 +26,7 @@ import no.resheim.elibrarium.epub.core.EpubUtil;
 import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Bookmark;
+import no.resheim.elibrarium.library.core.ILibraryCatalog;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -134,6 +135,18 @@ public class PaginationJob extends Job {
 								for (int i = 0; i < chapterSizes.length; i++) {
 									page += chapterSizes[i];
 								}
+								final int pageNumber = page;
+								// Update the page number
+								ILibraryCatalog.INSTANCE.modify(bookmark,
+										new ILibraryCatalog.ITransactionalOperation<Bookmark>() {
+
+											@Override
+											public Object execute(Bookmark object) {
+												object.cdoWriteLock();
+												object.setPage(pageNumber);
+												return null;
+											}
+										});
 								bookmark.setPage(page + 1);
 							}
 						}

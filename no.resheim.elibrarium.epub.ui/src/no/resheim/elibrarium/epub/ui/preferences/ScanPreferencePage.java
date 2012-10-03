@@ -11,7 +11,7 @@
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui.preferences;
 
-import no.resheim.elibrarium.epub.core.EpubCorePlugin;
+import no.resheim.elibrarium.epub.core.EpubCollection;
 import no.resheim.elibrarium.epub.core.PreferenceConstants;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -66,7 +66,7 @@ public class ScanPreferencePage extends FieldEditorPreferencePage implements IWo
 
 	public void init(IWorkbench workbench) {
 		if (preferences == null) {
-			preferences = new ScopedPreferenceStore(InstanceScope.INSTANCE, EpubCorePlugin.PLUGIN_ID);
+			preferences = new ScopedPreferenceStore(InstanceScope.INSTANCE, EpubCollection.PLUGIN_ID);
 		}
 		setPreferenceStore(preferences);
 	}

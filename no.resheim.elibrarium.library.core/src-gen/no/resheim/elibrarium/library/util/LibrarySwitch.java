@@ -88,10 +88,10 @@ public class LibrarySwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case LibraryPackage.ANNOTATION: {
-				Annotation annotation = (Annotation)theEObject;
-				T result = caseAnnotation(annotation);
-				if (result == null) result = caseBookmark(annotation);
+			case LibraryPackage.TEXT_ANNOTATION: {
+				TextAnnotation textAnnotation = (TextAnnotation)theEObject;
+				T result = caseTextAnnotation(textAnnotation);
+				if (result == null) result = caseBookmark(textAnnotation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -151,17 +151,17 @@ public class LibrarySwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Annotation</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Text Annotation</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Annotation</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Text Annotation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseAnnotation(Annotation object) {
+	public T caseTextAnnotation(TextAnnotation object) {
 		return null;
 	}
 

@@ -14,7 +14,7 @@ package no.resheim.elibrarium.library.core;
 import no.resheim.elibrarium.library.Book;
 
 /**
- * This interface describes the contract between the {@link LibraryPlugin},
+ * This interface describes the contract between the {@link Librarian},
  * instances of {@link ICollection} and various UI components manipulating the
  * library.
  * 
@@ -23,7 +23,8 @@ import no.resheim.elibrarium.library.Book;
 public interface ILibrarian {
 
 	/**
-	 * Notifies the {@link ILibrarian} that a new book should be added.
+	 * Notifies the {@link ILibrarian} that a new book should be added to the
+	 * library.
 	 * 
 	 * @param book
 	 *            the book that has been added
@@ -31,11 +32,30 @@ public interface ILibrarian {
 	public void addBook(Book book);
 
 	/**
-	 * Notifies the {@link ILibrarian} that a book should be permanently
-	 * removed.
+	 * Notifies the {@link ILibrarian} that a book should be permanently removed
+	 * from the library.
 	 * 
 	 * @param book
 	 *            the book that has been removed
 	 */
 	public void removeBook(Book book);
+
+	/**
+	 * Adds the given {@link ILibraryListener} to the list of listeners that
+	 * will be notified by the librarian when the library has changed.
+	 * 
+	 * @param listener
+	 *            the listener to add
+	 */
+	public void addListener(ILibraryListener listener);
+
+	/**
+	 * Removes the {@link ILibraryListener} from the listener list.
+	 * 
+	 * @param listener
+	 *            the listener to remove
+	 * @see #addListener(ILibraryListener)
+	 */
+	public void removeListener(ILibraryListener listener);
+
 }

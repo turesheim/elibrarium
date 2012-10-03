@@ -14,7 +14,7 @@ package no.resheim.elibrarium.library.ui.views;
 import java.util.Iterator;
 
 import no.resheim.elibrarium.library.Book;
-import no.resheim.elibrarium.library.core.LibraryPlugin;
+import no.resheim.elibrarium.library.core.Librarian;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -34,7 +34,7 @@ public class RemoveCommandHandler extends AbstractHandler implements IHandler {
 			for (@SuppressWarnings("unchecked")
 			Iterator<Object> iterator = strucSelection.iterator(); iterator.hasNext();) {
 				Object element = iterator.next();
-				LibraryPlugin.getDefault().removeBook((Book) element);
+				Librarian.getDefault().removeBook((Book) element);
 			}
 		}
 		return null;

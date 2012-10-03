@@ -271,14 +271,14 @@ public interface LibraryPackage extends EPackage {
 	int BOOKMARK_FEATURE_COUNT = 6;
 
 	/**
-	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.AnnotationImpl <em>Annotation</em>}' class.
+	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.TextAnnotationImpl <em>Text Annotation</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see no.resheim.elibrarium.library.impl.AnnotationImpl
-	 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getAnnotation()
+	 * @see no.resheim.elibrarium.library.impl.TextAnnotationImpl
+	 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getTextAnnotation()
 	 * @generated
 	 */
-	int ANNOTATION = 3;
+	int TEXT_ANNOTATION = 3;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -287,7 +287,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__ID = BOOKMARK__ID;
+	int TEXT_ANNOTATION__ID = BOOKMARK__ID;
 
 	/**
 	 * The feature id for the '<em><b>Location</b></em>' attribute.
@@ -296,7 +296,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__LOCATION = BOOKMARK__LOCATION;
+	int TEXT_ANNOTATION__LOCATION = BOOKMARK__LOCATION;
 
 	/**
 	 * The feature id for the '<em><b>Page</b></em>' attribute.
@@ -305,7 +305,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__PAGE = BOOKMARK__PAGE;
+	int TEXT_ANNOTATION__PAGE = BOOKMARK__PAGE;
 
 	/**
 	 * The feature id for the '<em><b>Href</b></em>' attribute.
@@ -314,7 +314,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__HREF = BOOKMARK__HREF;
+	int TEXT_ANNOTATION__HREF = BOOKMARK__HREF;
 
 	/**
 	 * The feature id for the '<em><b>Timestamp</b></em>' attribute.
@@ -323,7 +323,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__TIMESTAMP = BOOKMARK__TIMESTAMP;
+	int TEXT_ANNOTATION__TIMESTAMP = BOOKMARK__TIMESTAMP;
 
 	/**
 	 * The feature id for the '<em><b>Text</b></em>' attribute.
@@ -332,7 +332,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__TEXT = BOOKMARK__TEXT;
+	int TEXT_ANNOTATION__TEXT = BOOKMARK__TEXT;
 
 	/**
 	 * The feature id for the '<em><b>Color</b></em>' attribute.
@@ -341,7 +341,7 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__COLOR = BOOKMARK_FEATURE_COUNT + 0;
+	int TEXT_ANNOTATION__COLOR = BOOKMARK_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Comment</b></em>' attribute.
@@ -350,16 +350,16 @@ public interface LibraryPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION__COMMENT = BOOKMARK_FEATURE_COUNT + 1;
+	int TEXT_ANNOTATION__COMMENT = BOOKMARK_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of structural features of the '<em>Annotation</em>' class.
+	 * The number of structural features of the '<em>Text Annotation</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ANNOTATION_FEATURE_COUNT = BOOKMARK_FEATURE_COUNT + 2;
+	int TEXT_ANNOTATION_FEATURE_COUNT = BOOKMARK_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.MetadataImpl <em>Metadata</em>}' class.
@@ -627,36 +627,36 @@ public interface LibraryPackage extends EPackage {
 	EAttribute getBookmark_Text();
 
 	/**
-	 * Returns the meta object for class '{@link no.resheim.elibrarium.library.Annotation <em>Annotation</em>}'.
+	 * Returns the meta object for class '{@link no.resheim.elibrarium.library.TextAnnotation <em>Text Annotation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Annotation</em>'.
-	 * @see no.resheim.elibrarium.library.Annotation
+	 * @return the meta object for class '<em>Text Annotation</em>'.
+	 * @see no.resheim.elibrarium.library.TextAnnotation
 	 * @generated
 	 */
-	EClass getAnnotation();
+	EClass getTextAnnotation();
 
 	/**
-	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Annotation#getColor <em>Color</em>}'.
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.TextAnnotation#getColor <em>Color</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Color</em>'.
-	 * @see no.resheim.elibrarium.library.Annotation#getColor()
-	 * @see #getAnnotation()
+	 * @see no.resheim.elibrarium.library.TextAnnotation#getColor()
+	 * @see #getTextAnnotation()
 	 * @generated
 	 */
-	EAttribute getAnnotation_Color();
+	EAttribute getTextAnnotation_Color();
 
 	/**
-	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Annotation#getComment <em>Comment</em>}'.
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.TextAnnotation#getComment <em>Comment</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Comment</em>'.
-	 * @see no.resheim.elibrarium.library.Annotation#getComment()
-	 * @see #getAnnotation()
+	 * @see no.resheim.elibrarium.library.TextAnnotation#getComment()
+	 * @see #getTextAnnotation()
 	 * @generated
 	 */
-	EAttribute getAnnotation_Comment();
+	EAttribute getTextAnnotation_Comment();
 
 	/**
 	 * Returns the meta object for class '{@link no.resheim.elibrarium.library.Metadata <em>Metadata</em>}'.
@@ -889,14 +889,14 @@ public interface LibraryPackage extends EPackage {
 		EAttribute BOOKMARK__TEXT = eINSTANCE.getBookmark_Text();
 
 		/**
-		 * The meta object literal for the '{@link no.resheim.elibrarium.library.impl.AnnotationImpl <em>Annotation</em>}' class.
+		 * The meta object literal for the '{@link no.resheim.elibrarium.library.impl.TextAnnotationImpl <em>Text Annotation</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see no.resheim.elibrarium.library.impl.AnnotationImpl
-		 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getAnnotation()
+		 * @see no.resheim.elibrarium.library.impl.TextAnnotationImpl
+		 * @see no.resheim.elibrarium.library.impl.LibraryPackageImpl#getTextAnnotation()
 		 * @generated
 		 */
-		EClass ANNOTATION = eINSTANCE.getAnnotation();
+		EClass TEXT_ANNOTATION = eINSTANCE.getTextAnnotation();
 
 		/**
 		 * The meta object literal for the '<em><b>Color</b></em>' attribute feature.
@@ -904,7 +904,7 @@ public interface LibraryPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute ANNOTATION__COLOR = eINSTANCE.getAnnotation_Color();
+		EAttribute TEXT_ANNOTATION__COLOR = eINSTANCE.getTextAnnotation_Color();
 
 		/**
 		 * The meta object literal for the '<em><b>Comment</b></em>' attribute feature.
@@ -912,7 +912,7 @@ public interface LibraryPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute ANNOTATION__COMMENT = eINSTANCE.getAnnotation_Comment();
+		EAttribute TEXT_ANNOTATION__COMMENT = eINSTANCE.getTextAnnotation_Comment();
 
 		/**
 		 * The meta object literal for the '{@link no.resheim.elibrarium.library.impl.MetadataImpl <em>Metadata</em>}' class.

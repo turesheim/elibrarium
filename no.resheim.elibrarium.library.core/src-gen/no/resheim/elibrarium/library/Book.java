@@ -6,6 +6,7 @@
  */
 package no.resheim.elibrarium.library;
 
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -32,9 +33,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see no.resheim.elibrarium.library.LibraryPackage#getBook()
  * @model
+ * @extends CDOObject
  * @generated
  */
-public interface Book extends EObject {
+public interface Book extends CDOObject {
 	/**
 	 * Returns the value of the '<em><b>Book URN</b></em>' attribute.
 	 * <!-- begin-user-doc -->

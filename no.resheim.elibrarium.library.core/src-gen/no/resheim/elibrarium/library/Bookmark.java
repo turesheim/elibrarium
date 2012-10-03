@@ -8,6 +8,7 @@ package no.resheim.elibrarium.library;
 
 import java.util.Date;
 
+import org.eclipse.emf.cdo.CDOObject;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -29,9 +30,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see no.resheim.elibrarium.library.LibraryPackage#getBookmark()
  * @model
+ * @extends CDOObject
  * @generated
  */
-public interface Bookmark extends EObject {
+public interface Bookmark extends CDOObject {
+
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -85,13 +88,13 @@ public interface Bookmark extends EObject {
 	void setLocation(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Page</b></em>' attribute. <!--
-	 * begin-user-doc -->
+	 * Returns the value of the '<em><b>Page</b></em>' attribute.
+	 * <!-- begin-user-doc -->
 	 * <p>
-	 * The page number of the bookmark after pagination.
+	 * If the meaning of the '<em>Page</em>' attribute isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the value of the '<em>Page</em>' attribute.
 	 * @see #setPage(int)
 	 * @see no.resheim.elibrarium.library.LibraryPackage#getBookmark_Page()

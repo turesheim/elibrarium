@@ -53,15 +53,15 @@ public class FolderScanner extends Job {
 			String title = EpubUtil.getFirstTitle(ops);
 			String author = EpubUtil.getFirstAuthor(ops);
 			String id = EpubUtil.getIdentifier(ops);
-			if (!EpubCorePlugin.getCollection().hasBook(id)) {
+			if (!EpubCollection.getCollection().hasBook(id)) {
 				URI uri = epubPath.toURI();
-				Book book = LibraryUtil.createNewBook(EpubCorePlugin.COLLECTION_ID, uri, id, title, author);
+				Book book = LibraryUtil.createNewBook(EpubCollection.COLLECTION_ID, uri, id, title, author);
 				// Mark the book as automatically discovered
 				Metadata md = LibraryFactory.eINSTANCE.createMetadata();
 				md.setKey("discovered");
 				md.setKey(Boolean.toString(true));
 				book.getMetadata().add(md);
-				EpubCorePlugin.getCollection().add(book);
+				EpubCollection.getCollection().add(book);
 			}
 
 		}
@@ -69,7 +69,7 @@ public class FolderScanner extends Job {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EpubCorePlugin.PLUGIN_ID);
+		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EpubCollection.PLUGIN_ID);
 		boolean scan = preferences.getBoolean(PreferenceConstants.SCAN_ENABLE, false);
 		if (scan){
 			String paths = preferences.get(PreferenceConstants.SCAN_FOLDERS, "");
@@ -96,7 +96,7 @@ public class FolderScanner extends Job {
 				}
 			});
 			for (File file : epubs) {
-				if (!EpubCorePlugin.getCollection().hasBook(file)) {
+				if (!EpubCollection.getCollection().hasBook(file)) {
 					try {
 						registerBooks(file);
 					} catch (Exception e) {
