@@ -40,7 +40,7 @@ try {
 			$('body').scrollLeft(page * pageWidth);
 			return page;
 		} else {
-			alert("not found");
+			alert('Could not find element with identifier #'+identifier+'. This most likely a bug.'); 
 		}
 	}
 
