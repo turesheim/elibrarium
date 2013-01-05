@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Torkild U. Resheim.
+ * Copyright (c) 2011, 2012 Torkild U. Resheim.
  * 
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -11,10 +11,7 @@
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui.reader;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -43,6 +40,10 @@ import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.widgets.Shell;
 
 /**
+ * This type is for paginating EPUB books. It employs two threads - one
+ * iterating over the book chapters (or XHTML files) the other is counting the
+ * pages of each chapter. The latter will also inject all bookmarks and
+ * annotations and update the page number of these.
  * 
  * @author Torkild U. Resheim
  */
@@ -103,16 +104,8 @@ public class PaginationJob extends Job {
 		 */
 		private int paginateChapter() {
 			int pageCount = -1;
-			StringBuilder sb = new StringBuilder();
-			sb.append("desiredWidth = " + browser.getSize().x + ";");
-			sb.append("desiredHeight = " + (browser.getSize().y - 20) + ";");
 			try {
-				readJS("jquery-1.7.1.js", sb);
-				readJS("rangy-core.js", sb);
-				readJS("rangy-serializer.js", sb);
-				readJS("rangy-cssclassapplier.js", sb);
-				readJS("injected.js", sb);
-				boolean ok = browser.execute(sb.toString());
+				boolean ok = utility.injectJavaScript(browser);
 				if (ok) {
 					pageCount = (int) Math.round((Double) browser.evaluate("return pageCount"));
 					// Iterate over all bookmarks and annotations in order to
@@ -125,15 +118,15 @@ public class PaginationJob extends Job {
 							if (bookmark instanceof Annotation) {
 								int page = (int) Math.round((Double) browser.evaluate("page=markRange('"
 										+ bookmark.getLocation() + "','" + id + "');return page;"));
-								for (int i = 0; i < chapterSizes.length; i++) {
-									page += chapterSizes[i];
+								for (int chapterSize : chapterSizes) {
+									page += chapterSize;
 								}
 								bookmark.setPage(page + 1);
 							} else {
 								int page = (int) Math.round((Double) browser.evaluate("page=injectIdentifier('"
 										+ bookmark.getLocation() + "','" + id + "');return page;"));
-								for (int i = 0; i < chapterSizes.length; i++) {
-									page += chapterSizes[i];
+								for (int chapterSize : chapterSizes) {
+									page += chapterSize;
 								}
 								final int pageNumber = page;
 								// Update the page number
@@ -158,29 +151,9 @@ public class PaginationJob extends Job {
 			return pageCount;
 		}
 
-		/**
-		 * Reads the (JavaScript) file and appends the content to the given
-		 * buffer.
-		 * 
-		 * @param filename
-		 *            file to read
-		 * @param sb
-		 *            buffer to add to
-		 * @throws IOException
-		 */
-		private void readJS(String filename, StringBuilder sb) throws IOException {
-			String in;
-			BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(filename)));
-			while ((in = br.readLine()) != null) {
-				sb.append(in);
-				sb.append('\n');
-			}
-		}
-
 		@Override
 		public void run() {
 			browser.getDisplay().asyncExec(new Runnable() {
-
 				@Override
 				public void run() {
 					browser.addProgressListener(Paginator.this);
@@ -206,6 +179,8 @@ public class PaginationJob extends Job {
 		}
 
 	}
+
+	private final EpubUiUtility utility;
 
 	/**
 	 * The book currently open in the editor.
@@ -240,6 +215,7 @@ public class PaginationJob extends Job {
 		this.book = book;
 		shell = new Shell();
 		browser = new Browser(shell, SWT.NONE);
+		utility = new EpubUiUtility();
 	}
 
 	public int[] getChapterSizes() {
@@ -265,7 +241,7 @@ public class PaginationJob extends Job {
 	/**
 	 * Returns the width of the book page.
 	 * 
-	 * @return
+	 * @return the page width
 	 */
 	public int getWidth() {
 		return width;

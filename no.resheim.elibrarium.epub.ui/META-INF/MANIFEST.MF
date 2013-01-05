@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.cdo;bundle-version="4.1.0"
 Import-Package: org.eclipse.ui.internal.browser
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: no.resheim.elibrarium.epub.ui.EpubUIPlugin
+Bundle-Activator: no.resheim.elibrarium.epub.ui.EpubUiPlugin
 Export-Package: no.resheim.elibrarium.epub.ui,
  no.resheim.elibrarium.epub.ui.preferences,
  no.resheim.elibrarium.epub.ui.reader

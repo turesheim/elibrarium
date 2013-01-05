@@ -11,10 +11,8 @@
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui.reader;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URI;
 import java.util.Date;
@@ -22,7 +20,7 @@ import java.util.UUID;
 
 import no.resheim.elibrarium.epub.core.EpubCollection;
 import no.resheim.elibrarium.epub.core.EpubUtil;
-import no.resheim.elibrarium.epub.ui.EpubUIPlugin;
+import no.resheim.elibrarium.epub.ui.EpubUiPlugin;
 import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.AnnotationColor;
 import no.resheim.elibrarium.library.Book;
@@ -341,6 +339,7 @@ public class EpubReader extends EditorPart {
 
 	public EpubReader() {
 		super();
+		utility = new EpubUiUtility();
 	}
 
 	/**
@@ -382,7 +381,7 @@ public class EpubReader extends EditorPart {
 		gdBookmark.widthHint = 32;
 		gdBookmark.verticalSpan = 3;
 		bookmarkLabel = new Label(c, SWT.CENTER);
-		bookmarkLabel.setImage(EpubUIPlugin.getDefault().getImageRegistry().get(EpubUIPlugin.IMG_BOOKMARK_INACTIVE));
+		bookmarkLabel.setImage(EpubUiPlugin.getDefault().getImageRegistry().get(EpubUiPlugin.IMG_BOOKMARK_INACTIVE));
 		bookmarkLabel.setLayoutData(gdBookmark);
 		bookmarkLabel.addMouseListener(new MouseListener() {
 
@@ -459,8 +458,8 @@ public class EpubReader extends EditorPart {
 		menu.addListener(SWT.Show, new Listener() {
 			public void handleEvent(Event event) {
 				MenuItem[] menuItems = menu.getItems();
-				for (int i = 0; i < menuItems.length; i++) {
-					menuItems[i].dispose();
+				for (MenuItem menuItem : menuItems) {
+					menuItem.dispose();
 				}
 				populateMenu();
 			}
@@ -471,8 +470,8 @@ public class EpubReader extends EditorPart {
 	private boolean deleteFolder(File folder) {
 		if (folder.isDirectory()) {
 			String[] children = folder.list();
-			for (int i = 0; i < children.length; i++) {
-				boolean ok = deleteFolder(new File(folder, children[i]));
+			for (String element : children) {
+				boolean ok = deleteFolder(new File(folder, element));
 				if (!ok) {
 					return false;
 				}
@@ -677,7 +676,7 @@ public class EpubReader extends EditorPart {
 				paginationJob.addJobChangeListener(new PaginationJobListener());
 			} catch (Exception e) {
 				StatusManager.getManager()
-						.handle(new Status(IStatus.ERROR, EpubUIPlugin.PLUGIN_ID, "Could not open book", e),
+						.handle(new Status(IStatus.ERROR, EpubUiPlugin.PLUGIN_ID, "Could not open book", e),
 								StatusManager.SHOW);
 				close();
 			}
@@ -1049,24 +1048,24 @@ public class EpubReader extends EditorPart {
 	}
 
 	public void updateLocation() {
-		// Determine the current location so that it can be restored
-		// when reopening the book at a later stage.
 		if (!disposed) {
 			browser.getDisplay().syncExec(new Runnable() {
 				@Override
 				public void run() {
 					// See issue 28
 					try {
+						// Determine the current location so that it can be
+						// restored when reopening the book at a later stage.
 						String location = (String) browser.evaluate("bookmark = getPageLocation();return bookmark;");
 						currentLocation = location;
 						Bookmark b = hasBookmark();
 						if (b != null) {
-							bookmarkLabel.setImage(EpubUIPlugin.getDefault().getImageRegistry()
-									.get(EpubUIPlugin.IMG_BOOKMARK_ACTIVE));
+							bookmarkLabel.setImage(EpubUiPlugin.getDefault().getImageRegistry()
+									.get(EpubUiPlugin.IMG_BOOKMARK_ACTIVE));
 							bookmarkLabel.setToolTipText(b.getText() + "\n(Click to remove bookmark)");
 						} else {
-							bookmarkLabel.setImage(EpubUIPlugin.getDefault().getImageRegistry()
-									.get(EpubUIPlugin.IMG_BOOKMARK_INACTIVE));
+							bookmarkLabel.setImage(EpubUiPlugin.getDefault().getImageRegistry()
+									.get(EpubUiPlugin.IMG_BOOKMARK_INACTIVE));
 							bookmarkLabel.setToolTipText("Click to add bookmark");
 						}
 					} catch (Exception e) {
@@ -1142,21 +1141,15 @@ public class EpubReader extends EditorPart {
 		setPartName(getTitle(ops));
 	}
 
+	private final EpubUiUtility utility;
+
 	/**
 	 * Executes JavaScript that will reformat the chapter and obtain information
 	 * that is required for browsing it.
 	 */
 	private void paginateChapter() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("desiredWidth = " + browser.getSize().x + ";");
-		sb.append("desiredHeight = " + (browser.getSize().y - 20) + ";");
 		try {
-			readJS("jquery-1.7.1.js", sb);
-			readJS("rangy-core.js", sb);
-			readJS("rangy-serializer.js", sb);
-			readJS("rangy-cssclassapplier.js", sb);
-			readJS("injected.js", sb);
-			boolean ok = browser.execute(sb.toString());
+			boolean ok = utility.injectJavaScript(browser);
 			if (ok) {
 				pageCount = (int) Math.round((Double) browser.evaluate("return pageCount"));
 				pageWidth = (int) Math.round((Double) browser.evaluate("return desiredWidth"));
@@ -1190,24 +1183,6 @@ public class EpubReader extends EditorPart {
 		}
 	}
 
-	/**
-	 * Reads the (JavaScript) file and appends the content to the given buffer.
-	 * 
-	 * @param filename
-	 *            file to read
-	 * @param sb
-	 *            buffer to add to
-	 * @throws IOException
-	 */
-	private void readJS(String filename, StringBuilder sb) throws IOException {
-		String in;
-		BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(filename)));
-		while ((in = br.readLine()) != null) {
-			sb.append(in);
-			sb.append('\n');
-		}
-	}
-
 	private void registerBook(IPath path, OPSPublication ops) {
 		String title = EpubUtil.getFirstTitle(ops);
 		String author = EpubUtil.getFirstAuthor(ops);
@@ -1226,8 +1201,9 @@ public class EpubReader extends EditorPart {
 	 */
 	@Override
 	public void setFocus() {
-		if (browser != null)
+		if (browser != null) {
 			browser.setFocus();
+		}
 	}
 
 }

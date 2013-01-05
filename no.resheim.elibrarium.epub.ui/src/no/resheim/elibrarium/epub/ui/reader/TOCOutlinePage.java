@@ -12,7 +12,7 @@
 package no.resheim.elibrarium.epub.ui.reader;
 
 import no.resheim.elibrarium.epub.core.EpubUtil;
-import no.resheim.elibrarium.epub.ui.EpubUIPlugin;
+import no.resheim.elibrarium.epub.ui.EpubUiPlugin;
 import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Bookmark;
@@ -315,8 +315,8 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 				if (bookmark instanceof Annotation) {
 				} else {
 					int x = width - 9;
-					gc.drawImage(EpubUIPlugin.getDefault().getImageRegistry()
-							.get(EpubUIPlugin.IMG_BOOKMARK), x, event.y + 1);
+					gc.drawImage(EpubUiPlugin.getDefault().getImageRegistry()
+							.get(EpubUiPlugin.IMG_BOOKMARK), x, event.y + 1);
 				}
 				// Draw title
 				gc.setFont(getFont(TITLE_FONT));
@@ -518,9 +518,9 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 		};
 
 		showTOC.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
-				EpubUIPlugin.PLUGIN_ID, "icons/contents.gif"));
+				EpubUiPlugin.PLUGIN_ID, "icons/contents.gif"));
 		showAnnotations.setImageDescriptor(AbstractUIPlugin
-				.imageDescriptorFromPlugin(EpubUIPlugin.PLUGIN_ID,
+				.imageDescriptorFromPlugin(EpubUiPlugin.PLUGIN_ID,
 						"icons/marking.gif"));
 	}
 
