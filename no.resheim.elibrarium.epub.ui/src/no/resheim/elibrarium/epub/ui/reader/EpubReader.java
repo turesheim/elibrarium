@@ -756,26 +756,13 @@ public class EpubReader extends EditorPart {
 				for (final Bookmark bookmark : bookmarks) {
 					if (bookmark.getHref() != null && bookmark.getHref().equals(currentHref)) {
 						String id = bookmark.getId();
-						// Mark text
 						if (bookmark instanceof Annotation) {
+							// Mark text
 							if (!browser.execute("markRange('" + bookmark.getLocation() + "','" + id + "');")) {
 							}
-							// Page Bookmark
 						} else {
-							int page = (int) Math.round((Double) browser.evaluate("page=injectIdentifier('"
-									+ bookmark.getLocation() + "','" + id + "');return page;"));
-							final int adjustedPage = getCurrentChapterPageIndex() + page + 1;
-							// Update the page number
-							ILibraryCatalog.INSTANCE.modify(bookmark,
-									new ILibraryCatalog.ITransactionalOperation<Bookmark>() {
-
-										@Override
-										public Object execute(Bookmark object) {
-											object.cdoWriteLock();
-											object.setPage(adjustedPage);
-											return null;
-										}
-									});
+							// Mark page
+							browser.evaluate("injectIdentifier('" + bookmark.getLocation() + "','" + id + "');");
 						}
 					}
 				}

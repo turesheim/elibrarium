@@ -134,15 +134,13 @@ public class PaginationJob extends Job {
 								// Update the page number
 								ILibraryCatalog.INSTANCE.modify(bookmark,
 										new ILibraryCatalog.ITransactionalOperation<Bookmark>() {
-
 											@Override
 											public Object execute(Bookmark object) {
 												object.cdoWriteLock();
-												object.setPage(pageNumber);
+												object.setPage(pageNumber + 1);
 												return null;
 											}
 										});
-								bookmark.setPage(page + 1);
 							}
 						}
 					} // for
