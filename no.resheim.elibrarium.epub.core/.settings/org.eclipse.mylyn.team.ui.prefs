@@ -1,2 +1,2 @@
-commit.comment.template=${connector.task.prefix} ${task.key}\: ${task.description} \n${task.url}\n\n${task.notes}
+commit.comment.template=Issue ${task.key}\: ${task.description} \n${task.url}\n\n${task.notes}
 eclipse.preferences.version=1
