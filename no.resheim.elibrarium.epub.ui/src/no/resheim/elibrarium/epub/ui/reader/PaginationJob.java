@@ -88,6 +88,8 @@ public class PaginationJob extends Job {
 			newSizes[chapterSizes.length] = paginateChapter();
 			chapterSizes = newSizes;
 			try {
+				// The thread running this code is done and the other barrier
+				// is waiting for it.
 				barrier.await();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -170,6 +172,7 @@ public class PaginationJob extends Job {
 				}
 			});
 			try {
+				// This thread is done, wait until the other one is done.
 				barrier.await();
 			} catch (InterruptedException e) {
 				e.printStackTrace();

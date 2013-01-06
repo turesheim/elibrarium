@@ -1114,7 +1114,7 @@ public class EpubReader extends EditorPart {
 	 *            the page number to go to
 	 */
 	private void navigateToPage(int page) {
-		browser.evaluate("navigateToPage(" + page + ");");
+		EpubUiUtility.navigateToPage(browser, page);
 		updateLocation();
 	}
 
@@ -1152,7 +1152,7 @@ public class EpubReader extends EditorPart {
 			boolean ok = utility.injectJavaScript(browser);
 			if (ok) {
 				pageCount = (int) Math.round((Double) browser.evaluate("return pageCount"));
-				pageWidth = (int) Math.round((Double) browser.evaluate("return desiredWidth"));
+				pageWidth = EpubUiUtility.getPageWidth(browser);
 				lastWidth = browser.getSize().x;
 				lastHeight = browser.getSize().y;
 			}

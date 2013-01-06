@@ -18,6 +18,8 @@ import java.io.InputStreamReader;
 import org.eclipse.swt.browser.Browser;
 
 /**
+ * This type's methods should be used instead of calling browser JavaScript
+ * directly.
  * 
  * @author Torkild U. Resheim
  */
@@ -51,6 +53,22 @@ public final class EpubUiUtility {
 			sb.append(in);
 			sb.append('\n');
 		}
+	}
+
+	/**
+	 * Navigates to the given chapter page.
+	 * 
+	 * @param browser
+	 *            the browser widget
+	 * @param page
+	 *            the page number
+	 */
+	public static void navigateToPage(Browser browser, int page) {
+		browser.evaluate("navigateToPage(" + page + ");");
+	}
+
+	public static int getPageWidth(Browser browser) {
+		return (int) Math.round((Double) browser.evaluate("return desiredWidth"));
 	}
 
 }

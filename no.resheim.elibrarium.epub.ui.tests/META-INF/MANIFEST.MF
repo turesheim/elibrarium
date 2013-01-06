@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EPUB UI Tests
+Bundle-SymbolicName: no.resheim.elibrarium.epub.ui.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Torkild U. Resheim
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="4.10.0",
+ org.eclipse.ui.browser;bundle-version="3.4.0",
+ no.resheim.elibrarium.epub.ui;bundle-version="1.0.0",
+ org.eclipse.swt;bundle-version="3.100.1"

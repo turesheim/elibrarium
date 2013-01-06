@@ -8,7 +8,7 @@ try {
 	bodyID.style.width = width + 'px';
 	bodyID.style.height = desiredHeight + 'px';
 	bodyID.style.WebkitColumnCount = pageCount;
-
+	markedText = '';
 	debugging = false;
 
 	/**
@@ -181,6 +181,7 @@ try {
 	 * 
 	 * @param serialized the serialised selection
 	 * @param identifier the identifier to assign the range
+	 * @returns page number, zero offset
 	 */
 	function markRange(serialized, identifier) {
 		if ($('#' + identifier).length == 0) {
@@ -188,6 +189,7 @@ try {
 				var selection = rangy.deserializeSelection(serialized);
 				cssApplier.applyToSelection();
 				createIdentifiedSpan(identifier);
+				markedText = selection.toString();
 				selection.removeAllRanges();
 				selection.detach();
 				// Determine the offset
@@ -273,7 +275,7 @@ try {
 	function injectCSS() {
 		var headTag = document.getElementsByTagName("head")[0].innerHTML;
 		var newCSS = headTag
-				+ '<style type="text/css">*.yellowMarker {background-color: yellow;}</style>';
+				+ '<style type="text/css">html, body {margin:0; padding:0} *.yellowMarker {background-color: yellow;}</style>';
 		document.getElementsByTagName('head')[0].innerHTML += newCSS;
 	}
 	injectCSS();
