@@ -82,9 +82,8 @@ import org.ocpsoft.pretty.time.PrettyTime;
  * 
  * @author Torkild U. Resheim
  */
-public class TOCOutlinePage extends Page implements IContentOutlinePage,
-		ISelectionChangedListener, IDoubleClickListener,
-		IPropertyChangeListener {
+public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelectionChangedListener,
+		IDoubleClickListener, IPropertyChangeListener {
 
 	private static final String TITLE_FONT = "no.resheim.elibrarium.epub.ui.titleFont";
 
@@ -109,8 +108,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 	/**
 	 * Lists bookmarks
 	 */
-	private final class BookmarksContentProvider implements
-			IStructuredContentProvider {
+	private final class BookmarksContentProvider implements IStructuredContentProvider {
 
 		public void dispose() {
 		}
@@ -181,15 +179,13 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 		bookmarks.addSelectionChangedListener(this);
 		bookmarks.addDoubleClickListener(this);
 		bookmarks.getTable().setHeaderVisible(false);
-		final TableViewerColumn column = new TableViewerColumn(bookmarks,
-				SWT.LEFT);
+		final TableViewerColumn column = new TableViewerColumn(bookmarks, SWT.LEFT);
 		// Special drawing of bookmarks table
 		installLabelProvider(column);
 		// Automatic layout of bookmarks table
 		installControlAdapter(column);
 
-		GridData data = new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.GRAB_VERTICAL | GridData.FILL_BOTH);
+		GridData data = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL | GridData.FILL_BOTH);
 
 		bookmarks.getControl().setLayoutData(data);
 		// Create the context menu for the annotations
@@ -205,13 +201,12 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 			@Override
 			public void notifyChanged(Notification notification) {
 				if (!bookmarks.getControl().isDisposed()) {
-					bookmarks.getControl().getDisplay()
-							.asyncExec(new Runnable() {
-								@Override
-								public void run() {
-									bookmarks.refresh(true);
-								}
-							});
+					bookmarks.getControl().getDisplay().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							bookmarks.refresh(true);
+						}
+					});
 				}
 			}
 		};
@@ -231,18 +226,13 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 		pagebook.addControlListener(new ControlAdapter() {
 			@Override
 			public void controlResized(ControlEvent e) {
-				org.eclipse.swt.graphics.Rectangle area = pagebook
-						.getClientArea();
-				Point preferredSize = bookmarks.getTable().computeSize(
-						SWT.DEFAULT, SWT.DEFAULT);
-				int width = area.width - 2
-						* bookmarks.getTable().getBorderWidth();
-				if (preferredSize.y > area.height
-						+ bookmarks.getTable().getHeaderHeight()) {
+				org.eclipse.swt.graphics.Rectangle area = pagebook.getClientArea();
+				Point preferredSize = bookmarks.getTable().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+				int width = area.width - 2 * bookmarks.getTable().getBorderWidth();
+				if (preferredSize.y > area.height + bookmarks.getTable().getHeaderHeight()) {
 					// Subtract the scrollbar width from the total column width
 					// if a vertical scrollbar will be required
-					Point vBarSize = bookmarks.getTable().getVerticalBar()
-							.getSize();
+					Point vBarSize = bookmarks.getTable().getVerticalBar().getSize();
 					width -= vBarSize.x;
 				}
 				Point oldSize = bookmarks.getTable().getSize();
@@ -275,8 +265,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 				String date = pt.format(bookmark.getTimestamp());
 				int width = column.getColumn().getWidth();
 				// Calculate the size of the date string
-				Point size = event.gc.textExtent(date, SWT.DRAW_DELIMITER
-						| SWT.DRAW_TAB);
+				Point size = event.gc.textExtent(date, SWT.DRAW_DELIMITER | SWT.DRAW_TAB);
 				int halfHeight = size.y / 2;
 				int height = size.y;
 				// if ((event.detail & SWT.SELECTED) != 0) {
@@ -302,26 +291,23 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 
 				// Draw the date
 				gc.setFont(getFont(DATE_FONT));
-				gc.setForeground(JFaceResources.getColorRegistry().get(
-						JFacePreferences.QUALIFIER_COLOR));
+				gc.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
 				gc.drawText(date, width - size.x, event.y + size.y, true);
 				// Paint the page number of the bookmark
 				int pageNumber = bookmark.getPage();
 				String page = Integer.toString(pageNumber);
-				Point pageSize = event.gc.textExtent(page, SWT.DRAW_DELIMITER
-						| SWT.DRAW_TAB);
+				Point pageSize = event.gc.textExtent(page, SWT.DRAW_DELIMITER | SWT.DRAW_TAB);
 				gc.drawText(page, width - 16 - pageSize.x, event.y, true);
 				// Draw icon
-				if (bookmark instanceof Annotation) {
+				if (bookmark instanceof TextAnnotation) {
 				} else {
 					int x = width - 9;
-					gc.drawImage(EpubUiPlugin.getDefault().getImageRegistry()
-							.get(EpubUiPlugin.IMG_BOOKMARK), x, event.y + 1);
+					gc.drawImage(EpubUiPlugin.getDefault().getImageRegistry().get(EpubUiPlugin.IMG_BOOKMARK), x,
+							event.y + 1);
 				}
 				// Draw title
 				gc.setFont(getFont(TITLE_FONT));
-				gc.setForeground(display
-						.getSystemColor(SWT.COLOR_LIST_FOREGROUND));
+				gc.setForeground(display.getSystemColor(SWT.COLOR_LIST_FOREGROUND));
 				// Make sure text does not span to far
 				Region region = new Region();
 				gc.getClipping(region);
@@ -334,8 +320,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 				}
 				if (bookmark instanceof TextAnnotation) {
 					if ((event.detail & SWT.SELECTED) == 0) {
-						gc.setBackground(display
-								.getSystemColor(SWT.COLOR_YELLOW));
+						gc.setBackground(display.getSystemColor(SWT.COLOR_YELLOW));
 						gc.drawText(text, event.x + 1, event.y, false);
 					} else {
 						gc.drawText(text, event.x + 1, event.y, true);
@@ -348,8 +333,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 			}
 
 			public Font getFont(String fontName) {
-				IThemeManager themeManager = PlatformUI.getWorkbench()
-						.getThemeManager();
+				IThemeManager themeManager = PlatformUI.getWorkbench().getThemeManager();
 				ITheme currentTheme = themeManager.getCurrentTheme();
 
 				FontRegistry fontRegistry = currentTheme.getFontRegistry();
@@ -360,29 +344,22 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 			/**
 			 * Draws a separator between the rows.
 			 */
-			public void drawUnderline(Event event, GC gc, int width,
-					Point size, int halfHeight) {
+			public void drawUnderline(Event event, GC gc, int width, Point size, int halfHeight) {
 				int y = (event.y + size.y * 2) + halfHeight - 2;
 				int center = (width / 2);
-				gc.setForeground(JFaceResources.getColorRegistry().get(
-						JFacePreferences.QUALIFIER_COLOR));
-				gc.setBackground(Display.getCurrent().getSystemColor(
-						SWT.COLOR_LIST_BACKGROUND));
+				gc.setForeground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
+				gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 				gc.fillGradientRectangle(center, y, center, 1, false);
-				gc.setBackground(JFaceResources.getColorRegistry().get(
-						JFacePreferences.QUALIFIER_COLOR));
-				gc.setForeground(Display.getCurrent().getSystemColor(
-						SWT.COLOR_LIST_BACKGROUND));
+				gc.setBackground(JFaceResources.getColorRegistry().get(JFacePreferences.QUALIFIER_COLOR));
+				gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 				gc.fillGradientRectangle(0, y, center, 1, false);
 			}
 
 			@Override
 			protected void measure(Event event, Object element) {
 				String text = "A";
-				Point size = event.gc.textExtent(text, SWT.DRAW_DELIMITER
-						| SWT.DRAW_TAB);
-				event.width = bookmarks.getTable().getColumn(event.index)
-						.getWidth();
+				Point size = event.gc.textExtent(text, SWT.DRAW_DELIMITER | SWT.DRAW_TAB);
+				event.width = bookmarks.getTable().getColumn(event.index).getWidth();
 				// we need two lines of text and some space
 				int halfHeight = size.y / 2;
 				event.height = size.y * 2 + halfHeight;
@@ -416,8 +393,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 	 */
 	protected void fireSelectionChanged(ISelection selection) {
 		// create an event
-		final SelectionChangedEvent event = new SelectionChangedEvent(this,
-				selection);
+		final SelectionChangedEvent event = new SelectionChangedEvent(this, selection);
 
 		// fire the event
 		Object[] listeners = selectionChangedListeners.getListeners();
@@ -486,8 +462,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 		});
 		Menu menu = menuMgr.createContextMenu(bookmarks.getControl());
 		control.setMenu(menu);
-		getSite().registerContextMenu("no.resheim.elibrarium.bookmarks",
-				menuMgr, bookmarks);
+		getSite().registerContextMenu("no.resheim.elibrarium.bookmarks", menuMgr, bookmarks);
 	}
 
 	@Override
@@ -517,15 +492,13 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 			}
 		};
 
-		showTOC.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
-				EpubUiPlugin.PLUGIN_ID, "icons/contents.gif"));
-		showAnnotations.setImageDescriptor(AbstractUIPlugin
-				.imageDescriptorFromPlugin(EpubUiPlugin.PLUGIN_ID,
-						"icons/marking.gif"));
+		showTOC.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EpubUiPlugin.PLUGIN_ID,
+				"icons/contents.gif"));
+		showAnnotations.setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(EpubUiPlugin.PLUGIN_ID,
+				"icons/marking.gif"));
 	}
 
-	public void removeSelectionChangedListener(
-			ISelectionChangedListener listener) {
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		selectionChangedListeners.remove(listener);
 	}
 
@@ -558,8 +531,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage,
 	 * activation events and will be removed when the view is disposed.
 	 */
 	private void activateContext() {
-		IContextService contextService = (IContextService) getSite()
-				.getService(IContextService.class);
+		IContextService contextService = (IContextService) getSite().getService(IContextService.class);
 		contextService.activateContext(VIEW_CONTEXT_ID);
 	}
 
