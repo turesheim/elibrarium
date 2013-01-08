@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Torkild U. Resheim.
+ * Copyright (c) 2011-2013 Torkild U. Resheim.
  * 
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -20,9 +20,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import no.resheim.elibrarium.epub.core.EpubUtil;
-import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Bookmark;
+import no.resheim.elibrarium.library.TextAnnotation;
 import no.resheim.elibrarium.library.core.ILibraryCatalog;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -117,30 +117,14 @@ public class PaginationJob extends Job {
 					for (Bookmark bookmark : bookmarks) {
 						if (bookmark.getHref() != null && bookmark.getHref().equals(currentHref)) {
 							String id = bookmark.getId();
-							if (bookmark instanceof Annotation) {
+							if (bookmark instanceof TextAnnotation) {
 								int page = (int) Math.round((Double) browser.evaluate("page=markRange('"
 										+ bookmark.getLocation() + "','" + id + "');return page;"));
-								for (int chapterSize : chapterSizes) {
-									page += chapterSize;
-								}
-								bookmark.setPage(page + 1);
+								updatePageNumber(bookmark, page);
 							} else {
 								int page = (int) Math.round((Double) browser.evaluate("page=injectIdentifier('"
 										+ bookmark.getLocation() + "','" + id + "');return page;"));
-								for (int chapterSize : chapterSizes) {
-									page += chapterSize;
-								}
-								final int pageNumber = page;
-								// Update the page number
-								ILibraryCatalog.INSTANCE.modify(bookmark,
-										new ILibraryCatalog.ITransactionalOperation<Bookmark>() {
-											@Override
-											public Object execute(Bookmark object) {
-												object.cdoWriteLock();
-												object.setPage(pageNumber + 1);
-												return null;
-											}
-										});
+								updatePageNumber(bookmark, page);
 							}
 						}
 					} // for
@@ -149,6 +133,21 @@ public class PaginationJob extends Job {
 				e.printStackTrace();
 			}
 			return pageCount;
+		}
+
+		private void updatePageNumber(Bookmark bookmark, int pageNumber) {
+			for (int chapterSize : chapterSizes) {
+				pageNumber += chapterSize;
+			}
+			final int page = pageNumber + 1;
+			ILibraryCatalog.INSTANCE.modify(bookmark, new ILibraryCatalog.ITransactionalOperation<Bookmark>() {
+				@Override
+				public Object execute(Bookmark object) {
+					object.cdoWriteLock();
+					object.setPage(page);
+					return null;
+				}
+			});
 		}
 
 		@Override

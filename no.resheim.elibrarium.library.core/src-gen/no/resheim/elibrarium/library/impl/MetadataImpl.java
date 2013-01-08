@@ -1,21 +1,13 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
 package no.resheim.elibrarium.library.impl;
 
 import no.resheim.elibrarium.library.LibraryPackage;
 import no.resheim.elibrarium.library.Metadata;
 
-import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.internal.cdo.CDOObjectImpl;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
 
 /**
  * <!-- begin-user-doc -->

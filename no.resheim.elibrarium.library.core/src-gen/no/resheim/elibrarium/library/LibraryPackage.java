@@ -1,8 +1,4 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
 package no.resheim.elibrarium.library;
 
@@ -34,7 +30,7 @@ public interface LibraryPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNAME = "library"; //$NON-NLS-1$
+	String eNAME = "library";
 
 	/**
 	 * The package namespace URI.
@@ -42,7 +38,7 @@ public interface LibraryPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://resheim.no/elibrarium/library"; //$NON-NLS-1$
+	String eNS_URI = "http://resheim.no/elibrarium/library";
 
 	/**
 	 * The package namespace name.
@@ -50,7 +46,7 @@ public interface LibraryPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_PREFIX = "library"; //$NON-NLS-1$
+	String eNS_PREFIX = "library";
 
 	/**
 	 * The singleton instance of the package.

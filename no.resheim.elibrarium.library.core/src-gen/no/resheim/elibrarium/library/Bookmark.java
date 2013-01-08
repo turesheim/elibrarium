@@ -1,15 +1,10 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
 package no.resheim.elibrarium.library;
 
 import java.util.Date;
 
 import org.eclipse.emf.cdo.CDOObject;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,7 +29,6 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface Bookmark extends CDOObject {
-
 	/**
 	 * Returns the value of the '<em><b>Id</b></em>' attribute.
 	 * <!-- begin-user-doc -->

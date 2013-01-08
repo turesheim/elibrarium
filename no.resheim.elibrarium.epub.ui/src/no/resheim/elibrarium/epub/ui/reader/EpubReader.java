@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011,2012 Torkild U. Resheim.
+ * Copyright (c) 2011-2013 Torkild U. Resheim.
  * 
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -21,7 +21,6 @@ import java.util.UUID;
 import no.resheim.elibrarium.epub.core.EpubCollection;
 import no.resheim.elibrarium.epub.core.EpubUtil;
 import no.resheim.elibrarium.epub.ui.EpubUiPlugin;
-import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.AnnotationColor;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Bookmark;
@@ -756,7 +755,7 @@ public class EpubReader extends EditorPart {
 				for (final Bookmark bookmark : bookmarks) {
 					if (bookmark.getHref() != null && bookmark.getHref().equals(currentHref)) {
 						String id = bookmark.getId();
-						if (bookmark instanceof Annotation) {
+						if (bookmark instanceof TextAnnotation) {
 							// Mark text
 							if (!browser.execute("markRange('" + bookmark.getLocation() + "','" + id + "');")) {
 							}
@@ -1022,7 +1021,7 @@ public class EpubReader extends EditorPart {
 		for (Bookmark bookmark : bookmarks) {
 			if (bookmark.getHref() != null && bookmark.getHref().equals(currentHref)) {
 				// Only looking for page bookmarks
-				if (!(bookmark instanceof Annotation)) {
+				if (!(bookmark instanceof TextAnnotation)) {
 					Boolean intersects = (Boolean) browser.evaluate("bookmark = intersects('" + bookmark.getLocation()
 							+ "');return bookmark;");
 					if (intersects) {

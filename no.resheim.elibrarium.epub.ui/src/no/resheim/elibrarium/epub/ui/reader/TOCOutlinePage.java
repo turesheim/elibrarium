@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Torkild U. Resheim.
+ * Copyright (c) 2011-2013 Torkild U. Resheim.
  * 
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -13,7 +13,6 @@ package no.resheim.elibrarium.epub.ui.reader;
 
 import no.resheim.elibrarium.epub.core.EpubUtil;
 import no.resheim.elibrarium.epub.ui.EpubUiPlugin;
-import no.resheim.elibrarium.library.Annotation;
 import no.resheim.elibrarium.library.Book;
 import no.resheim.elibrarium.library.Bookmark;
 import no.resheim.elibrarium.library.TextAnnotation;
@@ -373,8 +372,8 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 		Object element = s.getFirstElement();
 		if (element instanceof NavPoint) {
 			reader.navigateTo((NavPoint) element);
-		} else if (element instanceof Annotation) {
-			reader.navigateTo((Annotation) element);
+		} else if (element instanceof TextAnnotation) {
+			reader.navigateTo((TextAnnotation) element);
 		} else if (element instanceof Bookmark) {
 			reader.navigateTo((Bookmark) element);
 		}

@@ -1,8 +1,4 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
 package no.resheim.elibrarium.library;
 
@@ -30,7 +26,7 @@ public enum AnnotationColor implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	YELLOW(1, "Yellow", "Yellow"), //$NON-NLS-1$ //$NON-NLS-2$
+	YELLOW(1, "Yellow", "Yellow"),
 
 	/**
 	 * The '<em><b>Green</b></em>' literal object.
@@ -40,7 +36,7 @@ public enum AnnotationColor implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	GREEN(2, "Green", "Green"), //$NON-NLS-1$ //$NON-NLS-2$
+	GREEN(2, "Green", "Green"),
 
 	/**
 	 * The '<em><b>Blue</b></em>' literal object.
@@ -50,7 +46,7 @@ public enum AnnotationColor implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	BLUE(3, "Blue", "Blue"), //$NON-NLS-1$ //$NON-NLS-2$
+	BLUE(3, "Blue", "Blue"),
 
 	/**
 	 * The '<em><b>Red</b></em>' literal object.
@@ -60,7 +56,7 @@ public enum AnnotationColor implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	RED(4, "Red", "Red"), //$NON-NLS-1$ //$NON-NLS-2$
+	RED(4, "Red", "Red"),
 
 	/**
 	 * The '<em><b>Purple</b></em>' literal object.
@@ -70,7 +66,7 @@ public enum AnnotationColor implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	PURPLE(5, "Purple", "Purple"), //$NON-NLS-1$ //$NON-NLS-2$
+	PURPLE(5, "Purple", "Purple"),
 
 	/**
 	 * The '<em><b>Underline</b></em>' literal object.
@@ -80,7 +76,7 @@ public enum AnnotationColor implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	UNDERLINE(6, "Underline", "Underline"); //$NON-NLS-1$ //$NON-NLS-2$
+	UNDERLINE(6, "Underline", "Underline");
 
 	/**
 	 * The '<em><b>Yellow</b></em>' literal value.
