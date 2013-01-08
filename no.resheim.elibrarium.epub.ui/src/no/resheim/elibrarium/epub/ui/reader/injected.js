@@ -85,7 +85,7 @@ try {
 	 * @returns the serialised range
 	 */
 	function getPageLocation() {
-		var elem = $('p,h1,h2,h3,h4,h5,h6,pre,img,b,i,code,q,a')
+		var elem = $('p,h1,h2,h3,h4,h5,h6,pre,tr,img,b,i,code,q,a')
 				.filter(
 						function() {
 							return (($(this).offset().left >= bodyID.scrollLeft) && ($(
@@ -112,7 +112,7 @@ try {
 	 * beginning of the first and last elements shown.
 	 */
 	function getPageRange() {
-		var elem = $('p,h1,h2,h3,h4,h5,h6,pre,img,b,i,code,q,a')
+		var elem = $('p,h1,h2,h3,h4,h5,h6,pre,tr,img,b,i,code,q,a')
 				.filter(
 						function() {
 							return (($(this).offset().left >= bodyID.scrollLeft) && ($(
