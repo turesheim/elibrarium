@@ -117,10 +117,12 @@ public class EpubReaderViewerTest {
 		}
 		return folder.delete();
 	}
+
 	@BeforeClass
 	public static void initialize() {
 		deleteFolder(new File("screenshots"));
 	}
+
 	private Browser browser;
 	private final Display display = Display.getDefault();
 	private int imageCount;
@@ -210,9 +212,7 @@ public class EpubReaderViewerTest {
 		browser = new Browser(shell, SWT.NONE);
 		shell.open();
 	}
-	public void tearDown() {
-		display.dispose();
-	}
+
 	@Test
 	public void testAnnotations() throws Exception {
 		loadContent("testdata/plain-page.xhtml", new ContentLoadedAction() {
