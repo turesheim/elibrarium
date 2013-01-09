@@ -25,4 +25,4 @@ The [planned set of features](elibrarium/wiki/Plan) are basically those you expe
 This software is released under the [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html).
 
 ##Copyright
-Copyright (c) 2011,2012 Torkild Ulvøy Resheim, All Rights Reserved.
+Copyright (c) 2011-2013 Torkild Ulvøy Resheim, All Rights Reserved.
