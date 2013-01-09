@@ -197,6 +197,10 @@ public class EpubReaderViewerTest {
 		il.data = new ImageData[] { image.getImageData() };
 		String imageName = dir.getAbsolutePath() + File.separator + name.getMethodName()
 				+ (imageCount > 0 ? "+" + imageCount : "") + ".png";
+		File imageFile = new File(imageName);
+		if (imageFile.exists()) {
+			imageFile.delete();
+		}
 		il.save(imageName, SWT.IMAGE_PNG);
 		imageCount++;
 		return image;
@@ -239,36 +243,43 @@ public class EpubReaderViewerTest {
 			public void onLoad() {
 				EpubUiUtility.navigateToPage(browser, 1);
 			}
+
 		});
 	}
 
 	@Test
 	public void testPage_2() throws Exception {
 		loadContent("testdata/plain-page.xhtml", new ContentLoadedAction() {
+
 			@Override
 			public void onLoad() {
 				EpubUiUtility.navigateToPage(browser, 2);
 			}
+
 		});
 	}
 
 	@Test
 	public void testPage_3() throws Exception {
 		loadContent("testdata/plain-page.xhtml", new ContentLoadedAction() {
+
 			@Override
 			public void onLoad() {
 				EpubUiUtility.navigateToPage(browser, 3);
 			}
+
 		});
 	}
 
 	@Test
 	public void testPage_4() throws Exception {
 		loadContent("testdata/plain-page.xhtml", new ContentLoadedAction() {
+
 			@Override
 			public void onLoad() {
 				EpubUiUtility.navigateToPage(browser, 4);
 			}
+
 		});
 	}
 
@@ -281,13 +292,14 @@ public class EpubReaderViewerTest {
 	@Test
 	public void testRenderingBasics() throws Exception {
 		loadContent("testdata/plain-page.xhtml", new ContentLoadedAction() {
+
 			@Override
 			public void onLoad() {
 				int count = (int) Math.round((Double) browser.evaluate("return pageCount"));
 				Assert.assertEquals(4, count);
 				Assert.assertEquals(300, EpubUiUtility.getPageWidth(browser));
-
 			}
+
 		});
 	}
 }

@@ -4,9 +4,10 @@ try {
 	totalHeight = bodyID.offsetHeight;
 	pageCount = Math.floor(totalHeight / desiredHeight) + 1;
 	width = desiredWidth * pageCount;
-	pageWidth = width / pageCount;
+	pageWidth = (width / pageCount);
 	bodyID.style.width = width + 'px';
 	bodyID.style.height = desiredHeight + 'px';
+	bodyID.style.webkitColumnGap = 0; /* Bug #15 */
 	bodyID.style.WebkitColumnCount = pageCount;
 	markedText = '';
 	debugging = false;
@@ -51,7 +52,7 @@ try {
 	 * @param page the page number
 	 */
 	function navigateToPage(page) {
-		bodyID.scrollLeft = +(pageWidth * (page - 1));
+		bodyID.scrollLeft =+ (pageWidth * (page - 1));
 	}
 
 	/**
