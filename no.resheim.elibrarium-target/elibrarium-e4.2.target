@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Elibrārium - Eclipse 4.2" sequenceNumber="46">
+<?pde version="3.8"?>
+
+<target name="Elibrarium for Eclipse Juno (4.2)" sequenceNumber="0">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.eclipse.osgi" version="3.8.0.v20120529-1548"/>
+<unit id="org.eclipse.core.runtime.compatibility.auth" version="3.2.300.v20120523-2004"/>
+<repository location="http://download.eclipse.org/eclipse/updates/3.8/R-3.8-201206081200"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.eclipse.sdk.ide" version="4.2.1.M20120914-1800"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.2"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.eclipse.emf.cdo.sdk.feature.group" version="4.2.0.v20121114-0954"/>
+<unit id="org.eclipse.emf.cdo.server.feature.group" version="4.2.0.v20121111-0727"/>
+<unit id="org.eclipse.emf.cdo.server.db.feature.group" version="4.2.0.v20121109-1045"/>
+<unit id="org.eclipse.emf.cdo.server.hibernate.feature.group" version="4.2.0.v20121109-0354"/>
+<unit id="org.eclipse.net4j.db.feature.group" version="4.2.0.v20121107-0826"/>
+<unit id="org.eclipse.net4j.db.h2.feature.group" version="4.2.0.v20121105-1608"/>
+<unit id="org.eclipse.net4j.feature.group" version="4.2.0.v20121108-1836"/>
+<unit id="org.eclipse.net4j.sdk.feature.group" version="4.2.0.v20121108-1836"/>
+<unit id="org.eclipse.net4j.ui.feature.group" version="4.2.0.v20121108-1836"/>
+<unit id="org.eclipse.net4j.util.feature.group" version="4.2.0.v20121107-0826"/>
+<unit id="org.eclipse.net4j.util.ui.feature.group" version="4.2.0.v20121108-1836"/>
+<repository location="http://download.eclipse.org/modeling/emf/cdo/updates/integration/stable"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.eclipse.emf.teneo.cdo.feature.group" version="2.0.1.v201301151903"/>
+<unit id="org.eclipse.emf.teneo.cdo.sdk.feature.group" version="2.0.1.v201301151903"/>
+<unit id="org.eclipse.emf.teneo.hibernate.feature.group" version="2.0.1.v201301151903"/>
+<unit id="org.eclipse.emf.teneo.hibernate.sdk.feature.group" version="2.0.1.v201301151903"/>
+<repository location="http://download.eclipse.org/modeling/emf/teneo/updates/2.0.0/interim/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="org.eclipse.cdt.platform.feature.group" version="8.1.1.201209170703"/>
 <unit id="org.eclipse.ecf.core.feature.group" version="3.5.6.v20120610-1946"/>
 <unit id="org.eclipse.equinox.concurrent" version="1.0.300.v20120522-2049"/>
@@ -13,9 +45,9 @@
 <unit id="org.eclipse.emf.edit.ui.feature.group" version="2.8.0.v20120917-0436"/>
 <unit id="org.eclipse.egit.feature.group" version="2.1.0.201209190230-r"/>
 <unit id="org.eclipse.jgit.feature.group" version="2.1.0.201209190230-r"/>
-<repository location="http://download.eclipse.org/releases/juno"/>
+<repository location="http://download.eclipse.org/releases/juno/"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
 <unit id="com.google.gerrit.prettify" version="2.1.5.v201112241444"/>
 <unit id="com.google.gerrit.reviewdb" version="2.1.5.v201112241444"/>
 <unit id="com.google.gerrit.common" version="2.1.5.v201112241444"/>
@@ -61,44 +93,14 @@
 <unit id="com.google.guava" version="10.0.1.v201203051515"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.osgi" version="3.8.0.v20120529-1548"/>
-<unit id="org.eclipse.core.runtime.compatibility.auth" version="3.2.300.v20120523-2004"/>
-<repository location="http://download.eclipse.org/eclipse/updates/3.8/R-3.8-201206081200"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.apache.commons.logging.feature.group" version="1.1.1.201209301655"/>
-<unit id="org.apache.log4j.feature.group" version="1.2.16.201209301655"/>
-<unit id="org.dom4j.feature.group" version="1.6.1.201209301655"/>
-<unit id="org.hibernate.feature.group" version="4.1.1.201209301655"/>
-<unit id="org.hsqldb.feature.group" version="2.2.8.201209301655"/>
-<unit id="javax.persistence.feature.group" version="2.0.1.201209301655"/>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="false" type="InstallableUnit">
+<unit id="org.apache.commons.logging.feature.group" version="1.1.1.201210222237"/>
+<unit id="org.apache.log4j.feature.group" version="1.2.16.201210222237"/>
+<unit id="org.dom4j.feature.group" version="1.6.1.201210222237"/>
+<unit id="org.hibernate.feature.group" version="4.1.1.201210222237"/>
+<unit id="org.hsqldb.feature.group" version="2.2.8.201210222237"/>
+<unit id="javax.persistence.feature.group" version="2.0.1.201210222237"/>
 <repository location="http://www.elver.org/eclipse/2.0.0/update"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.cdo.sdk.feature.group" version="4.2.0.v20120820-0854"/>
-<unit id="org.eclipse.emf.cdo.server.feature.group" version="4.2.0.v20120815-0706"/>
-<unit id="org.eclipse.emf.cdo.server.db.feature.group" version="4.2.0.v20120814-0902"/>
-<unit id="org.eclipse.emf.cdo.server.hibernate.feature.group" version="4.2.0.v20120820-0854"/>
-<unit id="org.eclipse.net4j.db.feature.group" version="4.2.0.v20120820-0854"/>
-<unit id="org.eclipse.net4j.db.h2.feature.group" version="4.2.0.v20120820-0854"/>
-<unit id="org.eclipse.net4j.feature.group" version="4.2.0.v20120815-0706"/>
-<unit id="org.eclipse.net4j.sdk.feature.group" version="4.2.0.v20120820-0854"/>
-<unit id="org.eclipse.net4j.ui.feature.group" version="4.2.0.v20120820-0854"/>
-<unit id="org.eclipse.net4j.util.feature.group" version="4.2.0.v20120814-0534"/>
-<unit id="org.eclipse.net4j.util.ui.feature.group" version="4.2.0.v20120814-0534"/>
-<repository location="http://download.eclipse.org/modeling/emf/cdo/updates/integration/stable"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="4.2.1.M20120914-1800"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.2"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.teneo.cdo.feature.group" version="2.0.0.v201209301618"/>
-<unit id="org.eclipse.emf.teneo.cdo.sdk.feature.group" version="2.0.0.v201209301618"/>
-<unit id="org.eclipse.emf.teneo.hibernate.feature.group" version="2.0.0.v201209301618"/>
-<unit id="org.eclipse.emf.teneo.hibernate.sdk.feature.group" version="2.0.0.v201209301618"/>
-<repository location="http://download.eclipse.org/modeling/emf/teneo/updates/2.0.0/interim/"/>
 </location>
 </locations>
 </target>
