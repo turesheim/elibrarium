@@ -12,9 +12,34 @@
    <feature url="features/no.resheim.elibrarium.epub_0.0.0.jar" id="no.resheim.elibrarium.epub" version="0.0.0">
       <category name="features"/>
    </feature>
-   <category-def name="features" label="Electronic Books">
+   <feature url="features/org.eclipse.emf.cdo.server.db_0.0.0.jar" id="org.eclipse.emf.cdo.server.db" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.mylyn.docs.epub_0.0.0.jar" id="org.eclipse.mylyn.docs.epub" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.mylyn.wikitext_feature_0.0.0.jar" id="org.eclipse.mylyn.wikitext_feature" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.emf.cdo.server_0.0.0.jar" id="org.eclipse.emf.cdo.server" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.net4j.db.h2_0.0.0.jar" id="org.eclipse.net4j.db.h2" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.net4j_0.0.0.jar" id="org.eclipse.net4j" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.emf.cdo_0.0.0.jar" id="org.eclipse.emf.cdo" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.net4j.db_0.0.0.jar" id="org.eclipse.net4j.db" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <category-def name="features" label="Electronic Book Reader">
       <description>
          Electronic book manager and readers.
       </description>
    </category-def>
+   <category-def name="dependencies" label="Required Features"/>
 </site>

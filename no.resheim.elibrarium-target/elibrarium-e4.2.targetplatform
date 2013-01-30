@@ -1,100 +1,113 @@
 target "Elibrarium for Eclipse Juno (4.2)"
+
+// Really required?
 location "http://download.eclipse.org/eclipse/updates/3.8/R-3.8-201206081200" {
 	with source, allEnvironments	
-org.eclipse.osgi
-org.eclipse.core.runtime.compatibility.auth	
+	org.eclipse.osgi
+	org.eclipse.core.runtime.compatibility.auth	
 }
-location "http://download.eclipse.org/eclipse/updates/4.2" {
+
+// Strictly only Mylyn Docs EPUB is required
+location "http://download.eclipse.org/mylyn/releases/latest" {
+	with source, allEnvironments		
+	org.eclipse.mylyn.commons.sdk.feature.group
+	org.eclipse.mylyn.context.sdk.feature.group
+	org.eclipse.mylyn.docs.sdk.feature.group
+	org.eclipse.mylyn.docs.epub.sdk.feature.group
+	org.eclipse.mylyn.sdk_feature.feature.group
+	org.eclipse.mylyn.wikitext.sdk.feature.group
+}
+
+// CDO 4.1 is for Juno (Can (some of) these be moved to Juno site?)
+location "http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.1" {
 	with source, allEnvironments	
-org.eclipse.sdk.ide	
+	org.eclipse.emf.cdo.sdk.feature.group
+	org.eclipse.emf.cdo.server.feature.group
+	org.eclipse.emf.cdo.server.db.feature.group
+	org.eclipse.emf.cdo.server.hibernate.feature.group
+	org.eclipse.net4j.db.feature.group
+	org.eclipse.net4j.db.h2.feature.group
+	org.eclipse.net4j.feature.group
+	org.eclipse.net4j.sdk.feature.group
+	org.eclipse.net4j.ui.feature.group
+	org.eclipse.net4j.util.feature.group
+	org.eclipse.net4j.util.ui.feature.group	
 }
-location "http://download.eclipse.org/modeling/emf/cdo/updates/integration/stable" {
-	with source, allEnvironments	
-org.eclipse.emf.cdo.sdk.feature.group
-org.eclipse.emf.cdo.server.feature.group
-org.eclipse.emf.cdo.server.db.feature.group
-org.eclipse.emf.cdo.server.hibernate.feature.group
-org.eclipse.net4j.db.feature.group
-org.eclipse.net4j.db.h2.feature.group
-org.eclipse.net4j.feature.group
-org.eclipse.net4j.sdk.feature.group
-org.eclipse.net4j.ui.feature.group
-org.eclipse.net4j.util.feature.group
-org.eclipse.net4j.util.ui.feature.group	
-}
+
 location "http://download.eclipse.org/modeling/emf/teneo/updates/2.0.0/interim/" {
 	with source, allEnvironments	
-org.eclipse.emf.teneo.cdo.feature.group
-org.eclipse.emf.teneo.cdo.sdk.feature.group
-org.eclipse.emf.teneo.hibernate.feature.group
-org.eclipse.emf.teneo.hibernate.sdk.feature.group	
+	org.eclipse.emf.teneo.cdo.feature.group
+	org.eclipse.emf.teneo.cdo.sdk.feature.group
+	org.eclipse.emf.teneo.hibernate.feature.group
+	org.eclipse.emf.teneo.hibernate.sdk.feature.group	
 }
+
+// Eclipse 4.2
 location "http://download.eclipse.org/releases/juno/" {
 	with source, allEnvironments	
-org.eclipse.cdt.platform.feature.group
-org.eclipse.ecf.core.feature.group
-org.eclipse.equinox.concurrent
-org.eclipse.emf.ecore.feature.group
-org.eclipse.emf.common.feature.group
-org.eclipse.emf.common.ui.feature.group
-org.eclipse.emf.databinding.feature.group
-org.eclipse.emf.edit.feature.group
-org.eclipse.emf.edit.ui.feature.group
-org.eclipse.egit.feature.group
-org.eclipse.jgit.feature.group
+	org.eclipse.sdk.ide
+	org.eclipse.ecf.core.feature.group
+	org.eclipse.egit.feature.group
+	org.eclipse.jgit.feature.group
+	org.eclipse.emf.sdk.feature.group
+	org.eclipse.emf.compare.sdk.feature.group
+	org.eclipse.emf.validation.sdk.feature.group
+	org.eclipse.ocl.all.sdk.feature.group
 }
+
 location "http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/"{
 	with source, allEnvironments	
-com.google.gerrit.prettify
-com.google.gerrit.reviewdb
-com.google.gerrit.common
-com.google.gson
-com.google.gwt.servlet
-com.google.gwtjsonrpc
-com.google.gwtorm
-com.sun.syndication
-com.sun.xml.bind
-javax.activation
-javax.el
-javax.mail
-javax.xml
-javax.xml.bind
-javax.xml.rpc
-javax.xml.soap
-javax.xml.stream
-javax.wsdl
-org.antlr.runtime
-org.apache.axis
-org.apache.commons.codec
-org.apache.commons.discovery
-org.apache.commons.httpclient
-org.apache.commons.io
-org.apache.commons.lang
-org.apache.commons.logging
-org.apache.xmlrpc
-org.apache.ws.commons.util
-org.hamcrest
-org.hamcrest.core
-org.hamcrest.generator
-org.hamcrest.integration
-org.hamcrest.library
-org.hamcrest.text
-com.thoughtworks.qdox
-org.jdom
-org.mockito
-org.objenesis
-org.apache.httpcomponents.httpclient
-org.apache.httpcomponents.httpcore
-org.jsoup
-org.apache.lucene.core
-com.google.guava
+	com.google.gerrit.prettify
+	com.google.gerrit.reviewdb
+	com.google.gerrit.common
+	com.google.gson
+	com.google.gwt.servlet
+	com.google.gwtjsonrpc
+	com.google.gwtorm
+	com.sun.syndication
+	com.sun.xml.bind
+	javax.activation
+	javax.el
+	javax.mail
+	javax.xml
+	javax.xml.bind
+	javax.xml.rpc
+	javax.xml.soap
+	javax.xml.stream
+	javax.wsdl
+	org.antlr.runtime
+	org.apache.axis
+	org.apache.commons.codec
+	org.apache.commons.discovery
+	org.apache.commons.httpclient
+	org.apache.commons.io
+	org.apache.commons.lang
+	org.apache.commons.logging
+	org.apache.xmlrpc
+	org.apache.ws.commons.util
+	org.hamcrest
+	org.hamcrest.core
+	org.hamcrest.generator
+	org.hamcrest.integration
+	org.hamcrest.library
+	org.hamcrest.text
+	com.thoughtworks.qdox
+	org.jdom
+	org.mockito
+	org.objenesis
+	org.apache.httpcomponents.httpclient
+	org.apache.httpcomponents.httpcore
+	org.jsoup
+	org.apache.lucene.core
+	com.google.guava
 }
+
 location "http://www.elver.org/eclipse/2.0.0/update" {
 	with source, allEnvironments	
-org.apache.commons.logging.feature.group
-org.apache.log4j.feature.group
-org.dom4j.feature.group
-org.hibernate.feature.group
-org.hsqldb.feature.group
-javax.persistence.feature.group	
+	org.apache.commons.logging.feature.group
+	org.apache.log4j.feature.group
+	org.dom4j.feature.group
+	org.hibernate.feature.group
+	org.hsqldb.feature.group
+	javax.persistence.feature.group	
 }

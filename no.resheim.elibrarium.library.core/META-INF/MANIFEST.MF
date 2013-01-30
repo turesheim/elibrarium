@@ -6,16 +6,16 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: Torkild U. Resheim
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.emf.cdo.server.db;bundle-version="4.2.0",
- org.eclipse.emf.cdo.server.net4j;bundle-version="4.0.200",
- org.eclipse.emf.cdo.net4j;bundle-version="4.1.100",
- org.eclipse.net4j.jvm;bundle-version="4.1.100",
- org.eclipse.net4j.tcp;bundle-version="4.1.100",
- org.eclipse.net4j.db.h2;bundle-version="4.0.200",
- org.eclipse.net4j.util.defs;bundle-version="4.0.100",
- org.eclipse.emf.edit;bundle-version="2.8.0",
- org.eclipse.core.resources,
- org.h2;bundle-version="1.1.117"
+Require-Bundle: org.eclipse.emf.cdo.server.db;bundle-version="[4.1.0,4.2.0)",
+ org.eclipse.emf.cdo.server.net4j;bundle-version="[4.0.0,4.1.0)",
+ org.eclipse.emf.cdo.net4j;bundle-version="[4.1.0,4.2.0)",
+ org.eclipse.net4j.jvm;bundle-version="[4.1.0,4.2.0)",
+ org.eclipse.net4j.tcp;bundle-version="[4.1.0,4.2.0)",
+ org.eclipse.net4j.db.h2;bundle-version="[4.0.0,4.1.0)",
+ org.eclipse.net4j.util.defs;bundle-version="[4.0.0,4.1.0)",
+ org.eclipse.emf.edit;bundle-version="[2.8.0,2.9.0)",
+ org.eclipse.core.resources;bundle-version="[3.8.0,3.9.0)",
+ org.h2;bundle-version="[1.1.0,1.2.0)"
 Bundle-ActivationPolicy: lazy
 Export-Package: no.resheim.elibrarium.library.core,
  no.resheim.elibrarium.library,
