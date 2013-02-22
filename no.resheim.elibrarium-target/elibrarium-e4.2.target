@@ -30,10 +30,10 @@
 <repository location="http://download.eclipse.org/modeling/emf/cdo/updates/releases/4.1"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.teneo.cdo.feature.group" version="2.0.1.v201301151903"/>
-<unit id="org.eclipse.emf.teneo.cdo.sdk.feature.group" version="2.0.1.v201301151903"/>
-<unit id="org.eclipse.emf.teneo.hibernate.feature.group" version="2.0.1.v201301151903"/>
-<unit id="org.eclipse.emf.teneo.hibernate.sdk.feature.group" version="2.0.1.v201301151903"/>
+<unit id="org.eclipse.emf.teneo.cdo.feature.group" version="2.0.1.v201302181909"/>
+<unit id="org.eclipse.emf.teneo.cdo.sdk.feature.group" version="2.0.1.v201302181909"/>
+<unit id="org.eclipse.emf.teneo.hibernate.feature.group" version="2.0.1.v201302181909"/>
+<unit id="org.eclipse.emf.teneo.hibernate.sdk.feature.group" version="2.0.1.v201302181909"/>
 <repository location="http://download.eclipse.org/modeling/emf/teneo/updates/2.0.0/interim/"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
