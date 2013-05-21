@@ -55,7 +55,7 @@ location "http://download.eclipse.org/releases/juno/" {
 	org.eclipse.ocl.all.sdk.feature.group
 }
 
-location "http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/"{
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository"{
 	with source, allEnvironments	
 	com.google.gerrit.prettify
 	com.google.gerrit.reviewdb
