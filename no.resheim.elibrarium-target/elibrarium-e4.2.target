@@ -88,6 +88,8 @@
 <unit id="org.objenesis" version="1.0.0.v201105211943"/>
 <unit id="org.apache.httpcomponents.httpclient" version="4.1.3.v201209201135"/>
 <unit id="org.apache.httpcomponents.httpcore" version="4.1.4.v201203221030"/>
+<unit id="org.apache.xmlgraphics" version="1.4.0.v201301251218"/>
+<unit id="org.apache.xalan" version="2.7.1.v201005080400"/>
 <unit id="org.jsoup" version="1.7.2.v201304221138"/>
 <unit id="org.apache.lucene.core" version="3.5.0.v20120725-1805"/>
 <unit id="com.google.guava" version="12.0.0.v201212092141"/>

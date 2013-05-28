@@ -97,6 +97,8 @@ location "http://download.eclipse.org/tools/orbit/downloads/drops/R2013051711141
 	org.objenesis
 	org.apache.httpcomponents.httpclient
 	org.apache.httpcomponents.httpcore
+	org.apache.xmlgraphics
+	org.apache.xalan
 	org.jsoup
 	org.apache.lucene.core
 	com.google.guava
