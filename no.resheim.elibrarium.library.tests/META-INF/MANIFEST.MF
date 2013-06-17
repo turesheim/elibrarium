@@ -9,3 +9,9 @@ Require-Bundle: org.junit;bundle-version="4.10.0",
  no.resheim.elibrarium.library.core;bundle-version="1.0.0",
  org.eclipse.net4j.tcp;bundle-version="[4.1.0,4.2.0)",
  org.eclipse.core.runtime;bundle-version="3.8.0"
+Import-Package: no.resheim.elibrarium.epub.ui.reader,
+ org.eclipse.swt,
+ org.eclipse.swt.browser,
+ org.eclipse.swt.graphics,
+ org.eclipse.swt.layout,
+ org.eclipse.swt.widgets
