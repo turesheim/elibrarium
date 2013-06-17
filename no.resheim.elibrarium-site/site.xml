@@ -15,6 +15,9 @@
    <feature url="features/org.eclipse.mylyn.docs.epub_0.0.0.jar" id="org.eclipse.mylyn.docs.epub" version="0.0.0">
       <category name="dependencies"/>
    </feature>
+   <feature url="features/org.eclipse.emf.cdo.server_0.0.0.jar" id="org.eclipse.emf.cdo.server" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
    <category-def name="features" label="Electronic Book Reader">
       <description>
          Electronic book manager and reader.
