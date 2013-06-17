@@ -18,6 +18,24 @@
    <feature url="features/org.eclipse.emf.cdo.server_0.0.0.jar" id="org.eclipse.emf.cdo.server" version="0.0.0">
       <category name="dependencies"/>
    </feature>
+   <feature url="features/org.eclipse.net4j_0.0.0.jar" id="org.eclipse.net4j" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.net4j.db_0.0.0.jar" id="org.eclipse.net4j.db" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.net4j.db.h2_0.0.0.jar" id="org.eclipse.net4j.db.h2" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.emf.cdo.server.db_0.0.0.jar" id="org.eclipse.emf.cdo.server.db" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.net4j.defs_0.0.0.jar" id="org.eclipse.net4j.defs" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
+   <feature url="features/org.eclipse.emf.edit_0.0.0.jar" id="org.eclipse.emf.edit" version="0.0.0">
+      <category name="dependencies"/>
+   </feature>
    <category-def name="features" label="Electronic Book Reader">
       <description>
          Electronic book manager and reader.
