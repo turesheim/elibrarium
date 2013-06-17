@@ -58,8 +58,8 @@ public class Librarian extends Plugin implements ILibrarian {
 	/** Identifier of this plug-in */
 	public static final String PLUGIN_ID = "no.resheim.elibrarium.library.core";
 
-	/** The default CDO server port */ 
-	private static int serverPort = 2629;
+	/** The default CDO server port */
+	private static int serverPort = 1409;
 
 	/** Port of the HTTP based database console. */
 	public static final int CONSOLE_SERVER_PORT = getServerPort() + 1;
@@ -179,15 +179,16 @@ public class Librarian extends Plugin implements ILibrarian {
 	 * @see {@link #getStorageLocation()}
 	 */
 	protected void doStart() throws Exception {
-		LOG.info("Elibrārium server starting");
+		LOG.info("Elibrarium server starting");
 		JdbcDataSource dataSource = new JdbcDataSource();
 		// XXX: This is a workaround for not handling inter-process transactions
 		// through CDO. It also solves several other problems, such as what
 		// happens when the database server dies.
 		//
 		// http://h2database.com/html/features.html#auto_mixed_mode
-		String url = "jdbc:h2:" + getStorageLocation() + File.separator + "h2db;AUTO_SERVER=TRUE";
-		// String url = "jdbc:h2:" + getStorageLocation() + File.separator + "h2db";
+		// String url = "jdbc:h2:" + getStorageLocation() + File.separator +
+		// "h2db;AUTO_SERVER=TRUE";
+		String url = "jdbc:h2:" + getStorageLocation() + File.separator + "h2db";
 		LOG.info("- Hibernate database URL = " + url);
 		dataSource.setURL(url);
 
@@ -207,8 +208,9 @@ public class Librarian extends Plugin implements ILibrarian {
 
 		acceptor = (IAcceptor) IPluginContainer.INSTANCE.getElement("org.eclipse.net4j.acceptors", "tcp",
 				DB_SERVER_ADDRESS);
-		startConsole();
-		LOG.info("Elibrārium server started");
+		LOG.info("- CDO acceptor started at " + DB_SERVER_ADDRESS);
+		// startConsole();
+		LOG.info("Elibrarium server started");
 	}
 
 	/**
@@ -217,10 +219,10 @@ public class Librarian extends Plugin implements ILibrarian {
 	 * @throws Exception
 	 */
 	protected void doStop() throws Exception {
-		LOG.info("Elibrārium stopping");
+		LOG.info("Elibrarium stopping");
 		LifecycleUtil.deactivate(acceptor);
 		LifecycleUtil.deactivate(repository);
-		LOG.info("Elibrārium stopped");
+		LOG.info("Elibrarium stopped");
 	}
 
 	/**
@@ -229,6 +231,7 @@ public class Librarian extends Plugin implements ILibrarian {
 	 * @param urn
 	 *            the book identifier
 	 * @return a list of books
+	 * @since 1.0
 	 */
 	public synchronized Book getBookByURN(String urn) {
 		EList<Book> items = ILibraryCatalog.INSTANCE.getLibrary().getBooks();
@@ -247,6 +250,7 @@ public class Librarian extends Plugin implements ILibrarian {
 	 * @param id
 	 *            the collection identifier
 	 * @return a list of books
+	 * @since 1.0
 	 */
 	public synchronized List<Book> getBooksByCollection(String id) {
 		ArrayList<Book> books = new ArrayList<Book>();
@@ -259,14 +263,19 @@ public class Librarian extends Plugin implements ILibrarian {
 		return books;
 	}
 
+	/**
+	 * 
+	 * @return the shared library instance
+	 * @since 1.0
+	 */
 	public synchronized Library getLibrary() {
 		return ILibraryCatalog.INSTANCE.getLibrary();
 	}
 
 	/**
 	 * Returns the root folder of where Elibrarium stores it's data files. On OS
-	 * X this is <i>~/Library/Elibrarium</i>. On other platforms it is at
-	 * ~/Elibrarium.
+	 * X this is normally <i>~/Library/Elibrarium</i>. On other platforms it is
+	 * normally at ~/Elibrarium.
 	 * 
 	 * @return the path to the storage location.
 	 * @throws IOException
@@ -336,7 +345,6 @@ public class Librarian extends Plugin implements ILibrarian {
 			LOG.info("- Started h2 console at http://127.0.0.1:" + CONSOLE_SERVER_PORT);
 		} catch (SQLException e) {
 			LOG.info("- Could not start h2 console");
-			LOG.error(e);
 		}
 	}
 
