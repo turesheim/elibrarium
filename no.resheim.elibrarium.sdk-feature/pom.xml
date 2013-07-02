@@ -6,6 +6,7 @@
     <artifactId>no.resheim.elibrarium-parent</artifactId>
     <groupId>no.resheim.elibrarium</groupId>
     <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../no.resheim.elibrarium-parent</relativePath>
   </parent>
   <artifactId>no.resheim.elibrarium.sdk</artifactId>
   <version>1.0.0-SNAPSHOT</version>

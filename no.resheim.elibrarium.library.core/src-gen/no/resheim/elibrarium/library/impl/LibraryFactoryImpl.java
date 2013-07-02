@@ -28,7 +28,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 */
 	public static LibraryFactory init() {
 		try {
-			LibraryFactory theLibraryFactory = (LibraryFactory)EPackage.Registry.INSTANCE.getEFactory("http://resheim.no/elibrarium/library"); 
+			LibraryFactory theLibraryFactory = (LibraryFactory)EPackage.Registry.INSTANCE.getEFactory(LibraryPackage.eNS_URI);
 			if (theLibraryFactory != null) {
 				return theLibraryFactory;
 			}

@@ -1,0 +1,142 @@
+target "Elibrarium for Eclipse Juno (4.3)"
+
+// Strictly only Mylyn Docs EPUB is required
+location "http://download.eclipse.org/mylyn/releases/latest" {
+	with source, allEnvironments		
+	org.eclipse.mylyn.commons.sdk.feature.group
+	org.eclipse.mylyn.context.sdk.feature.group
+	org.eclipse.mylyn.docs.sdk.feature.group
+	org.eclipse.mylyn.docs.epub.sdk.feature.group
+	org.eclipse.mylyn.sdk_feature.feature.group
+	org.eclipse.mylyn.wikitext.sdk.feature.group
+}
+
+// CDO 4.2 (Kepler)
+location "http://download.eclipse.org/modeling/emf/cdo/drops/R20130613-1157" {
+	with source, allEnvironments	
+	org.eclipse.emf.cdo.sdk.feature.group
+	org.eclipse.emf.cdo.server.feature.group
+	org.eclipse.emf.cdo.server.db.feature.group
+	org.eclipse.emf.cdo.server.hibernate.feature.group
+	org.eclipse.net4j.db.feature.group
+	org.eclipse.net4j.db.h2.feature.group
+	org.eclipse.net4j.feature.group
+	org.eclipse.net4j.sdk.feature.group
+	org.eclipse.net4j.ui.feature.group
+	org.eclipse.net4j.util.feature.group
+	org.eclipse.net4j.util.ui.feature.group	
+}
+
+// Do we really need Teneo/Hibernate?
+location "http://download.eclipse.org/modeling/emf/teneo/updates/2.0.0/interim/" {
+	with source, allEnvironments	
+	org.eclipse.emf.teneo.cdo.feature.group
+	org.eclipse.emf.teneo.cdo.sdk.feature.group
+	org.eclipse.emf.teneo.hibernate.feature.group
+	org.eclipse.emf.teneo.hibernate.sdk.feature.group	
+}
+
+// Eclipse 4.3
+location "http://download.eclipse.org/releases/kepler/" {
+	with source, allEnvironments
+	org.eclipse.ecf.core.feature.group
+	org.eclipse.egit.feature.group
+	org.eclipse.jgit.feature.group
+	org.eclipse.emf.sdk.feature.group
+	org.eclipse.emf.compare.sdk.feature.group
+	org.eclipse.emf.validation.sdk.feature.group
+	org.eclipse.ocl.all.sdk.feature.group
+	org.eclipse.sdk.feature.group
+//	org.eclipse.core.runtime
+//	org.eclipse.core.contenttype
+//	org.eclipse.core.resources
+//	org.eclipse.core.expressions
+//	org.eclipse.core.filesystem
+//	org.eclipse.core.commands 
+//	org.eclipse.core.jobs
+//	org.eclipse.ui
+//	org.eclipse.ui.browser
+//	org.eclipse.jface.text
+//	org.eclipse.ui.views
+// 	org.eclipse.ui.editors
+ //	org.eclipse.ui.views 
+//	org.eclipse.ui.workbench
+//	org.eclipse.jface.databinding
+//	org.eclipse.help
+//	org.eclipse.jface
+//	org.eclipse.swt
+//	org.eclipse.jface.text
+//	org.eclipse.ui.editors
+//	org.eclipse.equinox.common
+//	org.eclipse.equinox.registry
+//	org.eclipse.equinox.preferences
+//	org.eclipse.equinox.p2.metadata
+//	org.eclipse.equinox.app
+//	org.eclipse.osgi
+//	org.eclipse.osgi.service.debug
+//	org.eclipse.osgi.service.environment
+//	org.eclipse.osgi.service.runnable
+//	org.eclipse.osgi.storagemanager
+//	org.eclipse.osgi.util
+//	org.osgi.service.event
+//	org.osgi.service.packageadmin	
+}
+
+location "http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository"{
+	with source, allEnvironments	
+	com.google.gerrit.prettify
+	com.google.gerrit.reviewdb
+	com.google.gerrit.common
+	com.google.gson
+	com.google.gwt.servlet
+	com.google.gwtjsonrpc
+	com.google.gwtorm
+	com.sun.syndication
+	com.sun.xml.bind
+	javax.activation
+	javax.el
+	javax.mail
+	javax.xml
+	javax.xml.bind
+	javax.xml.rpc
+	javax.xml.soap
+	javax.xml.stream
+	javax.wsdl
+	org.antlr.runtime
+	org.apache.axis
+	org.apache.commons.codec
+	org.apache.commons.discovery
+	org.apache.commons.httpclient
+	org.apache.commons.io
+	org.apache.commons.lang
+	org.apache.commons.logging
+	org.apache.xmlrpc
+	org.apache.ws.commons.util
+	org.hamcrest
+	org.hamcrest.core
+	org.hamcrest.generator
+	org.hamcrest.integration
+	org.hamcrest.library
+	org.hamcrest.text
+	com.thoughtworks.qdox
+	org.jdom
+	org.mockito
+	org.objenesis
+	org.apache.httpcomponents.httpclient
+	org.apache.httpcomponents.httpcore
+	org.apache.xmlgraphics
+	org.apache.xalan
+	org.jsoup
+	org.apache.lucene.core
+	com.google.guava
+}
+
+location "http://www.elver.org/eclipse/2.0.0/update" {
+	with source, allEnvironments	
+	org.apache.commons.logging.feature.group
+	org.apache.log4j.feature.group
+	org.dom4j.feature.group
+	org.hibernate.feature.group
+	org.hsqldb.feature.group
+	javax.persistence.feature.group	
+}

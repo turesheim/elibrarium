@@ -19,6 +19,7 @@ import no.resheim.elibrarium.library.Book;
  * 
  * @author Torkild U. Resheim
  * @see ILibrarian
+ * XXX: Can we use pure CDO/EMF mechanisms instead?
  */
 public interface ILibraryListener {
 

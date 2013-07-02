@@ -19,13 +19,13 @@ import no.resheim.elibrarium.library.Book;
  * Implementors of this interface provide books for the library and take part in
  * the library maintenance workflow. Specifically:
  * <ul>
- * <li>Must add new books to the library.</li>
+ * <li>Add new books to the library.</li>
  * <li>May remove books from the library.</li>
- * <li>Must verify the status of a book in the library.</li>
+ * <li>Verifies the status of a book in the library.</li>
  * </ul>
  * As the library will only persist the book data required for it to operate,
- * any additional data must be persisted by the {@link ICollection}. Or one can
- * use a set of "key-value" pairs that also are available.
+ * any additional data must be maintained persisted by the {@link ICollection}.
+ * Or one can use a set of "key-value" pairs that also are available.
  * 
  * @author Torkild U. Resheim
  */

@@ -45,30 +45,12 @@
 		<tycho-version>0.15.0</tycho-version>
 		<mockito-version>1.8.4</mockito-version>
 		<junit-version>4.8.1</junit-version>
-		<target-platform>elibrarium-e4.2</target-platform>
+		<target-platform>elibrarium-e4.3</target-platform>
 		<project.source.sourceEncoding>UTF-8</project.source.sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<profiles>
-		<profile>
-			<id>platform-juno</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>platform-version-name</name>
-					<value>juno</value>
-				</property>
-			</activation>
-			<properties>
-				<target-platform>elibrarium-e4.2</target-platform>
-				<platform-version>[3.8,3.9)</platform-version>
-			</properties>
-			<modules>
-				<module>no.resheim.elibrarium-target</module>
-				<module>no.resheim.elibrarium-site</module>
-			</modules>
-		</profile>
 		<profile>
 			<id>static-checks</id>
 			<build>
@@ -261,24 +243,16 @@
 	</dependencyManagement>
 
 	<modules>
-		<!-- Target definitions -->
-		<module>no.resheim.elibrarium-target</module>
-		<!-- Library -->
-		<module>no.resheim.elibrarium.library.core</module>
-		<module>no.resheim.elibrarium.library.ui</module>
-		<!-- EPUB support -->
-		<module>no.resheim.elibrarium.epub.core</module>
-		<module>no.resheim.elibrarium.epub.ui</module>
-		<module>no.resheim.elibrarium.epub-feature</module>
-		<!-- Main feature -->
-		<module>no.resheim.elibrarium-feature</module>
-		<!-- Elibrarium SDK -->
-		<module>no.resheim.elibrarium.sdk-feature</module>
-		<!-- P2 repository -->
-		<module>no.resheim.elibrarium-site</module>
-		<!-- Tests -->
-		<module>no.resheim.elibrarium.library.tests</module>
-
+		<module>../no.resheim.elibrarium-target</module>
+		<module>../no.resheim.elibrarium.library.core</module>
+		<module>../no.resheim.elibrarium.library.ui</module>
+		<module>../no.resheim.elibrarium.epub.core</module>
+		<module>../no.resheim.elibrarium.epub.ui</module>
+		<module>../no.resheim.elibrarium.epub-feature</module>
+		<module>../no.resheim.elibrarium-feature</module>
+		<module>../no.resheim.elibrarium.sdk-feature</module>
+		<module>../no.resheim.elibrarium-site</module>
+		<module>../no.resheim.elibrarium.library.tests</module>
 	</modules>
 
 </project>
