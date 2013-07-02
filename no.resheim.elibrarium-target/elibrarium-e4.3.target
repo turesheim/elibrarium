@@ -89,14 +89,5 @@
 <unit id="com.google.guava" version="12.0.0.v201212092141"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository"/>
 </location>
-<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.apache.commons.logging.feature.group" version="1.1.1.201210222237"/>
-<unit id="org.apache.log4j.feature.group" version="1.2.16.201210222237"/>
-<unit id="org.dom4j.feature.group" version="1.6.1.201210222237"/>
-<unit id="org.hibernate.feature.group" version="4.1.1.201210222237"/>
-<unit id="org.hsqldb.feature.group" version="2.2.8.201210222237"/>
-<unit id="javax.persistence.feature.group" version="2.0.1.201210222237"/>
-<repository location="http://www.elver.org/eclipse/2.0.0/update"/>
-</location>
 </locations>
 </target>

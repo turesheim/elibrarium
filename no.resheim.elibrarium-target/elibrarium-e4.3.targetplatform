@@ -47,39 +47,6 @@ location "http://download.eclipse.org/releases/kepler/" {
 	org.eclipse.emf.validation.sdk.feature.group
 	org.eclipse.ocl.all.sdk.feature.group
 	org.eclipse.sdk.feature.group
-//	org.eclipse.core.runtime
-//	org.eclipse.core.contenttype
-//	org.eclipse.core.resources
-//	org.eclipse.core.expressions
-//	org.eclipse.core.filesystem
-//	org.eclipse.core.commands 
-//	org.eclipse.core.jobs
-//	org.eclipse.ui
-//	org.eclipse.ui.browser
-//	org.eclipse.jface.text
-//	org.eclipse.ui.views
-// 	org.eclipse.ui.editors
- //	org.eclipse.ui.views 
-//	org.eclipse.ui.workbench
-//	org.eclipse.jface.databinding
-//	org.eclipse.help
-//	org.eclipse.jface
-//	org.eclipse.swt
-//	org.eclipse.jface.text
-//	org.eclipse.ui.editors
-//	org.eclipse.equinox.common
-//	org.eclipse.equinox.registry
-//	org.eclipse.equinox.preferences
-//	org.eclipse.equinox.p2.metadata
-//	org.eclipse.equinox.app
-//	org.eclipse.osgi
-//	org.eclipse.osgi.service.debug
-//	org.eclipse.osgi.service.environment
-//	org.eclipse.osgi.service.runnable
-//	org.eclipse.osgi.storagemanager
-//	org.eclipse.osgi.util
-//	org.osgi.service.event
-//	org.osgi.service.packageadmin	
 }
 
 location "http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository"{
@@ -129,14 +96,4 @@ location "http://download.eclipse.org/tools/orbit/downloads/drops/R2013051711141
 	org.jsoup
 	org.apache.lucene.core
 	com.google.guava
-}
-
-location "http://www.elver.org/eclipse/2.0.0/update" {
-	with source, allEnvironments	
-	org.apache.commons.logging.feature.group
-	org.apache.log4j.feature.group
-	org.dom4j.feature.group
-	org.hibernate.feature.group
-	org.hsqldb.feature.group
-	javax.persistence.feature.group	
 }
