@@ -61,12 +61,6 @@ public class Librarian extends Plugin implements ILibrarian {
 	/** The default CDO server port */
 	private static int serverPort = 1409;
 
-	/** Port of the HTTP based database console. */
-	public static final int CONSOLE_SERVER_PORT = getServerPort() + 1;
-
-	/** TCP address of the H2 server. */
-	public static final String DB_SERVER_ADDRESS = "127.0.0.1:" + getServerPort();
-
 	public static final OMBundle BUNDLE = OMPlatform.INSTANCE.bundle(PLUGIN_ID, Librarian.class);
 
 	/** Identifier of the CDO repository used */
@@ -93,6 +87,13 @@ public class Librarian extends Plugin implements ILibrarian {
 
 	public static int getServerPort() {
 		return serverPort;
+	}
+
+	/**
+	 * Returns port of the HTTP based database console.
+	 */
+	public static int getConsolePort() {
+		return getServerPort() + 1;
 	}
 
 	private final ArrayList<ICollection> collection;
@@ -207,10 +208,17 @@ public class Librarian extends Plugin implements ILibrarian {
 		CDONet4jServerUtil.prepareContainer(IPluginContainer.INSTANCE);
 
 		acceptor = (IAcceptor) IPluginContainer.INSTANCE.getElement("org.eclipse.net4j.acceptors", "tcp",
-				DB_SERVER_ADDRESS);
-		LOG.info("- CDO acceptor started at " + DB_SERVER_ADDRESS);
-		// startConsole();
+				getDbServerAddress());
+		LOG.info("- CDO acceptor started at " + getDbServerAddress());
+		startConsole();
 		LOG.info("Elibrarium server started");
+	}
+
+	/**
+	 * Returns the TCP address of the H2 server.
+	 */
+	public static String getDbServerAddress() {
+		return "127.0.0.1:" + getServerPort();
 	}
 
 	/**
@@ -290,6 +298,9 @@ public class Librarian extends Plugin implements ILibrarian {
 		p.load(new FileReader(file));
 		storageLocation = p.getProperty("storage.location");
 		serverPort = Integer.parseInt(p.getProperty("server.port"));
+		LOG.info("Using configuration file at " + file.getAbsolutePath());
+		LOG.info("- storage.location = " + storageLocation);
+		LOG.info("- server.port=" + serverPort);
 	}
 
 	@Override
@@ -341,8 +352,8 @@ public class Librarian extends Plugin implements ILibrarian {
 	 */
 	private void startConsole() {
 		try {
-			Server.createWebServer(new String[] { "-webPort", String.valueOf(CONSOLE_SERVER_PORT) }).start();
-			LOG.info("- Started h2 console at http://127.0.0.1:" + CONSOLE_SERVER_PORT);
+			Server.createWebServer(new String[] { "-webPort", String.valueOf(getConsolePort()) }).start();
+			LOG.info("- Started h2 console at http://127.0.0.1:" + getConsolePort());
 		} catch (SQLException e) {
 			LOG.info("- Could not start h2 console");
 		}

@@ -119,8 +119,7 @@ public class CdoLibraryCatalog extends Lifecycle implements ILibraryCatalog {
 		TCPUtil.prepareContainer(container); // Register TCP factories
 		CDONet4jUtil.prepareContainer(container); // Register CDO factories
 		container.activate();
-
-		IConnector connector = Net4jUtil.getConnector(container, "tcp", Librarian.DB_SERVER_ADDRESS);
+		IConnector connector = Net4jUtil.getConnector(container, "tcp", Librarian.getDbServerAddress());
 
 		CDONet4jSessionConfiguration config = CDONet4jUtil.createNet4jSessionConfiguration();
 		config.setConnector(connector);
@@ -136,6 +135,5 @@ public class CdoLibraryCatalog extends Lifecycle implements ILibraryCatalog {
 		session.close();
 		session = null;
 		view = null;
-		super.doDeactivate();
 	}
 }
