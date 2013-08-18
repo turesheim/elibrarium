@@ -14,7 +14,6 @@ package no.resheim.elibrarium.library.core;
 import no.resheim.elibrarium.library.Library;
 
 import org.eclipse.emf.cdo.CDOObject;
-import org.eclipse.emf.common.notify.AdapterFactory;
 
 /**
  * The library catalogue holds all library information and is automatically
@@ -31,8 +30,6 @@ public interface ILibraryCatalog {
 	 */
 	public static final ILibraryCatalog INSTANCE = CdoLibraryCatalog.INSTANCE;
 
-	public AdapterFactory getAdapterFactory();
-
 	/**
 	 * Returns the library. Each catalogue has exactly one instance.
 	 * 
@@ -40,6 +37,10 @@ public interface ILibraryCatalog {
 	 */
 	public Library getLibrary();
 
+	/**
+	 * Modifies the given object within a transaction which is immediately
+	 * committed to the database if successful.
+	 */
 	public <T extends CDOObject> Object modify(T object, ITransactionalOperation<T> operation);
 
 	public interface ITransactionalOperation<T extends CDOObject> {

@@ -23,7 +23,6 @@ import org.eclipse.emf.cdo.transaction.CDOTransaction;
 import org.eclipse.emf.cdo.util.CommitException;
 import org.eclipse.emf.cdo.view.CDOAdapterPolicy;
 import org.eclipse.emf.cdo.view.CDOView;
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.net4j.Net4jUtil;
 import org.eclipse.net4j.connector.IConnector;
 import org.eclipse.net4j.tcp.TCPUtil;
@@ -50,17 +49,10 @@ public class CdoLibraryCatalog extends Lifecycle implements ILibraryCatalog {
 	private Library library;
 
 	private CdoLibraryCatalog() {
-		// adapterFactory = new
-		// ComposedAdapterFactory(EMFEditPlugin.getComposedAdapterFactoryDescriptorRegistry());
 	}
 
 	/** Catalogue path */
 	private final String path = "/library";
-
-	public AdapterFactory getAdapterFactory() {
-		return null;
-		// return adapterFactory;
-	}
 
 	public synchronized Library getLibrary() {
 		if (library == null) {
@@ -84,10 +76,6 @@ public class CdoLibraryCatalog extends Lifecycle implements ILibraryCatalog {
 		return library;
 	}
 
-	/**
-	 * Modifies the given object within a transaction which is immediately
-	 * committed to the database if successful.
-	 */
 	public <T extends CDOObject> Object modify(T object, ITransactionalOperation<T> operation) {
 		CDOTransaction transaction = session.openTransaction();
 
@@ -99,7 +87,7 @@ public class CdoLibraryCatalog extends Lifecycle implements ILibraryCatalog {
 			if (result instanceof CDOObject) {
 				return view.getObject((CDOObject) result);
 			}
-
+			
 			return result;
 		} catch (CommitException ex) {
 			throw WrappedException.wrap(ex);
@@ -132,6 +120,7 @@ public class CdoLibraryCatalog extends Lifecycle implements ILibraryCatalog {
 
 	@Override
 	protected void doDeactivate() throws Exception {
+		view.close();
 		session.close();
 		session = null;
 		view = null;
