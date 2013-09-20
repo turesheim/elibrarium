@@ -19,7 +19,7 @@ The reader is relying on the WebKit HTML rendering engine so this must be presen
 </table>
 
 ##Features
-The [planned set of features](https://github.com//turesheim/elibrarium/wiki/Plan) are basically those you expect to find in any modern reading system, such as book-like navigation, table of contents, search, bookmarks along with support for adding notes and marking text.
+The [planned set of features](https://github.com/turesheim/elibrarium/wiki/Plan) are basically those you expect to find in any modern reading system, such as book-like navigation, table of contents, search, bookmarks along with support for adding notes and marking text.
 
 ##License
 This software is released under the [Eclipse Public License 1.0](http://www.eclipse.org/legal/epl-v10.html).
