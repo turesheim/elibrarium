@@ -55,6 +55,7 @@ import org.h2.tools.Server;
 import org.osgi.framework.BundleContext;
 
 public class Librarian extends Plugin implements ILibrarian {
+	
 	/** Identifier of this plug-in */
 	public static final String PLUGIN_ID = "no.resheim.elibrarium.library.core";
 
@@ -228,8 +229,8 @@ public class Librarian extends Plugin implements ILibrarian {
 	 */
 	protected void doStop() throws Exception {
 		LOG.info("Elibrarium stopping");
-		LifecycleUtil.deactivate(acceptor);
 		LifecycleUtil.deactivate(repository);
+		LifecycleUtil.deactivate(acceptor);
 		LOG.info("Elibrarium stopped");
 	}
 

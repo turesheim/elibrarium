@@ -11,7 +11,7 @@ location "http://download.eclipse.org/mylyn/releases/latest" {
 	org.eclipse.mylyn.wikitext.sdk.feature.group
 }
 
-// CDO 4.2 (Kepler)
+// CDO 4.3 (Kepler)
 location "http://download.eclipse.org/modeling/emf/cdo/drops/R20130613-1157" {
 	with source, allEnvironments	
 	org.eclipse.emf.cdo.sdk.feature.group

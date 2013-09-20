@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.emf.cdo.server.db;bundle-version="4.2.0",
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.cdo;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ org.eclipse.net4j.util
 Bundle-ActivationPolicy: lazy
 Export-Package: no.resheim.elibrarium.library.core,
  no.resheim.elibrarium.library,

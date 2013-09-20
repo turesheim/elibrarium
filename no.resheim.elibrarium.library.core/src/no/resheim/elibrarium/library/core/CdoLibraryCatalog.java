@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Torkild U. Resheim.
+ * Copyright (c) 2012 - 2013 Torkild U. Resheim.
  * 
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
@@ -30,6 +30,7 @@ import org.eclipse.net4j.util.WrappedException;
 import org.eclipse.net4j.util.container.ContainerUtil;
 import org.eclipse.net4j.util.container.IManagedContainer;
 import org.eclipse.net4j.util.lifecycle.Lifecycle;
+import org.eclipse.net4j.util.lifecycle.LifecycleUtil;
 
 /**
  * 
@@ -39,8 +40,6 @@ import org.eclipse.net4j.util.lifecycle.Lifecycle;
 public class CdoLibraryCatalog extends Lifecycle implements ILibraryCatalog {
 
 	static final CdoLibraryCatalog INSTANCE = new CdoLibraryCatalog();
-
-	// private final AdapterFactory adapterFactory;
 
 	private CDONet4jSession session;
 
@@ -53,6 +52,12 @@ public class CdoLibraryCatalog extends Lifecycle implements ILibraryCatalog {
 
 	/** Catalogue path */
 	private final String path = "/library";
+
+	private IConnector connector;
+
+	private String repository;
+
+	private IManagedContainer container;
 
 	public synchronized Library getLibrary() {
 		if (library == null) {
@@ -99,15 +104,14 @@ public class CdoLibraryCatalog extends Lifecycle implements ILibraryCatalog {
 	@Override
 	protected void doActivate() throws Exception {
 		super.doActivate();
-		String repository = Librarian.CDO_REPOSITORY_ID;
+		repository = Librarian.CDO_REPOSITORY_ID;
 
-		// Prepare container
-		final IManagedContainer container = ContainerUtil.createContainer();
+		container = ContainerUtil.createContainer();
 		Net4jUtil.prepareContainer(container); // Register Net4j factories
 		TCPUtil.prepareContainer(container); // Register TCP factories
 		CDONet4jUtil.prepareContainer(container); // Register CDO factories
 		container.activate();
-		IConnector connector = Net4jUtil.getConnector(container, "tcp", Librarian.getDbServerAddress());
+		connector = Net4jUtil.getConnector(container, "tcp", Librarian.getDbServerAddress());
 
 		CDONet4jSessionConfiguration config = CDONet4jUtil.createNet4jSessionConfiguration();
 		config.setConnector(connector);
@@ -120,9 +124,10 @@ public class CdoLibraryCatalog extends Lifecycle implements ILibraryCatalog {
 
 	@Override
 	protected void doDeactivate() throws Exception {
-		view.close();
-		session.close();
-		session = null;
-		view = null;
+		super.doDeactivate();
+		  LifecycleUtil.deactivate(session);
+		  LifecycleUtil.deactivate(connector);
+		  LifecycleUtil.deactivate(repository);
+		  LifecycleUtil.deactivate(container);
 	}
 }
