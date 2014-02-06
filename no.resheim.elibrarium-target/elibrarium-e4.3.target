@@ -2,43 +2,43 @@
 <?pde version="3.8"?><target name="Elibrarium for Eclipse Juno (4.3)" sequenceNumber="0">
 <locations>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.mylyn.commons.sdk.feature.group" version="3.9.0.v20130612-0100"/>
-<unit id="org.eclipse.mylyn.context.sdk.feature.group" version="3.9.0.v20130612-0100"/>
-<unit id="org.eclipse.mylyn.docs.sdk.feature.group" version="1.8.0.v20130612-0100"/>
-<unit id="org.eclipse.mylyn.docs.epub.sdk.feature.group" version="1.1.0.v20130612-0100"/>
-<unit id="org.eclipse.mylyn.sdk_feature.feature.group" version="3.9.0.v20130612-0100"/>
-<unit id="org.eclipse.mylyn.wikitext.sdk.feature.group" version="1.8.0.v20130612-0100"/>
+<unit id="org.eclipse.mylyn.commons.sdk.feature.group" version="3.10.0.20131018-1210"/>
+<unit id="org.eclipse.mylyn.context.sdk.feature.group" version="3.10.0.20131008-2202"/>
+<unit id="org.eclipse.mylyn.docs.sdk.feature.group" version="1.9.0.20131008-0518"/>
+<unit id="org.eclipse.mylyn.docs.epub.sdk.feature.group" version="1.2.0.20131007-2055"/>
+<unit id="org.eclipse.mylyn.sdk_feature.feature.group" version="3.10.0.20131024-1218"/>
+<unit id="org.eclipse.mylyn.wikitext.sdk.feature.group" version="1.9.0.20131008-0518"/>
 <repository location="http://download.eclipse.org/mylyn/releases/latest"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.cdo.sdk.feature.group" version="4.2.0.v20130613-1556"/>
-<unit id="org.eclipse.emf.cdo.server.feature.group" version="4.2.0.v20130612-0849"/>
-<unit id="org.eclipse.emf.cdo.server.db.feature.group" version="4.2.0.v20130612-0849"/>
-<unit id="org.eclipse.emf.cdo.server.hibernate.feature.group" version="4.2.0.v20130601-1611"/>
-<unit id="org.eclipse.net4j.db.feature.group" version="4.2.0.v20130601-1611"/>
+<unit id="org.eclipse.emf.cdo.sdk.feature.group" version="4.2.1.v20130913-0613"/>
+<unit id="org.eclipse.emf.cdo.server.feature.group" version="4.2.1.v20130913-0613"/>
+<unit id="org.eclipse.emf.cdo.server.db.feature.group" version="4.2.1.v20130811-0503"/>
+<unit id="org.eclipse.emf.cdo.server.hibernate.feature.group" version="4.2.1.v20130911-1235"/>
+<unit id="org.eclipse.net4j.db.feature.group" version="4.2.1.v20130730-0902"/>
 <unit id="org.eclipse.net4j.db.h2.feature.group" version="4.2.0.v20130601-1611"/>
-<unit id="org.eclipse.net4j.feature.group" version="4.2.0.v20130611-1140"/>
-<unit id="org.eclipse.net4j.sdk.feature.group" version="4.2.0.v20130612-0849"/>
+<unit id="org.eclipse.net4j.feature.group" version="4.2.1.v20130806-0658"/>
+<unit id="org.eclipse.net4j.sdk.feature.group" version="4.2.1.v20130806-0658"/>
 <unit id="org.eclipse.net4j.ui.feature.group" version="4.2.0.v20130601-1611"/>
 <unit id="org.eclipse.net4j.util.feature.group" version="4.2.0.v20130601-1611"/>
-<unit id="org.eclipse.net4j.util.ui.feature.group" version="4.2.0.v20130601-1611"/>
-<repository location="http://download.eclipse.org/modeling/emf/cdo/drops/R20130613-1157"/>
+<unit id="org.eclipse.net4j.util.ui.feature.group" version="4.2.0.v20130730-0902"/>
+<repository location="http://download.eclipse.org/modeling/emf/cdo/drops/R20130918-0029/"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.teneo.cdo.feature.group" version="2.0.1.v201308110853"/>
-<unit id="org.eclipse.emf.teneo.cdo.sdk.feature.group" version="2.0.1.v201308110853"/>
-<unit id="org.eclipse.emf.teneo.hibernate.feature.group" version="2.0.1.v201308110853"/>
-<unit id="org.eclipse.emf.teneo.hibernate.sdk.feature.group" version="2.0.1.v201308110853"/>
+<unit id="org.eclipse.emf.teneo.cdo.feature.group" version="2.0.1.v201312161349"/>
+<unit id="org.eclipse.emf.teneo.cdo.sdk.feature.group" version="2.0.1.v201312161349"/>
+<unit id="org.eclipse.emf.teneo.hibernate.feature.group" version="2.0.1.v201312161349"/>
+<unit id="org.eclipse.emf.teneo.hibernate.sdk.feature.group" version="2.0.1.v201312161349"/>
 <repository location="http://download.eclipse.org/modeling/emf/teneo/updates/2.0.0/interim/"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.ecf.core.feature.group" version="3.6.1.v20130605-1748"/>
-<unit id="org.eclipse.egit.feature.group" version="3.0.0.201306101825-r"/>
-<unit id="org.eclipse.jgit.feature.group" version="3.0.0.201306101825-r"/>
-<unit id="org.eclipse.emf.sdk.feature.group" version="2.9.0.v20130610-0406"/>
+<unit id="org.eclipse.egit.feature.group" version="3.0.3.201309161630-r"/>
+<unit id="org.eclipse.jgit.feature.group" version="3.0.3.201309161630-r"/>
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.9.1.v20130902-0605"/>
 <unit id="org.eclipse.emf.validation.sdk.feature.group" version="1.7.0.201306111341"/>
-<unit id="org.eclipse.ocl.all.sdk.feature.group" version="4.1.0.v20130611-1511"/>
-<unit id="org.eclipse.sdk.feature.group" version="4.3.0.v20130605-2000"/>
+<unit id="org.eclipse.ocl.all.sdk.feature.group" version="4.1.1.v20130916-1423"/>
+<unit id="org.eclipse.sdk.feature.group" version="4.3.1.v20130911-1000"/>
 <repository location="http://download.eclipse.org/releases/kepler/"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">

@@ -2,7 +2,7 @@ target "Elibrarium for Eclipse Juno (4.3)"
 
 // Strictly only Mylyn Docs EPUB is required
 location "http://download.eclipse.org/mylyn/releases/latest" {
-	with source, allEnvironments		
+	with source, allEnvironments
 	org.eclipse.mylyn.commons.sdk.feature.group
 	org.eclipse.mylyn.context.sdk.feature.group
 	org.eclipse.mylyn.docs.sdk.feature.group
@@ -12,8 +12,8 @@ location "http://download.eclipse.org/mylyn/releases/latest" {
 }
 
 // CDO 4.3 (Kepler)
-location "http://download.eclipse.org/modeling/emf/cdo/drops/R20130613-1157" {
-	with source, allEnvironments	
+location "http://download.eclipse.org/modeling/emf/cdo/drops/R20130918-0029/" {
+	with source, allEnvironments
 	org.eclipse.emf.cdo.sdk.feature.group
 	org.eclipse.emf.cdo.server.feature.group
 	org.eclipse.emf.cdo.server.db.feature.group
@@ -24,16 +24,16 @@ location "http://download.eclipse.org/modeling/emf/cdo/drops/R20130613-1157" {
 	org.eclipse.net4j.sdk.feature.group
 	org.eclipse.net4j.ui.feature.group
 	org.eclipse.net4j.util.feature.group
-	org.eclipse.net4j.util.ui.feature.group	
+	org.eclipse.net4j.util.ui.feature.group
 }
 
 // Do we really need Teneo/Hibernate?
 location "http://download.eclipse.org/modeling/emf/teneo/updates/2.0.0/interim/" {
-	with source, allEnvironments	
+	with source, allEnvironments
 	org.eclipse.emf.teneo.cdo.feature.group
 	org.eclipse.emf.teneo.cdo.sdk.feature.group
 	org.eclipse.emf.teneo.hibernate.feature.group
-	org.eclipse.emf.teneo.hibernate.sdk.feature.group	
+	org.eclipse.emf.teneo.hibernate.sdk.feature.group
 }
 
 // Eclipse 4.3
@@ -50,7 +50,7 @@ location "http://download.eclipse.org/releases/kepler/" {
 }
 
 location "http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository"{
-	with source, allEnvironments	
+	with source, allEnvironments
 	com.google.gerrit.prettify
 	com.google.gerrit.reviewdb
 	com.google.gerrit.common
