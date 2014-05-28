@@ -1,8 +1,7 @@
 target "Elibrarium for Eclipse Juno (4.3)"
+with source, allEnvironments
 
-// Strictly only Mylyn Docs EPUB is required
 location "http://download.eclipse.org/mylyn/releases/latest" {
-	with source, allEnvironments
 	org.eclipse.mylyn.commons.sdk.feature.group
 	org.eclipse.mylyn.context.sdk.feature.group
 	org.eclipse.mylyn.docs.sdk.feature.group
@@ -13,7 +12,6 @@ location "http://download.eclipse.org/mylyn/releases/latest" {
 
 // CDO 4.3 (Kepler)
 location "http://download.eclipse.org/modeling/emf/cdo/drops/R20130918-0029/" {
-	with source, allEnvironments
 	org.eclipse.emf.cdo.sdk.feature.group
 	org.eclipse.emf.cdo.server.feature.group
 	org.eclipse.emf.cdo.server.db.feature.group
@@ -29,28 +27,28 @@ location "http://download.eclipse.org/modeling/emf/cdo/drops/R20130918-0029/" {
 
 // Do we really need Teneo/Hibernate?
 location "http://download.eclipse.org/modeling/emf/teneo/updates/2.0.0/interim/" {
-	with source, allEnvironments
 	org.eclipse.emf.teneo.cdo.feature.group
 	org.eclipse.emf.teneo.cdo.sdk.feature.group
 	org.eclipse.emf.teneo.hibernate.feature.group
 	org.eclipse.emf.teneo.hibernate.sdk.feature.group
 }
 
+location "http://download.eclipse.org/modeling/emf/compare/updates/releases/" {
+	org.eclipse.emf.compare.sdk.feature.group
+}
+
 // Eclipse 4.3
 location "http://download.eclipse.org/releases/kepler/" {
-	with source, allEnvironments
 	org.eclipse.ecf.core.feature.group
 	org.eclipse.egit.feature.group
 	org.eclipse.jgit.feature.group
 	org.eclipse.emf.sdk.feature.group
-	org.eclipse.emf.compare.sdk.feature.group
 	org.eclipse.emf.validation.sdk.feature.group
 	org.eclipse.ocl.all.sdk.feature.group
 	org.eclipse.sdk.feature.group
 }
 
 location "http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository"{
-	with source, allEnvironments
 	com.google.gerrit.prettify
 	com.google.gerrit.reviewdb
 	com.google.gerrit.common
@@ -58,6 +56,7 @@ location "http://download.eclipse.org/tools/orbit/downloads/drops/R2013051711141
 	com.google.gwt.servlet
 	com.google.gwtjsonrpc
 	com.google.gwtorm
+	com.google.guava
 	com.sun.syndication
 	com.sun.xml.bind
 	javax.activation
@@ -79,6 +78,8 @@ location "http://download.eclipse.org/tools/orbit/downloads/drops/R2013051711141
 	org.apache.commons.logging
 	org.apache.xmlrpc
 	org.apache.ws.commons.util
+	org.apache.tika.core
+	org.apache.tika.parsers
 	org.hamcrest
 	org.hamcrest.core
 	org.hamcrest.generator
