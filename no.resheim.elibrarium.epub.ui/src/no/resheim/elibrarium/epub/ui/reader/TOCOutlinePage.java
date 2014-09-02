@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2011-2013 Torkild U. Resheim.
- * 
+ * Copyright (c) 2011, 2013, 2014 Torkild U. Resheim.
+ *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: 
+ *
+ * Contributors:
  *     Torkild U. Resheim - initial API and implementation
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui.reader;
@@ -49,7 +49,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.mylyn.docs.epub.core.OPSPublication;
+import org.eclipse.mylyn.docs.epub.core.Publication;
 import org.eclipse.mylyn.docs.epub.ncx.NavPoint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -78,11 +78,11 @@ import org.ocpsoft.pretty.time.PrettyTime;
 
 /**
  * Use to provide an outline page for EPUB table of contents.
- * 
+ *
  * @author Torkild U. Resheim
  */
 public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelectionChangedListener,
-		IDoubleClickListener, IPropertyChangeListener {
+IDoubleClickListener, IPropertyChangeListener {
 
 	private static final String TITLE_FONT = "no.resheim.elibrarium.epub.ui.titleFont";
 
@@ -129,7 +129,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 	private TableViewer bookmarks;
 
-	private final OPSPublication ops;
+	private final Publication ops;
 
 	private Composite pagebook;
 
@@ -143,7 +143,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 	private TreeViewer toc;
 
-	public TOCOutlinePage(OPSPublication epub, EpubReader reader) {
+	public TOCOutlinePage(Publication epub, EpubReader reader) {
 		this.ops = epub;
 		this.reader = reader;
 	}
@@ -386,7 +386,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 	/**
 	 * Fires a selection changed event.
-	 * 
+	 *
 	 * @param selection
 	 *            the new selection
 	 */
@@ -432,7 +432,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 	 * <p>
 	 * Subclasses may override.
 	 * </p>
-	 * 
+	 *
 	 * @return the tree styles to use. By default, SWT.MULTI | SWT.H_SCROLL |
 	 *         SWT.V_SCROLL
 	 * @since 3.6
@@ -443,7 +443,7 @@ public class TOCOutlinePage extends Page implements IContentOutlinePage, ISelect
 
 	/**
 	 * Returns this page's tree viewer.
-	 * 
+	 *
 	 * @return this page's tree viewer, or <code>null</code> if
 	 *         <code>createControl</code> has not been called yet
 	 */

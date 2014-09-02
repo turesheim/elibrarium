@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2012 Torkild U. Resheim.
- * 
+ * Copyright (c) 2012, 2014 Torkild U. Resheim.
+ *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: 
+ *
+ * Contributors:
  *     Torkild U. Resheim - initial API and implementation
  *******************************************************************************/
 package no.resheim.elibrarium.epub.core;
@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.mylyn.docs.epub.core.EPUB;
-import org.eclipse.mylyn.docs.epub.core.OPSPublication;
+import org.eclipse.mylyn.docs.epub.core.Publication;
 
 public class FolderScanner extends Job {
 
@@ -40,7 +40,7 @@ public class FolderScanner extends Job {
 	/**
 	 * Registers all publications found in the given EPUB unless they are
 	 * already in the library.
-	 * 
+	 *
 	 * @param epubPath
 	 *            path to the EPUB file
 	 * @throws Exception
@@ -48,8 +48,8 @@ public class FolderScanner extends Job {
 	private void registerBooks(File epubPath) throws Exception {
 		EPUB epub = new EPUB();
 		epub.unpack(epubPath);
-		List<OPSPublication> publications = epub.getOPSPublications();
-		for (OPSPublication ops : publications) {
+		List<Publication> publications = epub.getOPSPublications();
+		for (Publication ops : publications) {
 			String title = EpubUtil.getFirstTitle(ops);
 			String author = EpubUtil.getFirstAuthor(ops);
 			String id = EpubUtil.getIdentifier(ops);
@@ -71,7 +71,7 @@ public class FolderScanner extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(EpubCollection.PLUGIN_ID);
 		boolean scan = preferences.getBoolean(PreferenceConstants.SCAN_ENABLE, false);
-		if (scan){
+		if (scan) {
 			String paths = preferences.get(PreferenceConstants.SCAN_FOLDERS, "");
 			String[] folders = paths.split(File.pathSeparator);
 			for (String string : folders) {

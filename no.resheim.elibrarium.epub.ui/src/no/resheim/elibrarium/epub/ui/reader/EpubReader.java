@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2011-2013 Torkild U. Resheim.
- * 
+ * Copyright (c) 2011, 2013, 2014 Torkild U. Resheim.
+ *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: 
+ *
+ * Contributors:
  *     Torkild U. Resheim - initial API and implementation
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui.reader;
@@ -50,7 +50,7 @@ import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.mylyn.docs.epub.core.EPUB;
-import org.eclipse.mylyn.docs.epub.core.OPSPublication;
+import org.eclipse.mylyn.docs.epub.core.Publication;
 import org.eclipse.mylyn.docs.epub.dc.Title;
 import org.eclipse.mylyn.docs.epub.ncx.NavPoint;
 import org.eclipse.mylyn.docs.epub.opf.Item;
@@ -90,7 +90,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 /**
- * 
+ *
  * @author Torkild U. Resheim
  */
 public class EpubReader extends EditorPart {
@@ -315,7 +315,7 @@ public class EpubReader extends EditorPart {
 
 	private Menu menu;
 
-	private OPSPublication ops;
+	private Publication ops;
 
 	private Object outlinePage;
 
@@ -492,6 +492,7 @@ public class EpubReader extends EditorPart {
 					object.cdoWriteLock().lock();
 					object.setLastLocation(currentLocation);
 					object.setLastHref(currentHref);
+					object.cdoWriteLock().unlock();
 					return null;
 				}
 			});
@@ -529,13 +530,13 @@ public class EpubReader extends EditorPart {
 	/**
 	 * Determines the chapter number of the item currently displayed. If
 	 * <b>-1</b> is returned, the item is not in the spine.
-	 * 
+	 *
 	 * @return the current chapter, starting from chapter one.
 	 */
 	private int getCurrentChapter() {
 		int currentChapter = -1;
-		EList<Itemref> spineItems = ops.getOpfPackage().getSpine().getSpineItems();
-		EList<Item> items = ops.getOpfPackage().getManifest().getItems();
+		EList<Itemref> spineItems = ops.getPackage().getSpine().getSpineItems();
+		EList<Item> items = ops.getPackage().getManifest().getItems();
 		String ref = currentHref;
 		for (Item item : items) {
 			if (item.getHref().equals(ref)) {
@@ -554,7 +555,7 @@ public class EpubReader extends EditorPart {
 	 * Determines the current page in the chapter using the content viewport
 	 * position. Since this offset may not be exactly the same as the start of
 	 * the page we need to do a bit of calculation.
-	 * 
+	 *
 	 * @return
 	 */
 	private int getCurrentChapterPage() {
@@ -575,7 +576,7 @@ public class EpubReader extends EditorPart {
 	/**
 	 * Calculates the book relative page index of the currently displayed page.
 	 * Note that the index of the first page is "0".
-	 * 
+	 *
 	 * @return the currently displayed page index
 	 */
 	private int getCurrentPageIndex() {
@@ -586,7 +587,7 @@ public class EpubReader extends EditorPart {
 	 * Calculates the book relative page index at the beginning of the chapter -
 	 * using information of chapter lengths obtained from the pagination job.
 	 * Note that the index of the first page is
-	 * 
+	 *
 	 * @return the page number at the start of the chapter
 	 */
 	private int getCurrentChapterPageIndex() {
@@ -605,7 +606,7 @@ public class EpubReader extends EditorPart {
 	/**
 	 * Returns the URL of the first text page of the publication. That is
 	 * excluding any cover page etc.
-	 * 
+	 *
 	 * @return URL of the first text page
 	 */
 	private String getOpeningPage(String href) {
@@ -613,8 +614,8 @@ public class EpubReader extends EditorPart {
 			return "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + href;
 		}
 		// First try the first TEXT type page if there is a guide.
-		if (ops.getOpfPackage().getGuide() != null) {
-			EList<Reference> references = ops.getOpfPackage().getGuide().getGuideItems();
+		if (ops.getPackage().getGuide() != null) {
+			EList<Reference> references = ops.getPackage().getGuide().getGuideItems();
 			for (Reference reference : references) {
 				if (reference.getType().equals(Type.TEXT)) {
 					return "file:" + ops.getRootFolder().getAbsolutePath() + File.separator + reference.getHref();
@@ -622,7 +623,7 @@ public class EpubReader extends EditorPart {
 			}
 		}
 		// Then try the first page in the spine
-		EList<Itemref> items = ops.getOpfPackage().getSpine().getSpineItems();
+		EList<Itemref> items = ops.getPackage().getSpine().getSpineItems();
 		for (Itemref itemref : items) {
 			if (itemref.getLinear() == null || Boolean.parseBoolean(itemref.getLinear())) {
 				Item item = ops.getItemById(itemref.getIdref());
@@ -633,8 +634,8 @@ public class EpubReader extends EditorPart {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public String getTitle(OPSPublication epub) {
-		EList<Title> titles = epub.getOpfPackage().getMetadata().getTitles();
+	public String getTitle(Publication epub) {
+		EList<Title> titles = epub.getPackage().getMetadata().getTitles();
 		if (titles.size() > 0) {
 			FeatureMap fm = titles.get(0).getMixed();
 			Object o = fm.get(TEXT, false);
@@ -673,6 +674,16 @@ public class EpubReader extends EditorPart {
 				paginationJob.setUser(false);
 				paginationJob.setPriority(Job.LONG);
 				paginationJob.addJobChangeListener(new PaginationJobListener());
+				//
+				ILibraryCatalog.INSTANCE.modify(currentBook, new ITransactionalOperation<Book>() {
+					@Override
+					public Object execute(Book object) {
+						object.cdoWriteLock().lock();
+						object.setLastOpened(System.currentTimeMillis());
+						object.cdoWriteLock().unlock();
+						return null;
+					}
+				});
 			} catch (Exception e) {
 				StatusManager.getManager()
 						.handle(new Status(IStatus.ERROR, EpubUiPlugin.PLUGIN_ID, "Could not open book", e),
@@ -695,7 +706,7 @@ public class EpubReader extends EditorPart {
 
 	/**
 	 * Install a listener that will respond to changes in the book.
-	 * 
+	 *
 	 * @param book
 	 *            the book to listen to
 	 */
@@ -862,7 +873,7 @@ public class EpubReader extends EditorPart {
 
 	/**
 	 * Browses to the next or previous chapter depending on the direction.
-	 * 
+	 *
 	 * @param direction
 	 *            the browsing direction.
 	 */
@@ -879,7 +890,7 @@ public class EpubReader extends EditorPart {
 		default:
 			break;
 		}
-		EList<Itemref> spineItems = ops.getOpfPackage().getSpine().getSpineItems();
+		EList<Itemref> spineItems = ops.getPackage().getSpine().getSpineItems();
 		if (currentChapter > 0 && currentChapter <= spineItems.size()) {
 			Item item = ops.getItemById(spineItems.get(currentChapter - 1).getIdref());
 			openItem(item);
@@ -889,7 +900,7 @@ public class EpubReader extends EditorPart {
 	/**
 	 * Navigates to the given bookmark. When a chapter is loaded all bookmarks
 	 * are handled and identifying elements are created in the document.
-	 * 
+	 *
 	 * @param bookmark
 	 *            the marker to navigate to
 	 */
@@ -904,7 +915,7 @@ public class EpubReader extends EditorPart {
 
 	/**
 	 * Use to navigate to a specific {@link NavPoint}.
-	 * 
+	 *
 	 * @param navPoint
 	 *            the point to navigate to
 	 */
@@ -914,7 +925,7 @@ public class EpubReader extends EditorPart {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param url
 	 */
 	private void navigateTo(String url) {
@@ -973,6 +984,7 @@ public class EpubReader extends EditorPart {
 				public Object execute(Book object) {
 					object.cdoWriteLock().lock();
 					object.getBookmarks().add(bookmark);
+					object.cdoWriteLock().unlock();
 					return null;
 				}
 			});
@@ -983,6 +995,7 @@ public class EpubReader extends EditorPart {
 				public Object execute(Book object) {
 					object.cdoWriteLock().lock();
 					object.getBookmarks().remove(existing);
+					object.cdoWriteLock().unlock();
 					return null;
 				}
 			});
@@ -1010,6 +1023,7 @@ public class EpubReader extends EditorPart {
 			public Object execute(Book object) {
 				object.cdoWriteLock().lock();
 				object.getBookmarks().add(annotation);
+				object.cdoWriteLock().unlock();
 				return null;
 			}
 		});
@@ -1095,7 +1109,7 @@ public class EpubReader extends EditorPart {
 
 	/**
 	 * Navigates to the given page number of the chapter.
-	 * 
+	 *
 	 * @param page
 	 *            the page number to go to
 	 */
@@ -1169,7 +1183,7 @@ public class EpubReader extends EditorPart {
 		}
 	}
 
-	private void registerBook(IPath path, OPSPublication ops) {
+	private void registerBook(IPath path, Publication ops) {
 		String title = EpubUtil.getFirstTitle(ops);
 		String author = EpubUtil.getFirstAuthor(ops);
 		String id = EpubUtil.getIdentifier(ops);

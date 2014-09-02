@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2011-2013 Torkild U. Resheim.
- * 
+ * Copyright (c) 2011, 2013, 2014 Torkild U. Resheim.
+ *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: 
+ *
+ * Contributors:
  *     Torkild U. Resheim - initial API and implementation
  *******************************************************************************/
 package no.resheim.elibrarium.epub.ui.reader;
@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.mylyn.docs.epub.core.OPSPublication;
+import org.eclipse.mylyn.docs.epub.core.Publication;
 import org.eclipse.mylyn.docs.epub.opf.Item;
 import org.eclipse.mylyn.docs.epub.opf.Itemref;
 import org.eclipse.swt.SWT;
@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Shell;
  * iterating over the book chapters (or XHTML files) the other is counting the
  * pages of each chapter. The latter will also inject all bookmarks and
  * annotations and update the page number of these.
- * 
+ *
  * @author Torkild U. Resheim
  */
 public class PaginationJob extends Job {
@@ -101,7 +101,7 @@ public class PaginationJob extends Job {
 		/**
 		 * Executes JavaScript that will reformat the chapter and obtain
 		 * information that is required for browsing it.
-		 * 
+		 *
 		 * @return the number of pages in the chapter
 		 */
 		private int paginateChapter() {
@@ -145,6 +145,7 @@ public class PaginationJob extends Job {
 				public Object execute(Bookmark object) {
 					object.cdoWriteLock();
 					object.setPage(page);
+					object.cdoWriteLock().unlock();
 					return null;
 				}
 			});
@@ -200,7 +201,7 @@ public class PaginationJob extends Job {
 	/**
 	 * The OPS publication being paginated.
 	 */
-	private final OPSPublication ops;
+	private final Publication ops;
 
 	private final Shell shell;
 
@@ -209,7 +210,7 @@ public class PaginationJob extends Job {
 	 */
 	private int width;
 
-	public PaginationJob(Book book, OPSPublication ops) {
+	public PaginationJob(Book book, Publication ops) {
 		super(MessageFormat.format("Paginating \"{0}\"", EpubUtil.getFirstTitle(ops)));
 		this.ops = ops;
 		this.book = book;
@@ -227,7 +228,7 @@ public class PaginationJob extends Job {
 
 	/**
 	 * Returns the total number of pages in the book.
-	 * 
+	 *
 	 * @return
 	 */
 	public int getTotalpages() {
@@ -240,7 +241,7 @@ public class PaginationJob extends Job {
 
 	/**
 	 * Returns the width of the book page.
-	 * 
+	 *
 	 * @return the page width
 	 */
 	public int getWidth() {
@@ -251,7 +252,7 @@ public class PaginationJob extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		long start = System.currentTimeMillis();
 		chapterSizes = new int[0];
-		EList<Itemref> refs = ops.getOpfPackage().getSpine().getSpineItems();
+		EList<Itemref> refs = ops.getPackage().getSpine().getSpineItems();
 		ExecutorService es = Executors.newFixedThreadPool(1);
 		for (Itemref ref : refs) {
 			if (!monitor.isCanceled()) {
