@@ -118,6 +118,7 @@ public class Librarian extends Plugin implements ILibrarian {
 				object.cdoWriteLock().lock();
 				EList<Book> books = object.getBooks();
 				books.add(book);
+				object.cdoWriteLock().unlock();
 				return null;
 			}
 		};
@@ -190,10 +191,11 @@ public class Librarian extends Plugin implements ILibrarian {
 		// http://h2database.com/html/features.html#auto_mixed_mode
 		// String url = "jdbc:h2:" + getStorageLocation() + File.separator +
 		// "h2db;AUTO_SERVER=TRUE";
-		String url = "jdbc:h2:" + getStorageLocation() + File.separator + "h2db";
+		String url = "jdbc:h2:" + getStorageLocation() + File.separator + "h2db;AUTO_SERVER=TRUE";
 		LOG.info("- Hibernate database URL = " + url);
 		dataSource.setURL(url);
 
+		// Create one database table per concrete model class
 		IMappingStrategy mappingStrategy = CDODBUtil.createHorizontalMappingStrategy(true);
 		IDBAdapter dbAdapter = new H2Adapter();
 		IDBConnectionProvider dbConnectionProvider = DBUtil.createConnectionProvider(dataSource);
@@ -203,7 +205,7 @@ public class Librarian extends Plugin implements ILibrarian {
 		props.put(IRepository.Props.OVERRIDE_UUID, CDO_REPOSITORY_ID);
 		props.put(IRepository.Props.SUPPORTING_AUDITS, "true");
 		props.put(IRepository.Props.SUPPORTING_BRANCHES, "false");
-
+		
 		repository = CDOServerUtil.createRepository(CDO_REPOSITORY_ID, store, props);
 		CDOServerUtil.addRepository(IPluginContainer.INSTANCE, repository);
 		CDONet4jServerUtil.prepareContainer(IPluginContainer.INSTANCE);
@@ -313,6 +315,7 @@ public class Librarian extends Plugin implements ILibrarian {
 				object.cdoWriteLock().lock();
 				EList<Book> books = object.getBooks();
 				books.remove(book);
+				object.cdoWriteLock().unlock();
 				return null;
 			}
 		};
