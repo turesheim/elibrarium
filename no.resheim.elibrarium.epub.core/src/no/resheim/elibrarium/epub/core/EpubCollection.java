@@ -20,6 +20,7 @@ import no.resheim.elibrarium.library.core.ICollection;
 import no.resheim.elibrarium.library.core.ILibrarian;
 import no.resheim.elibrarium.library.core.Librarian;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Plugin;
@@ -72,6 +73,7 @@ public class EpubCollection extends Plugin implements BundleActivator, ICollecti
 	}
 
 	public EpubCollection() {
+		Assert.isTrue(collection == null);
 		collection = this;
 		listeners = new ListenerList();
 		scanner = new FolderScanner("Scanning");
@@ -144,7 +146,7 @@ public class EpubCollection extends Plugin implements BundleActivator, ICollecti
 
 	/**
 	 * Checks if the book is in the collection or not.
-	 * 
+	 *
 	 * @param urn
 	 *            the book identifier
 	 * @return <code>true</code> if the book is in the collection
@@ -161,7 +163,7 @@ public class EpubCollection extends Plugin implements BundleActivator, ICollecti
 	/**
 	 * Returns the book with the given URN <code>null</code> if the book could
 	 * not be found.
-	 * 
+	 *
 	 * @param urn
 	 *            the book identifier
 	 * @return the book if found or <code>null</code>
