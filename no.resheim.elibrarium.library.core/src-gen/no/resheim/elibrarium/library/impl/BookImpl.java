@@ -29,6 +29,7 @@ import org.eclipse.emf.internal.cdo.CDOObjectImpl;
  *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getMetadata <em>Metadata</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getLastHref <em>Last Href</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getLastLocation <em>Last Location</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.impl.BookImpl#getLastOpened <em>Last Opened</em>}</li>
  * </ul>
  * </p>
  *
@@ -208,6 +209,24 @@ public class BookImpl extends CDOObjectImpl implements Book {
 	 */
 	public void setLastLocation(String newLastLocation) {
 		eSet(LibraryPackage.Literals.BOOK__LAST_LOCATION, newLastLocation);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public long getLastOpened() {
+		return (Long)eGet(LibraryPackage.Literals.BOOK__LAST_OPENED, true);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLastOpened(long newLastOpened) {
+		eSet(LibraryPackage.Literals.BOOK__LAST_OPENED, newLastOpened);
 	}
 
 } //BookImpl

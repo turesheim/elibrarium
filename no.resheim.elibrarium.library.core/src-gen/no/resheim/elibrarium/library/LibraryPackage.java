@@ -185,13 +185,22 @@ public interface LibraryPackage extends EPackage {
 	int BOOK__LAST_LOCATION = 8;
 
 	/**
+	 * The feature id for the '<em><b>Last Opened</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOK__LAST_OPENED = 9;
+
+	/**
 	 * The number of structural features of the '<em>Book</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BOOK_FEATURE_COUNT = 9;
+	int BOOK_FEATURE_COUNT = 10;
 
 	/**
 	 * The meta object id for the '{@link no.resheim.elibrarium.library.impl.BookmarkImpl <em>Bookmark</em>}' class.
@@ -547,6 +556,17 @@ public interface LibraryPackage extends EPackage {
 	EAttribute getBook_LastLocation();
 
 	/**
+	 * Returns the meta object for the attribute '{@link no.resheim.elibrarium.library.Book#getLastOpened <em>Last Opened</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Last Opened</em>'.
+	 * @see no.resheim.elibrarium.library.Book#getLastOpened()
+	 * @see #getBook()
+	 * @generated
+	 */
+	EAttribute getBook_LastOpened();
+
+	/**
 	 * Returns the meta object for class '{@link no.resheim.elibrarium.library.Bookmark <em>Bookmark</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -825,6 +845,14 @@ public interface LibraryPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute BOOK__LAST_LOCATION = eINSTANCE.getBook_LastLocation();
+
+		/**
+		 * The meta object literal for the '<em><b>Last Opened</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BOOK__LAST_OPENED = eINSTANCE.getBook_LastOpened();
 
 		/**
 		 * The meta object literal for the '{@link no.resheim.elibrarium.library.impl.BookmarkImpl <em>Bookmark</em>}' class.

@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link no.resheim.elibrarium.library.Book#getMetadata <em>Metadata</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Book#getLastHref <em>Last Href</em>}</li>
  *   <li>{@link no.resheim.elibrarium.library.Book#getLastLocation <em>Last Location</em>}</li>
+ *   <li>{@link no.resheim.elibrarium.library.Book#getLastOpened <em>Last Opened</em>}</li>
  * </ul>
  * </p>
  *
@@ -249,5 +250,31 @@ public interface Book extends CDOObject {
 	 * @generated
 	 */
 	void setLastLocation(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Last Opened</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * Indicates when the book was last opened. If the value is 0, the book 
+	 * has never been opened. Otherwise the value is standard UNIX time.
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Last Opened</em>' attribute.
+	 * @see #setLastOpened(long)
+	 * @see no.resheim.elibrarium.library.LibraryPackage#getBook_LastOpened()
+	 * @model
+	 * @generated
+	 */
+	long getLastOpened();
+
+	/**
+	 * Sets the value of the '{@link no.resheim.elibrarium.library.Book#getLastOpened <em>Last Opened</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Last Opened</em>' attribute.
+	 * @see #getLastOpened()
+	 * @generated
+	 */
+	void setLastOpened(long value);
 
 } // Book

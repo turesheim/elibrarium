@@ -251,6 +251,15 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getBook_LastOpened() {
+		return (EAttribute)bookEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getBookmark() {
 		return bookmarkEClass;
 	}
@@ -414,6 +423,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		createEReference(bookEClass, BOOK__METADATA);
 		createEAttribute(bookEClass, BOOK__LAST_HREF);
 		createEAttribute(bookEClass, BOOK__LAST_LOCATION);
+		createEAttribute(bookEClass, BOOK__LAST_OPENED);
 
 		bookmarkEClass = createEClass(BOOKMARK);
 		createEAttribute(bookmarkEClass, BOOKMARK__ID);
@@ -480,6 +490,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		initEReference(getBook_Metadata(), this.getMetadata(), null, "metadata", null, 0, -1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBook_LastHref(), ecorePackage.getEString(), "lastHref", null, 0, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getBook_LastLocation(), ecorePackage.getEString(), "lastLocation", null, 0, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBook_LastOpened(), ecorePackage.getELong(), "lastOpened", null, 0, 1, Book.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(bookmarkEClass, Bookmark.class, "Bookmark", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getBookmark_Id(), ecorePackage.getEString(), "id", null, 1, 1, Bookmark.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -521,37 +532,37 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * @generated
 	 */
 	protected void createExtendedMetaDataAnnotations() {
-		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";		
+		String source = "http:///org/eclipse/emf/ecore/util/ExtendedMetaData";	
 		addAnnotation
 		  (libraryEClass, 
 		   source, 
 		   new String[] {
 			 "namespace", "http://resheim.no/elibrarium/library"
-		   });		
+		   });	
 		addAnnotation
 		  (getLibrary_Books(), 
 		   source, 
 		   new String[] {
 			 "name", "book"
-		   });		
+		   });	
 		addAnnotation
 		  (getBook_BookURN(), 
 		   source, 
 		   new String[] {
 			 "name", "urn"
-		   });		
+		   });	
 		addAnnotation
 		  (getBook_BookURL(), 
 		   source, 
 		   new String[] {
 			 "name", "url"
-		   });		
+		   });	
 		addAnnotation
 		  (getBook_Bookmarks(), 
 		   source, 
 		   new String[] {
 			 "name", "bookmark"
-		   });		
+		   });	
 		addAnnotation
 		  (getBook_Metadata(), 
 		   source, 
