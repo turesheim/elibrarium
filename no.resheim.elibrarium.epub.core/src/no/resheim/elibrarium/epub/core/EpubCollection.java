@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2012 Torkild U. Resheim.
- * 
+ * Copyright (c) 2012, 2013 Torkild U. Resheim.
+ *
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: 
+ *
+ * Contributors:
  *     Torkild U. Resheim - initial API and implementation
  *******************************************************************************/
 package no.resheim.elibrarium.epub.core;
@@ -120,8 +120,8 @@ public class EpubCollection extends Plugin implements BundleActivator, ICollecti
 	public void remove(final Book book) {
 		if (hasBook(book.getBookURN())) {
 			Object[] l = listeners.getListeners();
-			for (int i = 0; i < l.length; i++) {
-				final ILibrarian listener = (ILibrarian) l[i];
+			for (Object element : l) {
+				final ILibrarian listener = (ILibrarian) element;
 				SafeRunner.run(new ISafeRunnable() {
 
 					@Override
@@ -188,8 +188,8 @@ public class EpubCollection extends Plugin implements BundleActivator, ICollecti
 	public void add(final Book book) {
 		if (!hasBook(book.getBookURN())) {
 			Object[] l = listeners.getListeners();
-			for (int i = 0; i < l.length; i++) {
-				final ILibrarian listener = (ILibrarian) l[i];
+			for (Object element : l) {
+				final ILibrarian listener = (ILibrarian) element;
 				SafeRunner.run(new ISafeRunnable() {
 
 					@Override
@@ -214,6 +214,10 @@ public class EpubCollection extends Plugin implements BundleActivator, ICollecti
 			} else {
 				scanner.cancel();
 			}
+		}
+		// Rescan all folders if the list have changed
+		if (event.getKey().equals(PreferenceConstants.SCAN_FOLDERS)) {
+			scanner.schedule();
 		}
 
 	}
