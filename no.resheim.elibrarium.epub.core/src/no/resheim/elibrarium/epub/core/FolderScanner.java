@@ -13,7 +13,6 @@ package no.resheim.elibrarium.epub.core;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.net.URI;
 import java.util.List;
 
@@ -29,12 +28,48 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.mylyn.docs.epub.core.EPUB;
+import org.eclipse.mylyn.docs.epub.core.ILogger;
 import org.eclipse.mylyn.docs.epub.core.Publication;
 
 public class FolderScanner extends Job {
 
+	class ScannerLogger implements ILogger {
+
+		@Override
+		public void log(String message) {
+			log(message, Severity.INFO);
+		}
+
+		@Override
+		public void log(String message, Severity severity) {
+			switch (severity) {
+			case ERROR:
+				System.out.print("[ERROR] ");
+				break;
+			case DEBUG:
+				System.out.print("[DEBUG] ");
+				break;
+			case INFO:
+				System.out.print("[INFO ] ");
+				break;
+			case VERBOSE:
+				System.out.print("[VERBO] ");
+				break;
+			case WARNING:
+				System.out.print("[WARN ] ");
+				break;
+			default:
+				break;
+			}
+			System.out.println(message);
+		}
+	}
+
+	private final ILogger logger;
+
 	public FolderScanner(String name) {
 		super(name);
+		logger = new ScannerLogger();
 	}
 
 	/**
@@ -45,8 +80,8 @@ public class FolderScanner extends Job {
 	 *            path to the EPUB file
 	 * @throws Exception
 	 */
-	private void registerBooks(File epubPath) throws Exception {
-		EPUB epub = new EPUB();
+	private void registerBook(File epubPath) throws Exception {
+		EPUB epub = new EPUB(logger);
 		epub.unpack(epubPath);
 		List<Publication> publications = epub.getOPSPublications();
 		for (Publication ops : publications) {
@@ -63,7 +98,6 @@ public class FolderScanner extends Job {
 				book.getMetadata().add(md);
 				EpubCollection.getCollection().add(book);
 			}
-
 		}
 	};
 
@@ -85,20 +119,24 @@ public class FolderScanner extends Job {
 	public void scanFolder(File folder) {
 		if (folder.isDirectory()) {
 			// Locate all EPUB's and handle these
-			File[] epubs = folder.listFiles(new FilenameFilter() {
+			File[] epubs = folder.listFiles(new FileFilter() {
 
 				@Override
-				public boolean accept(File dir, String name) {
-					if (name.toLowerCase().endsWith(".epub")) {
-						return true;
+				public boolean accept(File file) {
+					if (file.isFile()) {
+						String name = file.getName();
+						if (name.endsWith(".epub")) {
+							return true;
+						}
 					}
 					return false;
 				}
 			});
+			// Locate all subfolders and handle those
 			for (File file : epubs) {
 				if (!EpubCollection.getCollection().hasBook(file)) {
 					try {
-						registerBooks(file);
+						registerBook(file);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -108,8 +146,8 @@ public class FolderScanner extends Job {
 			File[] folders = folder.listFiles(new FileFilter() {
 
 				@Override
-				public boolean accept(File arg0) {
-					return arg0.isDirectory();
+				public boolean accept(File file) {
+					return file.isDirectory();
 				}
 			});
 			for (File file : folders) {
